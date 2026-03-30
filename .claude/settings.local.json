@@ -22,7 +22,8 @@
       "Bash(done)",
       "Bash(tsc:*)",
       "Bash(ls:*)",
-      "Bash(npx eslint:*)"
+      "Bash(npx eslint:*)",
+      "Bash(wc:*)"
     ]
   }
 }
