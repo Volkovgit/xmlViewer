@@ -13,7 +13,14 @@
       "Bash(taskkill:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(for:*)",
+      "Bash(do if [ -f \"$dir/index.ts\" ])",
+      "Bash(then echo \"✓ $dir\")",
+      "Bash(else echo \"✗ MISSING: $dir\")",
+      "Bash(fi:*)",
+      "Bash(done)",
+      "Bash(tsc:*)"
     ]
   }
 }
