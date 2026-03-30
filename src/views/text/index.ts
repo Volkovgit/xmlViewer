@@ -7,3 +7,6 @@ export type {
   MonacoTheme,
   EditorLanguage,
 } from './MonacoEditor';
+
+export { XMLTextEditor } from './XMLTextEditor';
+export type { XMLTextEditorProps } from './XMLTextEditor';

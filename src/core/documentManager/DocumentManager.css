@@ -1,0 +1,190 @@
+/**
+ * DocumentManager Component Styles
+ */
+
+.document-manager {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Toolbar Styles */
+.document-toolbar {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+  background-color: #f5f5f5;
+}
+
+.toolbar-button {
+  padding: 6px 12px;
+  border: 1px solid #999;
+  border-radius: 3px;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background-color 0.15s ease;
+}
+
+.toolbar-button:hover {
+  background-color: #e8e8e8;
+}
+
+.toolbar-button:active {
+  background-color: #d8d8d8;
+}
+
+/* Hidden file input */
+.document-file-input {
+  display: none;
+}
+
+/* Tab Bar Styles */
+.document-tabs {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-bottom: 1px solid #ccc;
+  background-color: #e8e8e8;
+  scrollbar-width: thin;
+  scrollbar-color: #999 #e8e8e8;
+}
+
+.document-tabs::-webkit-scrollbar {
+  height: 8px;
+}
+
+.document-tabs::-webkit-scrollbar-track {
+  background: #e8e8e8;
+}
+
+.document-tabs::-webkit-scrollbar-thumb {
+  background-color: #999;
+  border-radius: 4px;
+}
+
+/* Individual Tab Styles */
+.document-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-right: 1px solid #ccc;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease;
+  white-space: nowrap;
+  min-width: fit-content;
+}
+
+.document-tab:hover {
+  background-color: #d8d8d8;
+}
+
+.document-tab.active {
+  background-color: #fff;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.document-tab:focus-visible {
+  outline: 2px solid #0066cc;
+  outline-offset: -2px;
+}
+
+.document-name {
+  font-size: 13px;
+  color: #333;
+}
+
+.document-tab.active .document-name {
+  font-weight: 500;
+}
+
+.dirty-indicator {
+  color: #d32f2f;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  color: #666;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.close-button:hover {
+  background-color: #c8c8c8;
+  color: #333;
+}
+
+.close-button:focus-visible {
+  outline: 2px solid #0066cc;
+  outline-offset: 1px;
+}
+
+/* Document Content Area */
+.document-content {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.active-document {
+  height: 100%;
+  overflow: auto;
+}
+
+.document-text {
+  margin: 0;
+  padding: 16px;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #333;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background-color: #f9f9f9;
+}
+
+.empty-state-content {
+  text-align: center;
+  color: #666;
+}
+
+.empty-state-content h2 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  font-weight: 500;
+  color: #333;
+}
+
+.empty-state-content p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}

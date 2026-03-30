@@ -1,0 +1,82 @@
+/**
+ * XML Text Editor Styles
+ */
+
+.xml-text-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.xml-text-editor .monaco-editor-container {
+  flex: 1;
+  overflow: hidden;
+}
+
+.status-bar {
+  display: flex;
+  gap: 16px;
+  padding: 4px 12px;
+  background: #f5f5f5;
+  border-top: 1px solid #ccc;
+  font-size: 12px;
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono',
+    monospace;
+  user-select: none;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.status-item {
+  white-space: nowrap;
+  color: #666;
+}
+
+.status-item.validation-status.valid {
+  color: #008000;
+  font-weight: 500;
+}
+
+.status-item.validation-status.has-errors {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+/* Dark theme support for status bar (Phase 3) */
+@media (prefers-color-scheme: dark) {
+  .status-bar {
+    background: #2d2d2d;
+    border-top-color: #454545;
+    color: #ccc;
+  }
+
+  .status-item {
+    color: #aaa;
+  }
+
+  .status-item.validation-status.valid {
+    color: #4caf50;
+  }
+
+  .status-item.validation-status.has-errors {
+    color: #f44336;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .status-bar {
+    gap: 12px;
+    padding: 4px 8px;
+    font-size: 11px;
+    overflow-x: auto;
+  }
+}
+
+/* Print styles */
+@media print {
+  .status-bar {
+    display: none;
+  }
+}

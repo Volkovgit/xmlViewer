@@ -1,8 +1,10 @@
+import { DocumentManager } from '@/core/documentManager';
+import './index.css';
+
 function App() {
   return (
     <div className="app">
-      <h1>XMLSpy Clone</h1>
-      <p>XML Editor and Development Environment</p>
+      <DocumentManager />
     </div>
   );
 }

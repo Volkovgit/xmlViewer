@@ -82,7 +82,6 @@ export class XMLParser {
     let line = 1;
     let column = 1;
     let message = errorText;
-    let code: string | undefined;
 
     // Try to extract line and column from error message
     // Common patterns:
@@ -108,7 +107,7 @@ export class XMLParser {
     message = this.cleanErrorMessage(errorText);
 
     // Try to determine error code from message
-    code = this.determineErrorCode(message);
+    const code = this.determineErrorCode(message);
 
     return {
       line,

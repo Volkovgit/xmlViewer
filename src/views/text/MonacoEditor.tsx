@@ -56,6 +56,8 @@ export interface MonacoEditorProps {
   loading?: React.ReactNode;
   /** Class name for editor container */
   className?: string;
+  /** Callback when cursor position changes */
+  onDidChangeCursorPosition?: (event: Monaco.editor.ICursorPositionChangedEvent) => void;
 }
 
 /**
@@ -139,6 +141,7 @@ export const MonacoEditor = forwardRef<MonacoEditorHandle, MonacoEditorProps>(
       options = {},
       loading,
       className,
+      onDidChangeCursorPosition,
     },
     ref
   ) => {
@@ -171,6 +174,11 @@ export const MonacoEditor = forwardRef<MonacoEditorHandle, MonacoEditorProps>(
           editor.getAction('editor.action.formatDocument')?.run();
         }
       );
+
+      // Register cursor position change listener if callback provided
+      if (onDidChangeCursorPosition) {
+        editor.onDidChangeCursorPosition(onDidChangeCursorPosition);
+      }
     };
 
     /**
