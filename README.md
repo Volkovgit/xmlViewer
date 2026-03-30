@@ -19,15 +19,18 @@ XML Previewer is a comprehensive XML development environment designed to provide
 ## Tech Stack
 
 ### Core Framework
+
 - **React 18** - UI library
 - **TypeScript** - Type-safe JavaScript
 - **Vite** - Fast build tool and dev server
 
 ### State Management & Editor
+
 - **Zustand** - Lightweight state management
 - **Monaco Editor** - Professional code editor (VS Code's editor)
 
 ### Development Tools
+
 - **Vitest** - Fast unit testing framework
 - **Testing Library** - React component testing
 - **ESLint** - Code linting with TypeScript support
@@ -72,11 +75,13 @@ npm run preview
 ## Available Scripts
 
 ### Development
+
 - `npm run dev` - Start development server with hot reload
 - `npm run build` - Build for production (TypeScript compilation + Vite build)
 - `npm run preview` - Preview production build locally
 
 ### Code Quality
+
 - `npm run lint` - Run ESLint to check code quality
 - `npm run lint:fix` - Automatically fix ESLint issues
 - `npm run format` - Format code with Prettier
@@ -84,6 +89,7 @@ npm run preview
 - `npm run type-check` - Run TypeScript type checking without emitting files
 
 ### Testing
+
 - `npm run test` - Run all tests
 - `npm run test:watch` - Run tests in watch mode
 - `npm run test:ui` - Run tests with Vitest UI
@@ -135,7 +141,7 @@ See [IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md) for detailed development 
 
 - [IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md) - Detailed implementation plan
 - [CLAUDE.md](./CLAUDE.md) - Project-specific guidelines for AI assistants
-- [XMLSpy_Altova_функции.md](./XMLSpy_Altova_функции.md) - XMLSpy feature reference (in Russian)
+- [XMLSpy*Altova*функции.md](./XMLSpy_Altova_функции.md) - XMLSpy feature reference (in Russian)
 
 ## Contributing
 
