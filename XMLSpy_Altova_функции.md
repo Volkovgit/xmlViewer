@@ -141,5 +141,6 @@
 ---
 
 **Источники:**
+
 - [Altova XMLSpy - Обзор XML редактора](https://www.altova.com/xmlspy)
 - [Altova XMLSpy - XSD редактор](https://www.altova.com/xmlspy/xml-schema-editor.html)

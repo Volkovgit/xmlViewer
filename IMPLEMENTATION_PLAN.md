@@ -9,6 +9,7 @@
 **Цель:** Полноправный клон XMLSpy с приоритетом на MVP (минимально жизнеспособный продукт), включающий базовые функции XML и XSD поддержку.
 
 **Технологический стек:**
+
 - Frontend: React 18 + TypeScript
 - Build tool: Vite
 - State management: Zustand
@@ -23,6 +24,7 @@
 ### Уровень 1: Базовый (1-3 дня на функцию)
 
 **Функции:**
+
 - XML Text View (Monaco Editor интеграция)
 - XML Syntax Checking (быстрая проверка синтаксиса)
 - XML Viewer (базовое дерево элементов)
@@ -32,6 +34,7 @@
 - Basic error display
 
 **Библиотеки:**
+
 - `@monaco-editor/react` — редактор кода
 - `fast-xml-parser` — парсинг XML
 - `xmldom` — DOM manipulation
@@ -41,6 +44,7 @@
 ### Уровень 2: Средний (3-5 дней на функцию)
 
 **Функции:**
+
 - XML Validator (базовая валидация)
 - Validate XML against XSD
 - XSD to XML Generation
@@ -50,6 +54,7 @@
 - XSLT Editor (редактор с подсветкой)
 
 **Библиотеки:**
+
 - `xsdata` — XSD валидация
 - `xml-xsd-validator` — валидация XML против XSD
 - `xmlschema` — работа со схемами
@@ -60,6 +65,7 @@
 ### Уровень 3: Продвинутый (5-10 дней на функцию)
 
 **Функции:**
+
 - XML Grid View (табличное представление)
 - Enhanced XML Tree View (расширенное дерево)
 - Schema-Aware Editing (автодополнение на основе схемы)
@@ -69,6 +75,7 @@
 - XSLT transformation result preview
 
 **Библиотеки:**
+
 - `ag-grid-react` — табличное представление
 - `react-dnd` — drag-and-drop
 - `saxon-js` — XSLT 3.0 и XQuery 3.1
@@ -79,6 +86,7 @@
 ### Уровень 4: Экспертный (10-15 дней на функцию)
 
 **Функции:**
+
 - Compare XML files (сравнение и слияние)
 - XSLT Debugger
 - XSLT Profiler
@@ -89,6 +97,7 @@
 - Large file optimization (файлы 1GB+)
 
 **Библиотеки:**
+
 - `diff` + `react-diff-viewer` — сравнение
 - Кастомная реализация отладчиков
 - Web Workers для оптимизации
@@ -113,6 +122,7 @@
    - Настроить алиасы импортов
 
 3. Установка базовых зависимостей
+
    ```bash
    npm install react react-dom zustand @monaco-editor/react
    npm install -D @types/react @types/react-dom @vitejs/plugin-react typescript vite
@@ -127,6 +137,7 @@
 **Результат:** Рабочая среда разработки с базовой структурой
 
 **Критические файлы:**
+
 - `package.json`
 - `tsconfig.json`
 - `vite.config.ts`
@@ -187,6 +198,7 @@
 **Результат:** Функциональный текстовый XML редактор с подсветкой, базовой валидацией и деревом элементов
 
 **Критические файлы:**
+
 - `src/core/documentManager/DocumentManager.tsx`
 - `src/core/parserEngine/XMLParser.ts`
 - `src/views/text/MonacoEditor.tsx`
@@ -236,6 +248,7 @@
 **Результат:** Полная поддержка XSD с генерацией и валидацией
 
 **Критические файлы:**
+
 - `src/views/text/XSDTextEditor.tsx`
 - `src/services/xsd/XSDGenerator.ts`
 - `src/services/xsd/XSDToXMLGenerator.ts`
@@ -280,6 +293,7 @@
 **Результат:** Несколько синхронизированных представлений с интеллектуальным редактированием
 
 **Критические файлы:**
+
 - `src/views/grid/XMLGrid.tsx`
 - `src/core/viewManager/ViewCoordinator.ts`
 - `src/views/text/XMLTextEditor.tsx` (расширенный)
@@ -321,6 +335,7 @@
 **Результат:** Полная поддержка трансформаций и запросов
 
 **Критические файлы:**
+
 - `src/services/xpath/XPathService.ts`
 - `src/views/text/XSLTTextEditor.tsx`
 - `src/services/xslt/XSLTEngine.ts`
@@ -363,6 +378,7 @@
 **Результат:** Профессиональные функции для продвинутых пользователей
 
 **Критические файлы:**
+
 - `src/services/xml/XMLComparer.ts`
 - `src/services/xslt/XSLTDebugger.tsx`
 - `src/services/xslt/XSLTProfiler.ts`
@@ -458,6 +474,7 @@ xmlPreviewer/
 ## Зависимости проекта
 
 ### Базовые зависимости (Этап 0)
+
 ```json
 {
   "dependencies": {
@@ -470,6 +487,7 @@ xmlPreviewer/
 ```
 
 ### XML парсинг (Этап 1)
+
 ```json
 {
   "dependencies": {
@@ -480,6 +498,7 @@ xmlPreviewer/
 ```
 
 ### XSD поддержка (Этап 2)
+
 ```json
 {
   "dependencies": {
@@ -491,6 +510,7 @@ xmlPreviewer/
 ```
 
 ### Продвинутые представления (Этап 3)
+
 ```json
 {
   "dependencies": {
@@ -502,6 +522,7 @@ xmlPreviewer/
 ```
 
 ### Трансформации (Этап 4)
+
 ```json
 {
   "dependencies": {
@@ -512,6 +533,7 @@ xmlPreviewer/
 ```
 
 ### Экспертные функции (Этап 5)
+
 ```json
 {
   "dependencies": {
@@ -526,9 +548,11 @@ xmlPreviewer/
 ## Критические файлы для начала
 
 ### 1. DocumentManager.tsx
+
 **Путь:** `src/core/documentManager/DocumentManager.tsx`
 
 **Назначение:** Центральная система управления всеми открытыми документами. Обеспечивает:
+
 - Открытие/закрытие файлов
 - Управление состоянием dirty/saved
 - Координацию между представлениями
@@ -539,9 +563,11 @@ xmlPreviewer/
 ---
 
 ### 2. XMLParser.ts
+
 **Путь:** `src/core/parserEngine/XMLParser.ts`
 
 **Назначение:** Основной парсер XML. Обеспечивает:
+
 - Парсинг XML в DOM/JSON
 - Обработку ошибок
 - Кеширование результатов
@@ -552,9 +578,11 @@ xmlPreviewer/
 ---
 
 ### 3. MonacoEditor.tsx
+
 **Путь:** `src/views/text/MonacoEditor.tsx`
 
 **Назначение:** Обёртка над Monaco Editor. Обеспечивает:
+
 - Интеграцию Monaco в React
 - Настройку тем и языков
 - Управление состоянием редактора
@@ -565,9 +593,11 @@ xmlPreviewer/
 ---
 
 ### 4. XMLValidator.ts
+
 **Путь:** `src/core/validatorEngine/XMLValidator.ts`
 
 **Назначение:** Движок валидации XML. Обеспечивает:
+
 - Синтаксическую проверку
 - Валидацию против XSD
 - Агрегацию ошибок
@@ -578,9 +608,11 @@ xmlPreviewer/
 ---
 
 ### 5. documentStore.ts
+
 **Путь:** `src/stores/documentStore.ts`
 
 **Назначение:** Zustand store для управления состоянием документов. Обеспечивает:
+
 - Хранение списка документов
 - Управление активным документом
 - CRUD операции над документами
@@ -593,28 +625,36 @@ xmlPreviewer/
 ## Технические вызовы и решения
 
 ### Вызов 1: Большие файлы (100MB+)
+
 **Решение:**
+
 - Streaming парсинг (fast-xml-parser streaming mode)
 - Web Workers для фоновой обработки
 - Virtual scrolling для представлений
 - Ленивая загрузка узлов дерева
 
 ### Вызов 2: Синхронизация представлений
+
 **Решение:**
+
 - Observer паттерн для изменений
 - Debounce для предотвращения избыточных обновлений
 - Уникальные ID для узлов
 - Optimistic updates
 
 ### Вызов 3: Schema-aware автодополнение
+
 **Решение:**
+
 - Кеширование разобранных XSD
 - Индексация элементов/атрибутов
 - Контекстная генерация предложений
 - Monaco Completion API
 
 ### Вызов 4: Производительность Grid View
+
 **Решение:**
+
 - AG-Grid с virtualization
 - Infinite row model
 - Web Workers для обработки данных
@@ -625,22 +665,26 @@ xmlPreviewer/
 ## Стратегия тестирования
 
 ### Unit тесты (80%+ покрытие)
+
 - Parser/Validator логика
 - Service функции
 - Utility функции
 - Custom hooks
 
 ### Component тесты (70%+ покрытие)
+
 - Основные UI компоненты
 - Взаимодействие пользователя
 - События и state changes
 
 ### Integration тесты
+
 - Управление документами
 - View синхронизация
 - End-to-end workflows
 
 ### E2E тесты (Playwright)
+
 - Открытие и редактирование файлов
 - Валидация
 - Трансформации
@@ -651,6 +695,7 @@ xmlPreviewer/
 ## Метрики успеха
 
 ### Производительность
+
 - Запуск приложения: < 3 сек
 - Открытие файла (1MB): < 1 сек
 - Валидация (1MB): < 2 сек
@@ -658,6 +703,7 @@ xmlPreviewer/
 - Использование памяти: < 500MB
 
 ### Качество
+
 - Тестовое покрытие: > 75%
 - TypeScript strict mode
 - Zero ESLint warnings

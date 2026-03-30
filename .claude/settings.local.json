@@ -20,7 +20,9 @@
       "Bash(else echo \"✗ MISSING: $dir\")",
       "Bash(fi:*)",
       "Bash(done)",
-      "Bash(tsc:*)"
+      "Bash(tsc:*)",
+      "Bash(ls:*)",
+      "Bash(npx eslint:*)"
     ]
   }
 }

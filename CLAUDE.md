@@ -9,6 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Goal:** Create a full-featured XML editor with MVP priority on basic XML and XSD support.
 
 **Tech Stack:**
+
 - Frontend: React 18 + TypeScript (strict mode)
 - Build: Vite
 - State: Zustand
@@ -22,6 +23,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Common Commands
 
 ### Development
+
 ```bash
 npm install              # Install dependencies
 npm run dev             # Start dev server (http://localhost:5173)
@@ -30,6 +32,7 @@ npm run preview         # Preview production build
 ```
 
 ### Testing
+
 ```bash
 npm run test            # Run all tests (Vitest)
 npm run test:ui         # Run tests with UI
@@ -38,6 +41,7 @@ npm run test:watch      # Watch mode
 ```
 
 ### Code Quality
+
 ```bash
 npm run lint            # ESLint check
 npm run lint:fix        # ESLint auto-fix
@@ -133,6 +137,7 @@ The application follows a **layered architecture** with clear separation of conc
 ## File Structure Philosophy
 
 ### Core Systems (src/core/)
+
 **Purpose:** Fundamental systems that power the application. These are NOT UI components.
 
 - **documentManager/** - Document lifecycle, tabs, dirty state, file operations
@@ -141,6 +146,7 @@ The application follows a **layered architecture** with clear separation of conc
 - **viewManager/** - Multi-view coordination, synchronization
 
 ### Views (src/views/)
+
 **Purpose:** Top-level UI components representing different editing modes.
 
 - **text/** - Monaco-based editors (XML, XSD, XSLT, XQuery)
@@ -149,6 +155,7 @@ The application follows a **layered architecture** with clear separation of conc
 - **split/** - Multi-pane split views
 
 ### Services (src/services/)
+
 **Purpose:** Business logic for XML technologies. These are pure functions/classes, NOT React components.
 
 - **xml/** - XML operations, formatting, comparison
@@ -162,27 +169,33 @@ The application follows a **layered architecture** with clear separation of conc
 ## Technical Constraints & Solutions
 
 ### Large File Handling (100MB+ XML)
+
 **Challenge:** Browser crashes when parsing large files in main thread.
 
 **Solution:**
+
 - Use fast-xml-parser streaming mode
 - Offload parsing to Web Workers
 - Implement virtual scrolling in views (AG-Grid infinite row model)
 - Lazy-load tree nodes (only render visible branches)
 
 ### View Synchronization
+
 **Challenge:** Multiple views (text, grid, tree) can conflict when editing.
 
 **Solution:**
+
 - Observer pattern with `ViewCoordinator` as central dispatcher
 - Debounce view updates (300-500ms) to prevent render storms
 - Assign unique IDs to nodes for cross-view reference
 - Optimistic updates with rollback on validation failure
 
 ### Schema-Aware Autocompletion
+
 **Challenge:** Monaco needs context-aware XSD suggestions.
 
 **Solution:**
+
 - Parse and cache XSD schemas on document load
 - Index all elements/attributes/types in schema
 - Generate Monaco completion items based on cursor context
@@ -193,12 +206,14 @@ The application follows a **layered architecture** with clear separation of conc
 ## Implementation Phases
 
 ### Phase 0: Project Setup (Week 1)
+
 - Initialize Vite + React + TypeScript
 - Configure ESLint, Prettier, Vitest
 - Create folder structure
 - **Deliverable:** Working dev environment
 
 ### Phase 1: MVP - Basic XML Editor (Weeks 2-4)
+
 - DocumentManager + DocumentStore
 - XMLParser with fast-xml-parser
 - Monaco XML editor with syntax highlighting
@@ -208,6 +223,7 @@ The application follows a **layered architecture** with clear separation of conc
 - **Deliverable:** Functional XML text editor
 
 ### Phase 2: XSD Support (Weeks 5-7)
+
 - XSD text editor
 - XML vs XSD validation
 - XSD generation from XML
@@ -216,6 +232,7 @@ The application follows a **layered architecture** with clear separation of conc
 - **Deliverable:** Complete XML Schema workflow
 
 ### Phase 3: Advanced Views (Weeks 8-10)
+
 - AG-Grid table view
 - Enhanced tree with drag-drop
 - Multi-view synchronization
@@ -223,18 +240,21 @@ The application follows a **layered architecture** with clear separation of conc
 - **Deliverable:** Professional multi-view editor
 
 ### Phase 4: Transformations (Weeks 11-13)
+
 - XPath builder & tester (fontoxpath)
 - XSLT editor and transformer (saxon-js)
 - XQuery editor and executor
 - **Deliverable:** Full transformation support
 
 ### Phase 5: Expert Features (Weeks 14-16)
+
 - XML diff viewer
 - XSLT debugger and profiler
 - Large file optimization (Web Workers)
 - **Deliverable:** Production-ready application
 
 ### Phase 6: Polish (Weeks 17-18)
+
 - Performance optimization
 - Theming (light/dark)
 - Testing coverage (80%+)
@@ -246,6 +266,7 @@ The application follows a **layered architecture** with clear separation of conc
 ## Key Dependencies by Phase
 
 **Phase 0 (Base):**
+
 ```json
 {
   "react": "^18.2.0",
@@ -255,6 +276,7 @@ The application follows a **layered architecture** with clear separation of conc
 ```
 
 **Phase 1 (XML):**
+
 ```json
 {
   "fast-xml-parser": "^4.2.5",
@@ -263,6 +285,7 @@ The application follows a **layered architecture** with clear separation of conc
 ```
 
 **Phase 2 (XSD):**
+
 ```json
 {
   "xsdata": "^23.8.0",
@@ -271,6 +294,7 @@ The application follows a **layered architecture** with clear separation of conc
 ```
 
 **Phase 3 (Views):**
+
 ```json
 {
   "ag-grid-react": "^31.0.0",
@@ -279,6 +303,7 @@ The application follows a **layered architecture** with clear separation of conc
 ```
 
 **Phase 4 (Transformations):**
+
 ```json
 {
   "saxon-js": "^2.5.0",
@@ -287,6 +312,7 @@ The application follows a **layered architecture** with clear separation of conc
 ```
 
 **Phase 5 (Expert):**
+
 ```json
 {
   "diff": "^5.1.0",
@@ -299,20 +325,24 @@ The application follows a **layered architecture** with clear separation of conc
 ## Testing Strategy
 
 ### Unit Tests (80%+ coverage target)
+
 - **Target:** Parser/Validator logic, services, utilities, hooks
 - **Tool:** Vitest
 - **Location:** Co-located with source files (`__tests__/`)
 
 ### Component Tests (70%+ coverage target)
+
 - **Target:** UI components, user interactions, state changes
 - **Tool:** React Testing Library
 - **Focus:** Behavior, not implementation details
 
 ### Integration Tests
+
 - **Target:** Document management, view sync, end-to-end workflows
 - **Tool:** Vitest + testing-library utils
 
 ### E2E Tests
+
 - **Target:** Complete user scenarios (open, edit, validate, transform)
 - **Tool:** Playwright
 - **Scenarios:** See MVP verification checklist in IMPLEMENTATION_PLAN.md
