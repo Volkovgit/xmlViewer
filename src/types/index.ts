@@ -1,1 +1,2 @@
-// TypeScript type definitions
+// Document types
+export * from './document';

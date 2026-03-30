@@ -25,6 +25,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
+    "types": ["vitest/globals"],
 
     /* Path aliases */
     "baseUrl": ".",
