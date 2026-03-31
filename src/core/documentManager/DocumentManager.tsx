@@ -301,24 +301,6 @@ export function DocumentManager() {
                 </button>
               </div>
             )}
-            {isActiveXSD && (
-              <div className="xsd-view-toggle">
-                <button
-                  className={`toggle-btn ${xsdViewMode === 'text' ? 'active' : ''}`}
-                  onClick={() => setXsdViewMode('text')}
-                  data-testid="xsd-text-view-btn"
-                >
-                  Text
-                </button>
-                <button
-                  className={`toggle-btn ${xsdViewMode === 'visualizer' ? 'active' : ''}`}
-                  onClick={() => setXsdViewMode('visualizer')}
-                  data-testid="xsd-visual-view-btn"
-                >
-                  Visual
-                </button>
-              </div>
-            )}
             {isActiveXML && (
               <div className="xml-view-toggle">
                 <button

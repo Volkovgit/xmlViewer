@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<books>
+  <book id="1" title="XML 101" author="John Doe" price="29.99" category="Programming"/>
+  <book id="2" title="XSD Guide" author="Jane Smith" price="39.99" category="Programming"/>
+  <book id="3" title="Web Development" author="Bob Johnson" price="49.99" category="Web"/>
+</books>
