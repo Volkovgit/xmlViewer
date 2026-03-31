@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for core/documentManager/DocumentManager.tsx</title>
+    <title>Code coverage report for services/xsd/XSDValidator.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">core/documentManager</a> DocumentManager.tsx</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">services/xsd</a> XSDValidator.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">30.53% </span>
+                <span class="strong">86.06% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>40/131</span>
+                <span class='fraction'>105/122</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">26.25% </span>
+                <span class="strong">75.49% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>21/80</span>
+                <span class='fraction'>77/102</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">21.87% </span>
+                <span class="strong">76.47% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>7/32</span>
+                <span class='fraction'>13/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">32.2% </span>
+                <span class="strong">90.09% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>38/118</span>
+                <span class='fraction'>100/111</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -433,7 +433,50 @@
 <a name='L368'></a><a href='#L368'>368</a>
 <a name='L369'></a><a href='#L369'>369</a>
 <a name='L370'></a><a href='#L370'>370</a>
-<a name='L371'></a><a href='#L371'>371</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L371'></a><a href='#L371'>371</a>
+<a name='L372'></a><a href='#L372'>372</a>
+<a name='L373'></a><a href='#L373'>373</a>
+<a name='L374'></a><a href='#L374'>374</a>
+<a name='L375'></a><a href='#L375'>375</a>
+<a name='L376'></a><a href='#L376'>376</a>
+<a name='L377'></a><a href='#L377'>377</a>
+<a name='L378'></a><a href='#L378'>378</a>
+<a name='L379'></a><a href='#L379'>379</a>
+<a name='L380'></a><a href='#L380'>380</a>
+<a name='L381'></a><a href='#L381'>381</a>
+<a name='L382'></a><a href='#L382'>382</a>
+<a name='L383'></a><a href='#L383'>383</a>
+<a name='L384'></a><a href='#L384'>384</a>
+<a name='L385'></a><a href='#L385'>385</a>
+<a name='L386'></a><a href='#L386'>386</a>
+<a name='L387'></a><a href='#L387'>387</a>
+<a name='L388'></a><a href='#L388'>388</a>
+<a name='L389'></a><a href='#L389'>389</a>
+<a name='L390'></a><a href='#L390'>390</a>
+<a name='L391'></a><a href='#L391'>391</a>
+<a name='L392'></a><a href='#L392'>392</a>
+<a name='L393'></a><a href='#L393'>393</a>
+<a name='L394'></a><a href='#L394'>394</a>
+<a name='L395'></a><a href='#L395'>395</a>
+<a name='L396'></a><a href='#L396'>396</a>
+<a name='L397'></a><a href='#L397'>397</a>
+<a name='L398'></a><a href='#L398'>398</a>
+<a name='L399'></a><a href='#L399'>399</a>
+<a name='L400'></a><a href='#L400'>400</a>
+<a name='L401'></a><a href='#L401'>401</a>
+<a name='L402'></a><a href='#L402'>402</a>
+<a name='L403'></a><a href='#L403'>403</a>
+<a name='L404'></a><a href='#L404'>404</a>
+<a name='L405'></a><a href='#L405'>405</a>
+<a name='L406'></a><a href='#L406'>406</a>
+<a name='L407'></a><a href='#L407'>407</a>
+<a name='L408'></a><a href='#L408'>408</a>
+<a name='L409'></a><a href='#L409'>409</a>
+<a name='L410'></a><a href='#L410'>410</a>
+<a name='L411'></a><a href='#L411'>411</a>
+<a name='L412'></a><a href='#L412'>412</a>
+<a name='L413'></a><a href='#L413'>413</a>
+<a name='L414'></a><a href='#L414'>414</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -461,10 +504,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -472,67 +513,112 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-yes">16x</span>
-<span class="cline-any cline-yes">16x</span>
-<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">72x</span>
+<span class="cline-any cline-yes">72x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">72x</span>
+<span class="cline-any cline-yes">72x</span>
+<span class="cline-any cline-yes">72x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">72x</span>
+<span class="cline-any cline-yes">72x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">51x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">51x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">32x</span>
 <span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">51x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">19x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">51x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -540,133 +626,89 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">19x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">26x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">28x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-yes">54x</span>
-<span class="cline-any cline-yes">54x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">54x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">24x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -679,8 +721,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -690,6 +737,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -698,30 +750,47 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -729,6 +798,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -740,14 +810,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -756,23 +824,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -781,398 +852,456 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">29x</span>
+<span class="cline-any cline-yes">29x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">29x</span>
+<span class="cline-any cline-yes">29x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">28x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useCallback, useState } from 'react';
-import { useDocumentStore } from '@/stores';
-import { createUntitledDocument } from '@/services/document';
-import { DocumentType, DocumentStatus } from '@/types';
-import { useFileOperations } from '@/hooks/useFileOperations';
-import { generateXSDFromXML, generateXMLFromXSD, validateXMLAgainstXSD } from '@/services/xsd';
-import { DocumentTabs } from './DocumentTabs';
-import { DocumentToolbar } from './DocumentToolbar';
-import { XMLTextEditor } from '@/views/text';
-import { XMLTree } from '@/views/tree';
-import { XMLGrid } from '@/views/grid';
-import { XSDVisualizer } from '@/views/xsd/XSDVisualizer';
-import './DocumentManager.css';
-&nbsp;
-/**
- * DocumentManager Component
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
+ * XSD Validator
  *
- * Central UI component for document management in the XML editor.
- * Provides tab bar, toolbar, and document content area.
- * Integrates XSD schema operations: generate, validate, assign.
+ * Validates XML documents against a parsed XSD schema model.
+ * Performs structural validation: checks element names, required attributes,
+ * child element presence, and simple type constraints.
  */
-export function DocumentManager() {
-  const {
-    getAllDocuments,
-    getActiveDocument,
-    setActiveDocument,
-    removeDocument,
-    addDocument,
-    updateDocumentContent,
-  } = useDocumentStore();
 &nbsp;
-  const {
-    handleFileSelected,
-    handleFiles,
-    fileInputRef,
-    saveFile,
-    saveFileAs,
-    saveAllDocuments,
-    hasDirtyDocuments,
-  } = useFileOperations();
+import { parseXSD } from './XSDParser';
+import type {
+  XSDSchema,
+  XSDElement,
+  XSDComplexType,
+  XSDSimpleType,
+  XSDAttribute,
+} from './XSDParser';
+import type { ValidationError } from '@/types';
 &nbsp;
-  // Schema assignment state: maps docId → schemaDocId
-  const [schemaAssignments, setSchemaAssignments] = useState&lt;Map&lt;string, string&gt;&gt;(new Map());
-  // Validation errors from XSD validation
-  const [xsdErrors, setXsdErrors] = useState&lt;string[]&gt;([]);
-  // XSD view mode: 'text' or 'visualizer'
-  const [xsdViewMode, setXsdViewMode] = useState&lt;'text' | 'visualizer'&gt;('text');
-  // XML view mode: 'text', 'tree', or 'grid'
-  const [xmlViewMode, setXmlViewMode] = useState&lt;'text' | 'tree' | 'grid'&gt;('text');
+// ────────────────────────────────────────────────
+// Helpers
+// ────────────────────────────────────────────────
 &nbsp;
-  const handleNewFile = useCallback(() =&gt; {
-    const newDoc = createUntitledDocument(DocumentType.XML);
-    addDocument(newDoc);
-    setActiveDocument(newDoc.id);
-  }, [addDocument, setActiveDocument]);
-&nbsp;
-  const handleOpenButtonClick = useCallback(() =&gt; {
-    fileInputRef.current?.click();
-  }, [fileInputRef]);
-&nbsp;
-  const handleClose = useCallback(
-    (docId: string) =&gt; {
-      const documents = getAllDocuments();
-      const doc = documents.find((d) =&gt; d.id === docId);
-      <span class="missing-if-branch" title="if path not taken" >I</span>if (!doc) <span class="cstat-no" title="statement not covered" >return;</span>
-      if (doc.status === DocumentStatus.DIRTY) {
-        const confirmed = confirm(`Save changes to "${doc.name}" before closing?`);
-        if (!confirmed) return;
-      }
-      removeDocument(docId);
-      // Clean up schema assignment
-      setSchemaAssignments((prev) =&gt; {
-        const next = new Map(prev);
-        next.delete(docId);
-        return next;
-      });
-    },
-    [getAllDocuments, removeDocument]
-  );
-&nbsp;
-  const handleTabClick = useCallback(
-    (docId: string) =&gt; {
-      setActiveDocument(docId);
-    },
-    [setActiveDocument]
-  );
-&nbsp;
-  // Drag and drop
-  const handleDragOver = useCallback(<span class="fstat-no" title="function not covered" >(e</span>: React.DragEvent&lt;HTMLDivElement&gt;) =&gt; {
-<span class="cstat-no" title="statement not covered" >    e.preventDefault();</span>
-<span class="cstat-no" title="statement not covered" >    e.stopPropagation();</span>
-  }, []);
-&nbsp;
-  const handleDrop = useCallback(
-<span class="fstat-no" title="function not covered" >    (e</span>: React.DragEvent&lt;HTMLDivElement&gt;) =&gt; {
-<span class="cstat-no" title="statement not covered" >      e.preventDefault();</span>
-<span class="cstat-no" title="statement not covered" >      e.stopPropagation();</span>
-      const files = <span class="cstat-no" title="statement not covered" >e.dataTransfer.files;</span>
-<span class="cstat-no" title="statement not covered" >      if (files &amp;&amp; files.length &gt; 0) {</span>
-<span class="cstat-no" title="statement not covered" >        handleFiles(files);</span>
-      }
-    },
-    [handleFiles]
-  );
-&nbsp;
-  // ─── XSD Actions ────────────────────────────────
-&nbsp;
-  const handleGenerateXSD = useCallback(<span class="fstat-no" title="function not covered" >() =&gt; {</span>
-    const activeDoc = <span class="cstat-no" title="statement not covered" >getActiveDocument();</span>
-<span class="cstat-no" title="statement not covered" >    if (!activeDoc) <span class="cstat-no" title="statement not covered" >return;</span></span>
-&nbsp;
-    const <span class="cstat-no" title="statement not covered" >xsdContent = generateXSDFromXML(activeDoc.content);</span>
-<span class="cstat-no" title="statement not covered" >    if (!xsdContent) {</span>
-<span class="cstat-no" title="statement not covered" >      alert('Failed to generate XSD. Please ensure the XML is well-formed.');</span>
-<span class="cstat-no" title="statement not covered" >      return;</span>
-    }
-&nbsp;
-    const <span class="cstat-no" title="statement not covered" >newDoc = createUntitledDocument(DocumentType.XSD);</span>
-    // Replace default content with generated XSD
-    const docWithContent = <span class="cstat-no" title="statement not covered" >{ ...newDoc, content: xsdContent, name: `${activeDoc.name.replace(/\.[^.]+$/, '')}.xsd` };</span>
-<span class="cstat-no" title="statement not covered" >    addDocument(docWithContent);</span>
-<span class="cstat-no" title="statement not covered" >    setActiveDocument(docWithContent.id);</span>
-  }, [getActiveDocument, addDocument, setActiveDocument]);
-&nbsp;
-  const handleGenerateXML = useCallback(<span class="fstat-no" title="function not covered" >() =&gt; {</span>
-    const activeDoc = <span class="cstat-no" title="statement not covered" >getActiveDocument();</span>
-<span class="cstat-no" title="statement not covered" >    if (!activeDoc) <span class="cstat-no" title="statement not covered" >return;</span></span>
-&nbsp;
-    const <span class="cstat-no" title="statement not covered" >xmlContent = generateXMLFromXSD(activeDoc.content);</span>
-<span class="cstat-no" title="statement not covered" >    if (!xmlContent) {</span>
-<span class="cstat-no" title="statement not covered" >      alert('Failed to generate XML. Please ensure the XSD is valid.');</span>
-<span class="cstat-no" title="statement not covered" >      return;</span>
-    }
-&nbsp;
-    const <span class="cstat-no" title="statement not covered" >newDoc = createUntitledDocument(DocumentType.XML);</span>
-    const docWithContent = <span class="cstat-no" title="statement not covered" >{ ...newDoc, content: xmlContent, name: `${activeDoc.name.replace(/\.[^.]+$/, '')}_instance.xml` };</span>
-<span class="cstat-no" title="statement not covered" >    addDocument(docWithContent);</span>
-<span class="cstat-no" title="statement not covered" >    setActiveDocument(docWithContent.id);</span>
-  }, [getActiveDocument, addDocument, setActiveDocument]);
-&nbsp;
-  const handleValidateXSD = useCallback(<span class="fstat-no" title="function not covered" >() =&gt; {</span>
-    const activeDoc = <span class="cstat-no" title="statement not covered" >getActiveDocument();</span>
-<span class="cstat-no" title="statement not covered" >    if (!activeDoc) <span class="cstat-no" title="statement not covered" >return;</span></span>
-&nbsp;
-    // Find assigned schema
-    const schemaDocId = <span class="cstat-no" title="statement not covered" >schemaAssignments.get(activeDoc.id);</span>
-<span class="cstat-no" title="statement not covered" >    if (!schemaDocId) {</span>
-<span class="cstat-no" title="statement not covered" >      alert('No schema assigned. Use "Assign Schema" to attach an XSD file first.');</span>
-<span class="cstat-no" title="statement not covered" >      return;</span>
-    }
-&nbsp;
-    const allDocs = <span class="cstat-no" title="statement not covered" >getAllDocuments();</span>
-    const schemaDoc = <span class="cstat-no" title="statement not covered" >allDocs.find(<span class="fstat-no" title="function not covered" >(d</span>) =&gt; <span class="cstat-no" title="statement not covered" >d.id === schemaDocId)</span>;</span>
-<span class="cstat-no" title="statement not covered" >    if (!schemaDoc) {</span>
-<span class="cstat-no" title="statement not covered" >      alert('Assigned schema document not found. It may have been closed.');</span>
-<span class="cstat-no" title="statement not covered" >      return;</span>
-    }
-&nbsp;
-    const <span class="cstat-no" title="statement not covered" >errors = validateXMLAgainstXSD(activeDoc.content, schemaDoc.content);</span>
-<span class="cstat-no" title="statement not covered" >    if (errors.length === 0) {</span>
-<span class="cstat-no" title="statement not covered" >      setXsdErrors([]);</span>
-<span class="cstat-no" title="statement not covered" >      alert('✓ XML is valid against the assigned schema.');</span>
-    } else {
-      const msgs = <span class="cstat-no" title="statement not covered" >errors.map(<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >`Line ${e.line}: ${e.message}`)</span>;</span>
-<span class="cstat-no" title="statement not covered" >      setXsdErrors(msgs);</span>
-<span class="cstat-no" title="statement not covered" >      alert(`✗ ${errors.length} validation error(s):\n\n${msgs.join('\n')}`);</span>
-    }
-  }, [getActiveDocument, schemaAssignments, getAllDocuments]);
-&nbsp;
-  const handleAssignSchema = useCallback(<span class="fstat-no" title="function not covered" >() =&gt; {</span>
-    const activeDoc = <span class="cstat-no" title="statement not covered" >getActiveDocument();</span>
-<span class="cstat-no" title="statement not covered" >    if (!activeDoc) <span class="cstat-no" title="statement not covered" >return;</span></span>
-&nbsp;
-    const allDocs = <span class="cstat-no" title="statement not covered" >getAllDocuments();</span>
-    const xsdDocs = <span class="cstat-no" title="statement not covered" >allDocs.filter(<span class="fstat-no" title="function not covered" >(d</span>) =&gt; <span class="cstat-no" title="statement not covered" >d.type === DocumentType.XSD)</span>;</span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    if (xsdDocs.length === 0) {</span>
-<span class="cstat-no" title="statement not covered" >      alert('No XSD files are open. Please open an XSD file first.');</span>
-<span class="cstat-no" title="statement not covered" >      return;</span>
-    }
-&nbsp;
-    const options = <span class="cstat-no" title="statement not covered" >xsdDocs.map(<span class="fstat-no" title="function not covered" >(d</span>, i) =&gt; <span class="cstat-no" title="statement not covered" >`${i + 1}. ${d.name}`)</span>.join('\n');</span>
-    const choice = <span class="cstat-no" title="statement not covered" >prompt(`Select XSD schema to assign:\n\n${options}\n\nEnter number:`);</span>
-<span class="cstat-no" title="statement not covered" >    if (!choice) <span class="cstat-no" title="statement not covered" >return;</span></span>
-&nbsp;
-    const index = <span class="cstat-no" title="statement not covered" >parseInt(choice, 10) - 1;</span>
-<span class="cstat-no" title="statement not covered" >    if (isNaN(index) || index &lt; 0 || index &gt;= xsdDocs.length) {</span>
-<span class="cstat-no" title="statement not covered" >      alert('Invalid selection.');</span>
-<span class="cstat-no" title="statement not covered" >      return;</span>
-    }
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    setSchemaAssignments(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; {</span>
-      const next = <span class="cstat-no" title="statement not covered" >new Map(prev);</span>
-<span class="cstat-no" title="statement not covered" >      next.set(activeDoc.id, xsdDocs[index].id);</span>
-<span class="cstat-no" title="statement not covered" >      return next;</span>
-    });
-&nbsp;
-<span class="cstat-no" title="statement not covered" >    alert(`Schema "${xsdDocs[index].name}" assigned to "${activeDoc.name}".`);</span>
-  }, [getActiveDocument, getAllDocuments]);
-&nbsp;
-  // Handle grid cell value changes
-  const handleGridCellValueChanged = useCallback(
-<span class="fstat-no" title="function not covered" >    (n</span>ewXml: string) =&gt; {
-      const activeDoc = <span class="cstat-no" title="statement not covered" >getActiveDocument();</span>
-<span class="cstat-no" title="statement not covered" >      if (!activeDoc) <span class="cstat-no" title="statement not covered" >return;</span></span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >      updateDocumentContent(activeDoc.id, newXml);</span>
-    },
-    [getActiveDocument, updateDocumentContent]
-  );
-&nbsp;
-  // ─── Render ────────────────────────────────────
-&nbsp;
-  const documents = getAllDocuments();
-  const activeDocument = getActiveDocument();
-  const isActiveXML = activeDocument?.type === DocumentType.XML;
-  const isActiveXSD = activeDocument?.type === DocumentType.XSD;
-&nbsp;
-  return (
-    &lt;div
-      className="document-manager"
-      onDragOver={handleDragOver}
-      onDrop={handleDrop}
-    &gt;
-      &lt;DocumentToolbar
-        onNewFile={handleNewFile}
-        onOpenFile={handleOpenButtonClick}
-        onSaveFile={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >a</span>ctiveDocument &amp;&amp; saveFile(activeDocument)}</span>
-        onSaveFileAs={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >a</span>ctiveDocument &amp;&amp; saveFileAs(activeDocument)}</span>
-        onSaveAllDocuments={saveAllDocuments}
-        hasDirtyDocuments={hasDirtyDocuments}
-        hasActiveDocument={!!activeDocument}
-        isActiveXML={isActiveXML}
-        isActiveXSD={isActiveXSD}
-        onGenerateXSD={handleGenerateXSD}
-        onGenerateXML={handleGenerateXML}
-        onValidateXSD={handleValidateXSD}
-        onAssignSchema={handleAssignSchema}
-      /&gt;
-&nbsp;
-      &lt;input
-        ref={fileInputRef}
-        type="file"
-        className="document-file-input"
-        onChange={handleFileSelected}
-        accept=".xml,.xsd,.xsl,.xslt,.xq,.xquery,.json"
-        data-testid="file-input"
-      /&gt;
-&nbsp;
-      &lt;DocumentTabs
-        documents={documents}
-        activeDocumentId={activeDocument?.id ?? null}
-        onTabClick={handleTabClick}
-        onClose={handleClose}
-      /&gt;
-&nbsp;
-      &lt;div className="document-content"&gt;
-        {activeDocument ? (
-          &lt;div className="active-document" data-testid="active-document"&gt;
-            {isActiveXSD ? (
-<span class="branch-0 cbranch-no" title="branch not covered" >              xsdViewMode === 'visualizer' ? (</span>
-                &lt;XSDVisualizer xsdContent={activeDocument.content} /&gt;
-              ) : (
-                &lt;XMLTextEditor
-                  document={activeDocument}
-                  onSave={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>aveFile(activeDocument)}</span>
-                /&gt;
-              )
-            ) : isActiveXML ? (
-              xmlViewMode === 'tree' ? (
-<span class="branch-0 cbranch-no" title="branch not covered" >                &lt;XMLTree document={activeDocument} /&gt;</span>
-              ) : xmlViewMode === 'grid' ? (
-<span class="branch-0 cbranch-no" title="branch not covered" >                &lt;XMLGrid document={activeDocument} onCellValueChanged={handleGridCellValueChanged} /&gt;</span>
-              ) : (
-                &lt;XMLTextEditor
-                  document={activeDocument}
-                  onSave={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>aveFile(activeDocument)}</span>
-                /&gt;
-              )
-            ) : (
-<span class="branch-1 cbranch-no" title="branch not covered" >              &lt;XMLTextEditor</span>
-                document={activeDocument}
-                onSave={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>aveFile(activeDocument)}</span>
-              /&gt;
-            )}
-            {isActiveXSD &amp;&amp; (
-<span class="branch-1 cbranch-no" title="branch not covered" >              &lt;div className="xsd-view-toggle"&gt;</span>
-                &lt;button
-                  className={`toggle-btn ${xsdViewMode === 'text' ? 'active' : ''}`}
-                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etXsdViewMode('text')}</span>
-                  data-testid="xsd-text-view-btn"
-                &gt;
-                  Text
-                &lt;/button&gt;
-                &lt;button
-                  className={`toggle-btn ${xsdViewMode === 'visualizer' ? 'active' : ''}`}
-                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etXsdViewMode('visualizer')}</span>
-                  data-testid="xsd-visual-view-btn"
-                &gt;
-                  Visual
-                &lt;/button&gt;
-              &lt;/div&gt;
-            )}
-            {isActiveXSD &amp;&amp; (
-<span class="branch-1 cbranch-no" title="branch not covered" >              &lt;div className="xsd-view-toggle"&gt;</span>
-                &lt;button
-                  className={`toggle-btn ${xsdViewMode === 'text' ? 'active' : ''}`}
-                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etXsdViewMode('text')}</span>
-                  data-testid="xsd-text-view-btn"
-                &gt;
-                  Text
-                &lt;/button&gt;
-                &lt;button
-                  className={`toggle-btn ${xsdViewMode === 'visualizer' ? 'active' : ''}`}
-                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etXsdViewMode('visualizer')}</span>
-                  data-testid="xsd-visual-view-btn"
-                &gt;
-                  Visual
-                &lt;/button&gt;
-              &lt;/div&gt;
-            )}
-            {isActiveXML &amp;&amp; (
-              &lt;div className="xml-view-toggle"&gt;
-                &lt;button
-                  className={`toggle-btn ${xmlViewMode === 'text' ? 'active' : <span class="branch-1 cbranch-no" title="branch not covered" >''}</span>`}
-                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etXmlViewMode('text')}</span>
-                  data-testid="xml-text-view-btn"
-                &gt;
-                  Text View
-                &lt;/button&gt;
-                &lt;button
-                  className={`toggle-btn ${xmlViewMode === 'tree' ? <span class="branch-0 cbranch-no" title="branch not covered" >'active' : '</span>'}`}
-                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etXmlViewMode('tree')}</span>
-                  data-testid="xml-tree-view-btn"
-                &gt;
-                  Tree View
-                &lt;/button&gt;
-                &lt;button
-                  className={`toggle-btn ${xmlViewMode === 'grid' ? <span class="branch-0 cbranch-no" title="branch not covered" >'active' : '</span>'}`}
-                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etXmlViewMode('grid')}</span>
-                  data-testid="xml-grid-view-btn"
-                &gt;
-                  Grid View
-                &lt;/button&gt;
-              &lt;/div&gt;
-            )}
-            {xsdErrors.length &gt; 0 &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >isActiveXML &amp;&amp; (</span>
-<span class="branch-2 cbranch-no" title="branch not covered" >              &lt;div className="xsd-error-panel" data-testid="xsd-error-panel"&gt;</span>
-                &lt;h4&gt;XSD Validation Errors&lt;/h4&gt;
-                &lt;ul&gt;
-                  {xsdErrors.map(<span class="fstat-no" title="function not covered" >(e</span>rr, i) =&gt; (
-<span class="cstat-no" title="statement not covered" >                    &lt;li key={i}&gt;{err}&lt;/li&gt;</span>
-                  ))}
-                &lt;/ul&gt;
-              &lt;/div&gt;
-            )}
-          &lt;/div&gt;
-        ) : (
-          &lt;div className="empty-state" data-testid="empty-state"&gt;
-            &lt;div className="empty-state-content"&gt;
-              &lt;h2&gt;No Document Open&lt;/h2&gt;
-              &lt;p&gt;Create a new file or open an existing file to get started&lt;/p&gt;
-            &lt;/div&gt;
-          &lt;/div&gt;
-        )}
-      &lt;/div&gt;
-    &lt;/div&gt;
-  );
+/** Resolve a type name to a complexType from the schema */
+function <span class="fstat-no" title="function not covered" >resolveComplexType(</span>
+  typeName: string,
+  schema: XSDSchema
+): XSDComplexType | undefined {
+  // Strip namespace prefix
+  const localName = <span class="cstat-no" title="statement not covered" >typeName.includes(':') ? typeName.split(':')[1] : typeName;</span>
+<span class="cstat-no" title="statement not covered" >  return schema.complexTypes.find(<span class="fstat-no" title="function not covered" >(c</span>t) =&gt; <span class="cstat-no" title="statement not covered" >ct.name === localName)</span>;</span>
 }
 &nbsp;
+/** Resolve a type name to a simpleType from the schema */
+function <span class="fstat-no" title="function not covered" >resolveSimpleType(</span>
+  typeName: string,
+  schema: XSDSchema
+): XSDSimpleType | undefined {
+  const localName = <span class="cstat-no" title="statement not covered" >typeName.includes(':') ? typeName.split(':')[1] : typeName;</span>
+<span class="cstat-no" title="statement not covered" >  return schema.simpleTypes.find(<span class="fstat-no" title="function not covered" >(s</span>t) =&gt; <span class="cstat-no" title="statement not covered" >st.name === localName)</span>;</span>
+}
+&nbsp;
+/** Find an element declaration in a list by name */
+function findElementDecl(
+  name: string,
+  elements: XSDElement[]
+): XSDElement | undefined {
+  return elements.find((e) =&gt; e.name === name);
+}
+&nbsp;
+/** Check if a type is a built-in XSD type */
+function isBuiltInType(typeName: string): boolean {
+  const builtIns = [
+    'string', 'boolean', 'decimal', 'float', 'double', 'integer',
+    'int', 'long', 'short', 'byte', 'positiveInteger', 'negativeInteger',
+    'nonPositiveInteger', 'nonNegativeInteger', 'unsignedLong', 'unsignedInt',
+    'unsignedShort', 'unsignedByte', 'date', 'dateTime', 'time', 'duration',
+    'gYear', 'gMonth', 'gDay', 'gYearMonth', 'gMonthDay',
+    'hexBinary', 'base64Binary', 'anyURI', 'QName', 'NOTATION',
+    'normalizedString', 'token', 'language', 'NMTOKEN', 'NMTOKENS',
+    'Name', 'NCName', 'ID', 'IDREF', 'IDREFS', 'ENTITY', 'ENTITIES',
+    'anyType', 'anySimpleType',
+  ];
+  const local = typeName.includes(':') ? typeName.split(':')[1] : <span class="branch-1 cbranch-no" title="branch not covered" >typeName;</span>
+  return builtIns.includes(local);
+}
+&nbsp;
+/** Get line number for a DOM node (approximate via counting preceding text) */
+function getLineNumber(node: Node, xmlString: string): number {
+  // Use the node's textContent position as a rough approximation
+  const nodeName =
+    node.nodeType === Node.ELEMENT_NODE ? (node as Element).tagName : <span class="branch-1 cbranch-no" title="branch not covered" >'';</span>
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (!nodeName) <span class="cstat-no" title="statement not covered" >return 1;</span>
+&nbsp;
+  const tagPattern = `&lt;${nodeName}`;
+  const index = xmlString.indexOf(tagPattern);
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (index === -1) <span class="cstat-no" title="statement not covered" >return 1;</span>
+&nbsp;
+  const upToHere = xmlString.substring(0, index);
+  return upToHere.split('\n').length;
+}
+&nbsp;
+// ────────────────────────────────────────────────
+// Validation
+// ────────────────────────────────────────────────
+&nbsp;
+function validateElement(
+  xmlEl: Element,
+  schemaEl: XSDElement,
+  schema: XSDSchema,
+  xmlString: string,
+  errors: ValidationError[]
+): void {
+  const line = getLineNumber(xmlEl, xmlString);
+&nbsp;
+  // Determine the complex/simple type to validate against
+  let complexType: XSDComplexType | undefined;
+  let simpleType: XSDSimpleType | undefined;
+&nbsp;
+  if (schemaEl.complexType) {
+    complexType = schemaEl.complexType;
+  } else if (schemaEl.simpleType) {
+    simpleType = schemaEl.simpleType;
+  <span class="missing-if-branch" title="if path not taken" >I</span>} else if (schemaEl.type &amp;&amp; !isBuiltInType(schemaEl.type)) {
+<span class="cstat-no" title="statement not covered" >    complexType = resolveComplexType(schemaEl.type, schema);</span>
+<span class="cstat-no" title="statement not covered" >    if (!complexType) {</span>
+<span class="cstat-no" title="statement not covered" >      simpleType = resolveSimpleType(schemaEl.type, schema);</span>
+    }
+  }
+&nbsp;
+  // Validate attributes
+  if (complexType) {
+    validateAttributes(xmlEl, complexType.attributes, line, errors);
+    validateChildElements(xmlEl, complexType.elements, schema, xmlString, errors);
+  }
+&nbsp;
+  // Validate text content against simple type
+  if (simpleType &amp;&amp; simpleType.restriction) {
+    const textContent = xmlEl.textContent || <span class="branch-1 cbranch-no" title="branch not covered" >'';</span>
+    validateSimpleValue(textContent, simpleType, line, xmlEl.tagName, errors);
+  }
+}
+&nbsp;
+function validateAttributes(
+  xmlEl: Element,
+  declaredAttrs: XSDAttribute[],
+  line: number,
+  errors: ValidationError[]
+): void {
+  // Check required attributes are present
+  for (const attrDecl of declaredAttrs) {
+    if (attrDecl.use === 'required') {
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (!xmlEl.hasAttribute(attrDecl.name)) {
+        errors.push({
+          line,
+          column: 1,
+          message: `Missing required attribute "${attrDecl.name}" on element &lt;${xmlEl.tagName}&gt;`,
+          severity: 'error',
+        });
+      }
+    }
+    if (attrDecl.use === 'prohibited') {
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (xmlEl.hasAttribute(attrDecl.name)) {
+        errors.push({
+          line,
+          column: 1,
+          message: `Prohibited attribute "${attrDecl.name}" found on element &lt;${xmlEl.tagName}&gt;`,
+          severity: 'error',
+        });
+      }
+    }
+  }
+&nbsp;
+  // Check for undeclared attributes (warning, not error)
+  const declaredNames = new Set(declaredAttrs.map((a) =&gt; a.name));
+  for (let i = 0; i &lt; xmlEl.attributes.length; i++) {
+    const attr = xmlEl.attributes[i];
+    // Skip namespace declarations
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (attr.name.startsWith('xmlns')) <span class="cstat-no" title="statement not covered" >continue;</span>
+    if (!declaredNames.has(attr.name)) {
+      errors.push({
+        line,
+        column: 1,
+        message: `Unexpected attribute "${attr.name}" on element &lt;${xmlEl.tagName}&gt;`,
+        severity: 'warning',
+      });
+    }
+  }
+}
+&nbsp;
+function validateChildElements(
+  xmlEl: Element,
+  declaredElements: XSDElement[],
+  schema: XSDSchema,
+  xmlString: string,
+  errors: ValidationError[]
+): void {
+  const line = getLineNumber(xmlEl, xmlString);
+&nbsp;
+  // Count occurrences of each child element
+  const childCounts = new Map&lt;string, number&gt;();
+  const childElements: Element[] = [];
+&nbsp;
+  for (let i = 0; i &lt; xmlEl.children.length; i++) {
+    const child = xmlEl.children[i];
+    childElements.push(child);
+    const name = child.localName;
+    childCounts.set(name, (childCounts.get(name) || 0) + 1);
+  }
+&nbsp;
+  // Check declared elements constraints
+  for (const decl of declaredElements) {
+    const count = childCounts.get(decl.name) || 0;
+&nbsp;
+    // Check minOccurs
+    if (count &lt; decl.occurrence.minOccurs) {
+      errors.push({
+        line,
+        column: 1,
+        message: `Element &lt;${xmlEl.tagName}&gt; requires at least ${decl.occurrence.minOccurs} &lt;${decl.name}&gt; child element(s), found ${count}`,
+        severity: 'error',
+      });
+    }
+&nbsp;
+    // Check maxOccurs
+    if (
+      decl.occurrence.maxOccurs !== 'unbounded' &amp;&amp;
+      count &gt; decl.occurrence.maxOccurs
+    ) {
+      errors.push({
+        line,
+        column: 1,
+        message: `Element &lt;${xmlEl.tagName}&gt; allows at most ${decl.occurrence.maxOccurs} &lt;${decl.name}&gt; child element(s), found ${count}`,
+        severity: 'error',
+      });
+    }
+  }
+&nbsp;
+  // Check for undeclared child elements
+  const declaredNames = new Set(declaredElements.map((e) =&gt; e.name));
+  for (const child of childElements) {
+    if (!declaredNames.has(child.localName)) {
+      const childLine = getLineNumber(child, xmlString);
+      errors.push({
+        line: childLine,
+        column: 1,
+        message: `Unexpected element &lt;${child.localName}&gt; inside &lt;${xmlEl.tagName}&gt;`,
+        severity: 'error',
+      });
+    } else {
+      // Recursively validate
+      const childDecl = findElementDecl(child.localName, declaredElements);
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (childDecl) {
+        validateElement(child, childDecl, schema, xmlString, errors);
+      }
+    }
+  }
+}
+&nbsp;
+function validateSimpleValue(
+  value: string,
+  simpleType: XSDSimpleType,
+  line: number,
+  elementName: string,
+  errors: ValidationError[]
+): void {
+  const r = simpleType.restriction;
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (!r) <span class="cstat-no" title="statement not covered" >return;</span>
+&nbsp;
+  // Enumeration check
+  if (r.enumerations &amp;&amp; r.enumerations.length &gt; 0) {
+    if (!r.enumerations.includes(value)) {
+      errors.push({
+        line,
+        column: 1,
+        message: `Value "${value}" for &lt;${elementName}&gt; is not in allowed values: [${r.enumerations.join(', ')}]`,
+        severity: 'error',
+      });
+    }
+  }
+&nbsp;
+  // Pattern check
+  if (r.pattern) {
+    try {
+      const regex = new RegExp(`^${r.pattern}$`);
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (!regex.test(value)) {
+        errors.push({
+          line,
+          column: 1,
+          message: `Value "${value}" for &lt;${elementName}&gt; does not match pattern "${r.pattern}"`,
+          severity: 'error',
+        });
+      }
+    } catch {
+      // Invalid regex pattern in XSD — skip
+    }
+  }
+&nbsp;
+  // Length checks
+  if (r.minLength !== undefined &amp;&amp; value.length &lt; r.minLength) {
+    errors.push({
+      line,
+      column: 1,
+      message: `Value for &lt;${elementName}&gt; is too short (min length: ${r.minLength})`,
+      severity: 'error',
+    });
+  }
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (r.maxLength !== undefined &amp;&amp; value.length &gt; r.maxLength) {
+<span class="cstat-no" title="statement not covered" >    errors.push({</span>
+      line,
+      column: 1,
+      message: `Value for &lt;${elementName}&gt; is too long (max length: ${r.maxLength})`,
+      severity: 'error',
+    });
+  }
+&nbsp;
+  // Numeric range checks
+  const numVal = parseFloat(value);
+  if (!isNaN(numVal)) {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (r.minInclusive !== undefined &amp;&amp; numVal &lt; r.minInclusive) {
+<span class="cstat-no" title="statement not covered" >      errors.push({</span>
+        line,
+        column: 1,
+        message: `Value ${numVal} for &lt;${elementName}&gt; is below minimum ${r.minInclusive}`,
+        severity: 'error',
+      });
+    }
+    if (r.maxInclusive !== undefined &amp;&amp; numVal &gt; r.maxInclusive) {
+      errors.push({
+        line,
+        column: 1,
+        message: `Value ${numVal} for &lt;${elementName}&gt; exceeds maximum ${r.maxInclusive}`,
+        severity: 'error',
+      });
+    }
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (r.minExclusive !== undefined &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >numVal &lt;= r.minExclusive) {</span>
+<span class="cstat-no" title="statement not covered" >      errors.push({</span>
+        line,
+        column: 1,
+        message: `Value ${numVal} for &lt;${elementName}&gt; must be greater than ${r.minExclusive}`,
+        severity: 'error',
+      });
+    }
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (r.maxExclusive !== undefined &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >numVal &gt;= r.maxExclusive) {</span>
+<span class="cstat-no" title="statement not covered" >      errors.push({</span>
+        line,
+        column: 1,
+        message: `Value ${numVal} for &lt;${elementName}&gt; must be less than ${r.maxExclusive}`,
+        severity: 'error',
+      });
+    }
+  }
+}
+&nbsp;
+// ────────────────────────────────────────────────
+// Public API
+// ────────────────────────────────────────────────
+&nbsp;
+/**
+ * Validate XML content against an XSD schema.
+ *
+ * @param xmlContent - XML document string
+ * @param xsdContent - XSD schema string
+ * @returns Array of validation errors
+ */
+export function validateXMLAgainstXSD(
+  xmlContent: string,
+  xsdContent: string
+): ValidationError[] {
+  const errors: ValidationError[] = [];
+&nbsp;
+  // Parse the XSD
+  const schema = parseXSD(xsdContent);
+  if (!schema) {
+    errors.push({
+      line: 1,
+      column: 1,
+      message: 'Failed to parse XSD schema',
+      severity: 'error',
+    });
+    return errors;
+  }
+&nbsp;
+  return validateXMLAgainstSchema(xmlContent, schema);
+}
+&nbsp;
+/**
+ * Validate XML content against a pre-parsed XSD schema model.
+ *
+ * @param xmlContent - XML document string
+ * @param schema - Parsed XSDSchema object
+ * @returns Array of validation errors
+ */
+export function validateXMLAgainstSchema(
+  xmlContent: string,
+  schema: XSDSchema
+): ValidationError[] {
+  const errors: ValidationError[] = [];
+&nbsp;
+  // Parse XML
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(xmlContent, 'application/xml');
+&nbsp;
+  const parseError = xmlDoc.querySelector('parsererror');
+  if (parseError) {
+    errors.push({
+      line: 1,
+      column: 1,
+      message: 'XML is not well-formed: ' + (parseError.textContent || <span class="branch-1 cbranch-no" title="branch not covered" >''),</span>
+      severity: 'error',
+    });
+    return errors;
+  }
+&nbsp;
+  const rootEl = xmlDoc.documentElement;
+  const rootName = rootEl.localName;
+&nbsp;
+  // Find matching root element declaration
+  const rootDecl = findElementDecl(rootName, schema.elements);
+  if (!rootDecl) {
+    errors.push({
+      line: 1,
+      column: 1,
+      message: `Root element &lt;${rootName}&gt; is not declared in the schema. Expected one of: ${schema.elements.map((e) =&gt; e.name).join(', ')}`,
+      severity: 'error',
+    });
+    return errors;
+  }
+&nbsp;
+  // Validate recursively
+  validateElement(rootEl, rootDecl, schema, xmlContent, errors);
+&nbsp;
+  return errors;
+}
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

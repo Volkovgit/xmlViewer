@@ -1,7 +1,17 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { vi } from 'vitest';
 import { XMLTree } from '../XMLTree';
 import { Document, DocumentType, DocumentStatus } from '@/types';
+
+function wrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <DndProvider backend={HTML5Backend}>
+      {children}
+    </DndProvider>
+  );
+}
 
 describe('XMLTree Component', () => {
   const createMockDocument = (content: string): Document => ({
@@ -16,14 +26,14 @@ describe('XMLTree Component', () => {
 
   it('should render empty state for no XML', () => {
     const document = createMockDocument('');
-    render(<XMLTree document={document} />);
+    render(<XMLTree document={document} />, { wrapper });
 
     expect(screen.getByText('No XML to display')).toBeInTheDocument();
   });
 
   it('should render tree for simple XML', () => {
     const document = createMockDocument('<root>content</root>');
-    render(<XMLTree document={document} />);
+    render(<XMLTree document={document} />, { wrapper });
 
     expect(screen.getByText('root')).toBeInTheDocument();
   });
@@ -32,7 +42,7 @@ describe('XMLTree Component', () => {
     const document = createMockDocument(
       '<root><parent><child>value</child></parent></root>'
     );
-    render(<XMLTree document={document} />);
+    render(<XMLTree document={document} />, { wrapper });
 
     expect(screen.getByText('root')).toBeInTheDocument();
 
@@ -48,7 +58,7 @@ describe('XMLTree Component', () => {
     const document = createMockDocument(
       '<root><child>value</child></root>'
     );
-    render(<XMLTree document={document} />);
+    render(<XMLTree document={document} />, { wrapper });
 
     // Get toggle buttons (filter out Expand All/Collapse All toolbar buttons)
     const toggleButtons = screen.getAllByRole('button').filter(btn =>
@@ -82,7 +92,7 @@ describe('XMLTree Component', () => {
 
   it('should display selected node info', () => {
     const document = createMockDocument('<root>content</root>');
-    render(<XMLTree document={document} />);
+    render(<XMLTree document={document} />, { wrapper });
 
     const rootNodes = screen.getAllByText('root');
     const rootNode = rootNodes[0].closest('.tree-node');
@@ -96,14 +106,14 @@ describe('XMLTree Component', () => {
 
   it('should display node value', () => {
     const document = createMockDocument('<root>test value</root>');
-    render(<XMLTree document={document} />);
+    render(<XMLTree document={document} />, { wrapper });
 
     expect(screen.getByText(': test value')).toBeInTheDocument();
   });
 
   it('should display attributes in collapsed state', () => {
     const document = createMockDocument('<root id="1" name="test">content</root>');
-    render(<XMLTree document={document} />);
+    render(<XMLTree document={document} />, { wrapper });
 
     // Select the root node to see attributes in the selected node info
     const rootNodes = screen.getAllByText('root');
@@ -123,7 +133,7 @@ describe('XMLTree Component', () => {
     const document = createMockDocument(
       '<root><child>value</child></root>'
     );
-    render(<XMLTree document={document} />);
+    render(<XMLTree document={document} />, { wrapper });
 
     const expandAllButton = screen.getByRole('button', { name: 'Expand all nodes' });
     fireEvent.click(expandAllButton);
@@ -141,7 +151,7 @@ describe('XMLTree Component', () => {
     const document = createMockDocument(
       '<root><child>value</child></root>'
     );
-    render(<XMLTree document={document} />);
+    render(<XMLTree document={document} />, { wrapper });
 
     // First expand all
     const expandAllButton = screen.getByRole('button', { name: 'Expand all nodes' });
@@ -162,7 +172,7 @@ describe('XMLTree Component', () => {
   it('should handle parse errors gracefully', () => {
     // The parser might actually parse this, so let's use truly invalid XML
     const document = createMockDocument('<<<>>><<<');
-    render(<XMLTree document={document} />);
+    render(<XMLTree document={document} />, { wrapper });
 
     // Should either show an error or empty state
     const errorElement = screen.queryByText(/Error:/i);
@@ -195,7 +205,7 @@ describe('XMLTree Component', () => {
 
   it('should handle keyboard navigation', () => {
     const document = createMockDocument('<root><child>value</child></root>');
-    render(<XMLTree document={document} />);
+    render(<XMLTree document={document} />, { wrapper });
 
     const rootNode = screen.getByText('root').closest('.tree-node');
     if (rootNode) {
@@ -210,7 +220,7 @@ describe('XMLTree Component', () => {
 
   it('should display node type for non-element nodes', () => {
     const document = createMockDocument('<root>text content</root>');
-    render(<XMLTree document={document} />);
+    render(<XMLTree document={document} />, { wrapper });
 
     // Text nodes should display type
     const treeContent = screen.getByRole('tree');
@@ -219,7 +229,7 @@ describe('XMLTree Component', () => {
 
   it('should show attributes in selected node info', () => {
     const document = createMockDocument('<root id="1" name="test">content</root>');
-    render(<XMLTree document={document} />);
+    render(<XMLTree document={document} />, { wrapper });
 
     const rootNodes = screen.getAllByText('root');
     const rootNode = rootNodes[0].closest('.tree-node');
@@ -235,7 +245,7 @@ describe('XMLTree Component', () => {
     const document = createMockDocument(
       '<root><l1><l2><l3><l4><l5>deep</l5></l4></l3></l2></l1></root>'
     );
-    render(<XMLTree document={document} />);
+    render(<XMLTree document={document} />, { wrapper });
 
     // Initially only root is visible
     expect(screen.getByText('root')).toBeInTheDocument();
@@ -259,7 +269,7 @@ describe('XMLTree Component', () => {
     const document = createMockDocument(
       '<root><item1>a</item1><item2>b</item2><item3>c</item3></root>'
     );
-    render(<XMLTree document={document} />);
+    render(<XMLTree document={document} />, { wrapper });
 
     // Expand all to see all children
     const expandAllButton = screen.getByRole('button', { name: 'Expand all nodes' });
@@ -274,7 +284,7 @@ describe('XMLTree Component', () => {
 
   it('should highlight selected node', () => {
     const document = createMockDocument('<root>content</root>');
-    render(<XMLTree document={document} />);
+    render(<XMLTree document={document} />, { wrapper });
 
     const rootNode = screen.getByText('root').closest('.tree-node');
     fireEvent.click(rootNode!);

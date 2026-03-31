@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for core/documentManager/DocumentManager.css</title>
+    <title>Code coverage report for services/xml/XMLParser.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">core/documentManager</a> DocumentManager.css</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">services/xml</a> XMLParser.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">94.93% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>75/79</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">71.73% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>33/46</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">94.87% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>74/78</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -331,7 +331,148 @@
 <a name='L266'></a><a href='#L266'>266</a>
 <a name='L267'></a><a href='#L267'>267</a>
 <a name='L268'></a><a href='#L268'>268</a>
-<a name='L269'></a><a href='#L269'>269</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L269'></a><a href='#L269'>269</a>
+<a name='L270'></a><a href='#L270'>270</a>
+<a name='L271'></a><a href='#L271'>271</a>
+<a name='L272'></a><a href='#L272'>272</a>
+<a name='L273'></a><a href='#L273'>273</a>
+<a name='L274'></a><a href='#L274'>274</a>
+<a name='L275'></a><a href='#L275'>275</a>
+<a name='L276'></a><a href='#L276'>276</a>
+<a name='L277'></a><a href='#L277'>277</a>
+<a name='L278'></a><a href='#L278'>278</a>
+<a name='L279'></a><a href='#L279'>279</a>
+<a name='L280'></a><a href='#L280'>280</a>
+<a name='L281'></a><a href='#L281'>281</a>
+<a name='L282'></a><a href='#L282'>282</a>
+<a name='L283'></a><a href='#L283'>283</a>
+<a name='L284'></a><a href='#L284'>284</a>
+<a name='L285'></a><a href='#L285'>285</a>
+<a name='L286'></a><a href='#L286'>286</a>
+<a name='L287'></a><a href='#L287'>287</a>
+<a name='L288'></a><a href='#L288'>288</a>
+<a name='L289'></a><a href='#L289'>289</a>
+<a name='L290'></a><a href='#L290'>290</a>
+<a name='L291'></a><a href='#L291'>291</a>
+<a name='L292'></a><a href='#L292'>292</a>
+<a name='L293'></a><a href='#L293'>293</a>
+<a name='L294'></a><a href='#L294'>294</a>
+<a name='L295'></a><a href='#L295'>295</a>
+<a name='L296'></a><a href='#L296'>296</a>
+<a name='L297'></a><a href='#L297'>297</a>
+<a name='L298'></a><a href='#L298'>298</a>
+<a name='L299'></a><a href='#L299'>299</a>
+<a name='L300'></a><a href='#L300'>300</a>
+<a name='L301'></a><a href='#L301'>301</a>
+<a name='L302'></a><a href='#L302'>302</a>
+<a name='L303'></a><a href='#L303'>303</a>
+<a name='L304'></a><a href='#L304'>304</a>
+<a name='L305'></a><a href='#L305'>305</a>
+<a name='L306'></a><a href='#L306'>306</a>
+<a name='L307'></a><a href='#L307'>307</a>
+<a name='L308'></a><a href='#L308'>308</a>
+<a name='L309'></a><a href='#L309'>309</a>
+<a name='L310'></a><a href='#L310'>310</a>
+<a name='L311'></a><a href='#L311'>311</a>
+<a name='L312'></a><a href='#L312'>312</a>
+<a name='L313'></a><a href='#L313'>313</a>
+<a name='L314'></a><a href='#L314'>314</a>
+<a name='L315'></a><a href='#L315'>315</a>
+<a name='L316'></a><a href='#L316'>316</a>
+<a name='L317'></a><a href='#L317'>317</a>
+<a name='L318'></a><a href='#L318'>318</a>
+<a name='L319'></a><a href='#L319'>319</a>
+<a name='L320'></a><a href='#L320'>320</a>
+<a name='L321'></a><a href='#L321'>321</a>
+<a name='L322'></a><a href='#L322'>322</a>
+<a name='L323'></a><a href='#L323'>323</a>
+<a name='L324'></a><a href='#L324'>324</a>
+<a name='L325'></a><a href='#L325'>325</a>
+<a name='L326'></a><a href='#L326'>326</a>
+<a name='L327'></a><a href='#L327'>327</a>
+<a name='L328'></a><a href='#L328'>328</a>
+<a name='L329'></a><a href='#L329'>329</a>
+<a name='L330'></a><a href='#L330'>330</a>
+<a name='L331'></a><a href='#L331'>331</a>
+<a name='L332'></a><a href='#L332'>332</a>
+<a name='L333'></a><a href='#L333'>333</a>
+<a name='L334'></a><a href='#L334'>334</a>
+<a name='L335'></a><a href='#L335'>335</a>
+<a name='L336'></a><a href='#L336'>336</a>
+<a name='L337'></a><a href='#L337'>337</a>
+<a name='L338'></a><a href='#L338'>338</a>
+<a name='L339'></a><a href='#L339'>339</a>
+<a name='L340'></a><a href='#L340'>340</a>
+<a name='L341'></a><a href='#L341'>341</a>
+<a name='L342'></a><a href='#L342'>342</a>
+<a name='L343'></a><a href='#L343'>343</a>
+<a name='L344'></a><a href='#L344'>344</a>
+<a name='L345'></a><a href='#L345'>345</a>
+<a name='L346'></a><a href='#L346'>346</a>
+<a name='L347'></a><a href='#L347'>347</a>
+<a name='L348'></a><a href='#L348'>348</a>
+<a name='L349'></a><a href='#L349'>349</a>
+<a name='L350'></a><a href='#L350'>350</a>
+<a name='L351'></a><a href='#L351'>351</a>
+<a name='L352'></a><a href='#L352'>352</a>
+<a name='L353'></a><a href='#L353'>353</a>
+<a name='L354'></a><a href='#L354'>354</a>
+<a name='L355'></a><a href='#L355'>355</a>
+<a name='L356'></a><a href='#L356'>356</a>
+<a name='L357'></a><a href='#L357'>357</a>
+<a name='L358'></a><a href='#L358'>358</a>
+<a name='L359'></a><a href='#L359'>359</a>
+<a name='L360'></a><a href='#L360'>360</a>
+<a name='L361'></a><a href='#L361'>361</a>
+<a name='L362'></a><a href='#L362'>362</a>
+<a name='L363'></a><a href='#L363'>363</a>
+<a name='L364'></a><a href='#L364'>364</a>
+<a name='L365'></a><a href='#L365'>365</a>
+<a name='L366'></a><a href='#L366'>366</a>
+<a name='L367'></a><a href='#L367'>367</a>
+<a name='L368'></a><a href='#L368'>368</a>
+<a name='L369'></a><a href='#L369'>369</a>
+<a name='L370'></a><a href='#L370'>370</a>
+<a name='L371'></a><a href='#L371'>371</a>
+<a name='L372'></a><a href='#L372'>372</a>
+<a name='L373'></a><a href='#L373'>373</a>
+<a name='L374'></a><a href='#L374'>374</a>
+<a name='L375'></a><a href='#L375'>375</a>
+<a name='L376'></a><a href='#L376'>376</a>
+<a name='L377'></a><a href='#L377'>377</a>
+<a name='L378'></a><a href='#L378'>378</a>
+<a name='L379'></a><a href='#L379'>379</a>
+<a name='L380'></a><a href='#L380'>380</a>
+<a name='L381'></a><a href='#L381'>381</a>
+<a name='L382'></a><a href='#L382'>382</a>
+<a name='L383'></a><a href='#L383'>383</a>
+<a name='L384'></a><a href='#L384'>384</a>
+<a name='L385'></a><a href='#L385'>385</a>
+<a name='L386'></a><a href='#L386'>386</a>
+<a name='L387'></a><a href='#L387'>387</a>
+<a name='L388'></a><a href='#L388'>388</a>
+<a name='L389'></a><a href='#L389'>389</a>
+<a name='L390'></a><a href='#L390'>390</a>
+<a name='L391'></a><a href='#L391'>391</a>
+<a name='L392'></a><a href='#L392'>392</a>
+<a name='L393'></a><a href='#L393'>393</a>
+<a name='L394'></a><a href='#L394'>394</a>
+<a name='L395'></a><a href='#L395'>395</a>
+<a name='L396'></a><a href='#L396'>396</a>
+<a name='L397'></a><a href='#L397'>397</a>
+<a name='L398'></a><a href='#L398'>398</a>
+<a name='L399'></a><a href='#L399'>399</a>
+<a name='L400'></a><a href='#L400'>400</a>
+<a name='L401'></a><a href='#L401'>401</a>
+<a name='L402'></a><a href='#L402'>402</a>
+<a name='L403'></a><a href='#L403'>403</a>
+<a name='L404'></a><a href='#L404'>404</a>
+<a name='L405'></a><a href='#L405'>405</a>
+<a name='L406'></a><a href='#L406'>406</a>
+<a name='L407'></a><a href='#L407'>407</a>
+<a name='L408'></a><a href='#L408'>408</a>
+<a name='L409'></a><a href='#L409'>409</a>
+<a name='L410'></a><a href='#L410'>410</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -355,6 +496,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">55x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -372,14 +514,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">55x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">55x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">55x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -390,7 +535,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">181x</span>
+<span class="cline-any cline-yes">181x</span>
+<span class="cline-any cline-yes">28644x</span>
+<span class="cline-any cline-yes">28644x</span>
+<span class="cline-any cline-yes">28644x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">181x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -400,6 +551,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">171x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -407,7 +559,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">166x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -437,8 +593,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">185x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">185x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -456,33 +615,49 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">181x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">181x</span>
+<span class="cline-any cline-yes">181x</span>
+<span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">167x</span>
+<span class="cline-any cline-yes">167x</span>
+<span class="cline-any cline-yes">167x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">167x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">167x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">167x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">167x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">167x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">167x</span>
+<span class="cline-any cline-yes">167x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">167x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -492,16 +667,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -524,9 +708,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -554,25 +742,36 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -581,8 +780,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -599,274 +802,494 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
- * DocumentManager Component Styles
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { XMLParser, XMLBuilder } from 'fast-xml-parser';
+import { ParseError } from '@/types';
+import { ParseResult, FormatOptions, ParserOptions } from './types';
+&nbsp;
+/**
+ * XMLParser Service
+ *
+ * Provides XML parsing, validation, formatting, and minification functionality
+ * using fast-xml-parser library. Includes caching mechanism for improved performance.
+ *
+ * @example
+ * ```typescript
+ * const parser = new XMLParserService();
+ * const result = parser.parseXML('&lt;root&gt;content&lt;/root&gt;');
+ * if (result.success) {
+ *   console.log(result.data);
+ * }
+ * ```
  */
+export class XMLParserService {
+  /** Cache for parsed XML documents using hash as key */
+  private parseCache: Map&lt;string, ParseResult&gt;;
 &nbsp;
-.document-manager {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
+  /** Fast-XML-Parser instance configuration */
+  private readonly defaultParserOptions: any = {
+    ignoreAttributes: false,
+    attributeNamePrefix: '',
+    textNodeName: '#text',
+    parseAttributeValue: false, // Keep as strings to match expected behavior
+    parseTagValue: false, // Keep as strings to match expected behavior
+    parseNodeValue: false,
+    trimValues: true,
+    ignoreDeclaration: true,
+    ignorePiTags: true,
+    allowBooleanAttributes: false,
+    cdataProp: '#cdata',
+    // Strict parsing options
+    unpairedTags: [], // No unpaired tags by default
+    stopNodes: [], // No stop nodes
+  };
+&nbsp;
+  /** Default format options */
+  private readonly defaultFormatOptions: FormatOptions = {
+    indentation: '  ',
+    collapseEmpty: false,
+    ignoreAttributes: false,
+  };
+&nbsp;
+  /** Maximum cache size to prevent memory issues */
+  private readonly MAX_CACHE_SIZE = 100;
+&nbsp;
+  constructor() {
+    this.parseCache = new Map();
+  }
+&nbsp;
+  /**
+   * Generate a simple hash from string for cache key
+   * Uses a simple hashing algorithm for performance
+   *
+   * @param xmlString - The XML string to hash
+   * @returns A hash string suitable for cache key
+   */
+  private generateHash(xmlString: string): string {
+    let hash = 0;
+    for (let i = 0; i &lt; xmlString.length; i++) {
+      const char = xmlString.charCodeAt(i);
+      hash = (hash &lt;&lt; 5) - hash + char;
+      hash = hash &amp; hash; // Convert to 32-bit integer
+    }
+    return hash.toString(36);
+  }
+&nbsp;
+  /**
+   * Count the number of lines in a string
+   *
+   * @param text - The text to count lines in
+   * @returns Number of lines
+   */
+  private countLines(text: string): number {
+    return text.split('\n').length;
+  }
+&nbsp;
+  /**
+   * Manage cache size by removing oldest entries when limit is reached
+   * Uses FIFO (First In, First Out) eviction policy
+   */
+  private manageCacheSize(): void {
+    if (this.parseCache.size &gt;= this.MAX_CACHE_SIZE) {
+      // Get the first key (oldest entry)
+      const firstKey = this.parseCache.keys().next().value;
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (firstKey) {
+        this.parseCache.delete(firstKey);
+      }
+    }
+  }
+&nbsp;
+  /**
+   * Parse XML string into JavaScript object
+   *
+   * Features:
+   * - Caching mechanism for improved performance on repeated parses
+   * - Preserves attributes and structure
+   * - Returns detailed metadata about the parsed document
+   * - Handles parse errors with line/column information
+   *
+   * @param xmlString - The XML string to parse
+   * @param options - Optional parser configuration
+   * @returns ParseResult with success status, data or errors, and metadata
+   *
+   * @example
+   * ```typescript
+   * const parser = new XMLParserService();
+   * const result = parser.parseXML('&lt;root&gt;&lt;item id="1"&gt;Test&lt;/item&gt;&lt;/root&gt;');
+   * if (result.success) {
+   *   console.log(result.data); // { root: { item: { '#text': 'Test', id: '1' } } }
+   *   console.log(result.metadata.lineCount); // 1
+   * }
+   * ```
+   */
+  parseXML(xmlString: string, options?: ParserOptions): ParseResult {
+    // Trim and validate input
+    const trimmedXml = xmlString.trim();
+&nbsp;
+    // Handle empty input
+    if (!trimmedXml) {
+      return {
+        success: false,
+        errors: [
+          {
+            line: 1,
+            column: 1,
+            message: 'Empty XML document',
+          },
+        ],
+        metadata: {
+          size: xmlString.length,
+          lineCount: this.countLines(xmlString),
+          encoding: 'UTF-8',
+        },
+      };
+    }
+&nbsp;
+    // Generate cache key from XML content
+    const hash = this.generateHash(xmlString);
+&nbsp;
+    // Check cache first
+    const cached = this.parseCache.get(hash);
+    if (cached) {
+      return cached;
+    }
+&nbsp;
+    // Calculate metadata
+    const size = xmlString.length;
+    const lineCount = this.countLines(xmlString);
+    const metadata = {
+      size,
+      lineCount,
+      encoding: 'UTF-8',
+    };
+&nbsp;
+    // Configure parser with merged options
+    const parserOptions = {
+      ...this.defaultParserOptions,
+      ...options,
+    };
+&nbsp;
+    const parser = new XMLParser(parserOptions);
+&nbsp;
+    try {
+      // Attempt to parse the XML
+      const data = parser.parse(trimmedXml);
+&nbsp;
+      const result: ParseResult = {
+        success: true,
+        data,
+        metadata,
+      };
+&nbsp;
+      // Cache the result
+      this.manageCacheSize();
+      this.parseCache.set(hash, result);
+&nbsp;
+      return result;
+    } catch (error) {
+      // Handle parse errors
+      const parseError: ParseError = {
+        line: 1,
+        column: 1,
+        message:
+          error instanceof Error
+            ? error.message
+            : <span class="branch-1 cbranch-no" title="branch not covered" >'Unknown parsing error occurred',</span>
+      };
+&nbsp;
+      // Try to extract line/column from error message if available
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (error instanceof Error) {
+        const lineMatch = error.message.match(/line:\s*(\d+)/i);
+        const colMatch = error.message.match(/col(?:umn)?:\s*(\d+)/i);
+&nbsp;
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (lineMatch) {
+<span class="cstat-no" title="statement not covered" >          parseError.line = parseInt(lineMatch[1], 10);</span>
+        }
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (colMatch) {
+<span class="cstat-no" title="statement not covered" >          parseError.column = parseInt(colMatch[1], 10);</span>
+        }
+      }
+&nbsp;
+      const result: ParseResult = {
+        success: false,
+        errors: [parseError],
+        metadata,
+      };
+&nbsp;
+      return result;
+    }
+  }
+&nbsp;
+  /**
+   * Validate XML syntax without returning parsed data
+   *
+   * Useful for syntax checking before saving or processing documents.
+   * Returns an empty array if the XML is valid.
+   *
+   * @param xmlString - The XML string to validate
+   * @returns Array of ParseError objects (empty if valid)
+   *
+   * @example
+   * ```typescript
+   * const parser = new XMLParserService();
+   * const errors = parser.validateSyntax('&lt;root&gt;&lt;item&gt;Test&lt;/root&gt;');
+   * if (errors.length &gt; 0) {
+   *   console.error('Invalid XML:', errors[0].message);
+   * }
+   * ```
+   */
+  validateSyntax(xmlString: string): ParseError[] {
+    const result = this.parseXML(xmlString);
+&nbsp;
+    if (result.success) {
+      return [];
+    }
+&nbsp;
+    return result.errors || <span class="branch-1 cbranch-no" title="branch not covered" >[];</span>
+  }
+&nbsp;
+  /**
+   * Format/beautify XML string with proper indentation
+   *
+   * Features:
+   * - Configurable indentation (default: 2 spaces)
+   * - Optional self-closing tag support
+   * - Preserves attributes by default
+   *
+   * @param xmlString - The XML string to format
+   * @param options - Optional formatting configuration
+   * @returns Formatted XML string
+   *
+   * @example
+   * ```typescript
+   * const parser = new XMLParserService();
+   * const messy = '&lt;root&gt;&lt;item&gt;Test&lt;/item&gt;&lt;/root&gt;';
+   * const formatted = parser.formatXML(messy);
+   * // Returns:
+   * // &lt;root&gt;
+   * //   &lt;item&gt;Test&lt;/item&gt;
+   * // &lt;/root&gt;
+   * ```
+   */
+  formatXML(xmlString: string, options?: FormatOptions): string {
+    // Validate input
+    if (!xmlString || !xmlString.trim()) {
+      throw new Error('Cannot format empty XML');
+    }
+&nbsp;
+    // Merge with default options
+    const formatOptions = {
+      ...this.defaultFormatOptions,
+      ...options,
+    };
+&nbsp;
+    // Parse with preserveOrder for proper structure
+    const parserOptions = {
+      ...this.defaultParserOptions,
+      preserveOrder: true,
+      ignoreAttributes: formatOptions.ignoreAttributes,
+    };
+&nbsp;
+    const parser = new XMLParser(parserOptions);
+&nbsp;
+    try {
+      const data = parser.parse(xmlString);
+&nbsp;
+      // Extract actual content from preserveOrder array structure
+      let contentToBuild = data;
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (Array.isArray(data) &amp;&amp; data.length &gt; 0) {
+        contentToBuild = data[0];
+      }
+&nbsp;
+      // Configure builder with proper text node handling
+      const builderOptions: any = {
+        ignoreAttributes: formatOptions.ignoreAttributes || false,
+        attributeNamePrefix: '',
+        textNodeName: '#text',
+        format: true,
+        indentBy: formatOptions.indentation || <span class="branch-1 cbranch-no" title="branch not covered" >'  ',</span>
+        suppressEmptyNode: formatOptions.collapseEmpty || false,
+      };
+&nbsp;
+      const builder = new XMLBuilder(builderOptions);
+      const result = builder.build(contentToBuild);
+&nbsp;
+      return result;
+    } catch (error) {
+<span class="cstat-no" title="statement not covered" >      throw new Error(</span>
+        `Cannot format XML: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
+&nbsp;
+  /**
+   * Minify XML string by removing unnecessary whitespace
+   *
+   * Features:
+   * - Removes all indentation and extra whitespace
+   * - Collapses empty elements into self-closing tags
+   * - Reduces file size for transmission or storage
+   *
+   * @param xmlString - The XML string to minify
+   * @returns Minified XML string
+   *
+   * @example
+   * ```typescript
+   * const parser = new XMLParserService();
+   * const formatted = '&lt;root&gt;\n  &lt;item&gt;Test&lt;/item&gt;\n&lt;/root&gt;';
+   * const minified = parser.minifyXML(formatted);
+   * // Returns: &lt;root&gt;&lt;item&gt;Test&lt;/item&gt;&lt;/root&gt;
+   * ```
+   */
+  minifyXML(xmlString: string): string {
+    // Validate input
+    if (!xmlString || !xmlString.trim()) {
+      throw new Error('Cannot minify empty XML');
+    }
+&nbsp;
+    // Parse with preserveOrder for proper structure
+    const parserOptions = {
+      ...this.defaultParserOptions,
+      preserveOrder: true,
+    };
+&nbsp;
+    const parser = new XMLParser(parserOptions);
+&nbsp;
+    try {
+      const data = parser.parse(xmlString);
+&nbsp;
+      // Extract actual content from preserveOrder array structure
+      let contentToBuild = data;
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (Array.isArray(data) &amp;&amp; data.length &gt; 0) {
+        contentToBuild = data[0];
+      }
+&nbsp;
+      // Configure builder for minification
+      const builderOptions = {
+        ignoreAttributes: false,
+        attributeNamePrefix: '',
+        textNodeName: '#text',
+        format: false,
+        suppressEmptyNode: true,
+      };
+&nbsp;
+      const builder = new XMLBuilder(builderOptions);
+      return builder.build(contentToBuild);
+    } catch (error) {
+<span class="cstat-no" title="statement not covered" >      throw new Error(</span>
+        `Cannot minify XML: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
+&nbsp;
+  /**
+   * Clear the parse cache
+   *
+   * Useful for freeing memory or forcing fresh parses
+   *
+   * @example
+   * ```typescript
+   * const parser = new XMLParserService();
+   * parser.clearCache();
+   * ```
+   */
+  clearCache(): void {
+    this.parseCache.clear();
+  }
+&nbsp;
+  /**
+   * Get current cache size
+   *
+   * @returns Number of cached parse results
+   */
+  getCacheSize(): number {
+    return this.parseCache.size;
+  }
 }
 &nbsp;
-/* Toolbar Styles */
-.document-toolbar {
-  display: flex;
-  gap: 8px;
-  padding: 8px;
-  border-bottom: 1px solid #ccc;
-  background-color: #f5f5f5;
-}
-&nbsp;
-.toolbar-button {
-  padding: 6px 12px;
-  border: 1px solid #999;
-  border-radius: 3px;
-  background-color: #fff;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
-  transition: background-color 0.15s ease;
-}
-&nbsp;
-.toolbar-button:hover {
-  background-color: #e8e8e8;
-}
-&nbsp;
-.toolbar-button:active {
-  background-color: #d8d8d8;
-}
-&nbsp;
-/* Hidden file input */
-.document-file-input {
-  display: none;
-}
-&nbsp;
-/* Tab Bar Styles */
-.document-tabs {
-  display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
-  border-bottom: 1px solid #ccc;
-  background-color: #e8e8e8;
-  scrollbar-width: thin;
-  scrollbar-color: #999 #e8e8e8;
-}
-&nbsp;
-.document-tabs::-webkit-scrollbar {
-  height: 8px;
-}
-&nbsp;
-.document-tabs::-webkit-scrollbar-track {
-  background: #e8e8e8;
-}
-&nbsp;
-.document-tabs::-webkit-scrollbar-thumb {
-  background-color: #999;
-  border-radius: 4px;
-}
-&nbsp;
-/* Individual Tab Styles */
-.document-tab {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-right: 1px solid #ccc;
-  cursor: pointer;
-  user-select: none;
-  transition: background-color 0.15s ease;
-  white-space: nowrap;
-  min-width: fit-content;
-}
-&nbsp;
-.document-tab:hover {
-  background-color: #d8d8d8;
-}
-&nbsp;
-.document-tab.active {
-  background-color: #fff;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-}
-&nbsp;
-.document-tab:focus-visible {
-  outline: 2px solid #0066cc;
-  outline-offset: -2px;
-}
-&nbsp;
-.document-name {
-  font-size: 13px;
-  color: #333;
-}
-&nbsp;
-.document-tab.active .document-name {
-  font-weight: 500;
-}
-&nbsp;
-.dirty-indicator {
-  color: #d32f2f;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 1;
-}
-&nbsp;
-.close-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  line-height: 1;
-  color: #666;
-  padding: 0;
-  width: 16px;
-  height: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 2px;
-  transition: background-color 0.15s ease, color 0.15s ease;
-}
-&nbsp;
-.close-button:hover {
-  background-color: #c8c8c8;
-  color: #333;
-}
-&nbsp;
-.close-button:focus-visible {
-  outline: 2px solid #0066cc;
-  outline-offset: 1px;
-}
-&nbsp;
-/* Document Content Area */
-.document-content {
-  flex: 1;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-&nbsp;
-.active-document {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-&nbsp;
-.active-document &gt; .xml-text-editor,
-.active-document &gt; .xsd-visualizer {
-  flex: 1;
-  min-height: 0;
-  overflow: auto;
-}
-&nbsp;
-.document-text {
-  margin: 0;
-  padding: 16px;
-  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-  font-size: 13px;
-  line-height: 1.5;
-  color: #333;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-&nbsp;
-/* Empty State */
-.empty-state {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  background-color: #f9f9f9;
-}
-&nbsp;
-.empty-state-content {
-  text-align: center;
-  color: #666;
-}
-&nbsp;
-.empty-state-content h2 {
-  margin: 0 0 8px 0;
-  font-size: 20px;
-  font-weight: 500;
-  color: #333;
-}
-&nbsp;
-.empty-state-content p {
-  margin: 0;
-  font-size: 14px;
-  color: #666;
-}
-&nbsp;
-/* XSD View Toggle */
-.xsd-view-toggle,
-.xml-view-toggle {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
-  padding: 4px 8px;
-  border-top: 1px solid #ccc;
-  background: #f5f5f5;
-}
-&nbsp;
-.toggle-btn {
-  padding: 4px 12px;
-  border: 1px solid #ccc;
-  background: #fff;
-  cursor: pointer;
-  font-size: 12px;
-  border-radius: 3px;
-  transition: background-color 0.15s;
-}
-&nbsp;
-.toggle-btn:hover {
-  background: #e8e8e8;
-}
-&nbsp;
-.toggle-btn.active {
-  background: #0066cc;
-  color: #fff;
-  border-color: #0066cc;
-}
-&nbsp;
-/* XSD Error Panel */
-.xsd-error-panel {
-  border-top: 1px solid #f44336;
-  background: #fff5f5;
-  padding: 8px 12px;
-  max-height: 200px;
-  overflow-y: auto;
-}
-&nbsp;
-.xsd-error-panel h4 {
-  margin: 0 0 8px 0;
-  color: #c62828;
-  font-size: 13px;
-}
-&nbsp;
-.xsd-error-panel ul {
-  margin: 0;
-  padding-left: 20px;
-}
-&nbsp;
-.xsd-error-panel li {
-  font-size: 12px;
-  color: #c62828;
-  line-height: 1.6;
-}
-&nbsp;
-/* Toolbar disabled state */
-.toolbar-button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-&nbsp;
-.toolbar-group {
-  display: flex;
-  gap: 4px;
-}
-&nbsp;
+/**
+ * Singleton instance of XMLParserService
+ * Exported for convenient use throughout the application
+ */
+export const xmlParser = new XMLParserService();
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

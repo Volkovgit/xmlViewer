@@ -7,6 +7,7 @@
 
 import React, { useMemo, useCallback, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type {
   ColDef,
   GridOptions,
@@ -15,9 +16,11 @@ import { Document } from '@/types/document';
 import { buildGridData, updateXMLFromGrid } from './GridDataBuilder';
 import './XMLGrid.css';
 
-// Import AG-Grid styles
+// Register AG-Grid modules
+ModuleRegistry.registerModules([AllCommunityModule]);
+
+// Import AG-Grid styles (new Theming API)
 import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 export interface XMLGridProps {
   /** Document to display in grid view */
@@ -160,7 +163,7 @@ export const XMLGrid: React.FC<XMLGridProps> = ({
   // Main grid UI
   return (
     <div className="xml-grid-container">
-      <div className="ag-theme-alpine xml-grid-wrapper">
+      <div className="ag-theme-quartz xml-grid-wrapper">
         <AgGridReact
           rowData={gridData.rows}
           columnDefs={columnDefs}

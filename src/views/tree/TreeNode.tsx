@@ -66,18 +66,16 @@ export function TreeNode({
     y: number;
   }>({ visible: false, x: 0, y: 0 });
 
-  // Drag-drop functionality (only enable if onDrop is provided)
+  // Drag-drop functionality - always enabled but no-op without onDrop
   const { dragRef, dropRef, isDragging, isOver } = useTreeDragDrop({
     node,
-    onDrop: onDrop || (() => {})
+    onDrop: onDrop ?? (() => {})
   });
 
   // Combine refs for drag and drop
   const combinedRef = (element: HTMLDivElement | null) => {
-    if (onDrop) {
-      dragRef(element);
-      dropRef(element);
-    }
+    dragRef(element);
+    dropRef(element);
   };
 
   const handleClick = () => {
@@ -110,12 +108,13 @@ export function TreeNode({
   };
 
   const isHighlighted = matchedNodeIds?.has(node.id);
+  const isDragEnabled = !!onDrop;
 
   return (
     <div>
       <div
         ref={combinedRef}
-        className={`tree-node ${isSelected ? 'selected' : ''} ${isDragging ? 'dragging' : ''} ${isOver ? 'drop-target' : ''} ${isHighlighted ? 'search-highlight' : ''}`}
+        className={`tree-node ${isSelected ? 'selected' : ''} ${isDragEnabled && isDragging ? 'dragging' : ''} ${isDragEnabled && isOver ? 'drop-target' : ''} ${isHighlighted ? 'search-highlight' : ''}`}
         style={{ paddingLeft }}
         onClick={handleClick}
         onContextMenu={handleContextMenu}
