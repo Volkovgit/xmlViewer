@@ -43,6 +43,11 @@
   align-items: center;
 }
 
+.tree-toolbar-actions {
+  display: flex;
+  gap: 8px;
+}
+
 .tree-button {
   padding: 4px 12px;
   font-size: 12px;

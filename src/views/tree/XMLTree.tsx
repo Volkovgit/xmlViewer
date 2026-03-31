@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { XMLNode, treeBuilder } from '@/services/xml/TreeBuilder';
+import { treeManipulator } from '@/services/xml/TreeManipulator';
 import { Document } from '@/types';
 import { TreeNode } from './TreeNode';
+import { TreeSearch } from './TreeSearch';
 import './XMLTree.css';
 
 /**
@@ -35,6 +37,7 @@ export function XMLTree({ document, onNodeSelect, className = '' }: XMLTreeProps
   const [tree, setTree] = useState<XMLNode | null>(null);
   const [selectedNode, setSelectedNode] = useState<XMLNode | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [matchedNodeIds, setMatchedNodeIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     // Reset ID counter for consistent IDs on document change
@@ -68,6 +71,99 @@ export function XMLTree({ document, onNodeSelect, className = '' }: XMLTreeProps
       );
     }
   }, [document.content]);
+
+  // Node manipulation callbacks
+  const handleDrop = useCallback((draggedNode: XMLNode, targetNode: XMLNode) => {
+    if (!tree) return;
+
+    try {
+      // Remove from old location
+      let updatedTree = treeManipulator.removeNode(tree, draggedNode.id);
+      // Add to new location
+      updatedTree = treeManipulator.addChild(targetNode, draggedNode);
+      setTree(updatedTree);
+
+      // Expand target to show dropped node
+      setExpandedNodes(prev => new Set(prev).add(targetNode.id));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Drop failed');
+    }
+  }, [tree]);
+
+  const handleAddChild = useCallback((parent: XMLNode) => {
+    if (!tree) return;
+
+    const newChild: XMLNode = {
+      id: `node-${Date.now()}`,
+      name: 'newElement',
+      attributes: {},
+      children: [],
+      type: 'element'
+    };
+
+    const updatedTree = treeManipulator.addChild(parent, newChild);
+    setTree(updatedTree);
+    setExpandedNodes(prev => new Set(prev).add(parent.id));
+  }, [tree]);
+
+  const handleEditNode = useCallback((node: XMLNode) => {
+    // TODO: Implement edit dialog
+    alert(`Edit node: ${node.name}`);
+  }, []);
+
+  const handleDeleteNode = useCallback((node: XMLNode) => {
+    if (!tree) return;
+
+    const confirmed = confirm(`Delete node "${node.name}"?`);
+    if (!confirmed) return;
+
+    try {
+      const updatedTree = treeManipulator.removeNode(tree, node.id);
+      setTree(updatedTree);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Delete failed');
+    }
+  }, [tree]);
+
+  const handleDuplicateNode = useCallback((node: XMLNode) => {
+    if (!tree) return;
+
+    const updatedTree = treeManipulator.duplicateNode(tree, node.id);
+    setTree(updatedTree);
+  }, [tree]);
+
+  // Prevent unused warnings - handlers will be connected to context menu in TreeNode
+  void { handleAddChild, handleEditNode, handleDeleteNode, handleDuplicateNode };
+
+  const handleSearchResults = useCallback((matchedIds: string[]) => {
+    setMatchedNodeIds(new Set(matchedIds));
+
+    // Expand parents of matched nodes
+    if (tree && matchedIds.length > 0) {
+      const idsToExpand = new Set(matchedIds);
+
+      const expandParents = (node: XMLNode): boolean => {
+        let shouldExpand = false;
+
+        node.children.forEach(child => {
+          if (idsToExpand.has(child.id)) {
+            shouldExpand = true;
+          }
+          if (expandParents(child)) {
+            shouldExpand = true;
+          }
+        });
+
+        if (shouldExpand && !expandedNodes.has(node.id)) {
+          setExpandedNodes(prev => new Set(prev).add(node.id));
+        }
+
+        return shouldExpand;
+      };
+
+      expandParents(tree);
+    }
+  }, [tree, expandedNodes]);
 
   const handleToggle = (node: XMLNode) => {
     setExpandedNodes((prev) => {
@@ -126,22 +222,25 @@ export function XMLTree({ document, onNodeSelect, className = '' }: XMLTreeProps
   return (
     <div className={`xml-tree ${className}`}>
       <div className="tree-toolbar">
-        <button
-          onClick={handleExpandAll}
-          className="tree-button"
-          type="button"
-          aria-label="Expand all nodes"
-        >
-          Expand All
-        </button>
-        <button
-          onClick={handleCollapseAll}
-          className="tree-button"
-          type="button"
-          aria-label="Collapse all nodes"
-        >
-          Collapse All
-        </button>
+        <TreeSearch tree={tree} onSearchResults={handleSearchResults} />
+        <div className="tree-toolbar-actions">
+          <button
+            onClick={handleExpandAll}
+            className="tree-button"
+            type="button"
+            aria-label="Expand all nodes"
+          >
+            Expand All
+          </button>
+          <button
+            onClick={handleCollapseAll}
+            className="tree-button"
+            type="button"
+            aria-label="Collapse all nodes"
+          >
+            Collapse All
+          </button>
+        </div>
       </div>
 
       <div className="tree-content" role="tree" aria-label="XML structure tree">
@@ -152,6 +251,8 @@ export function XMLTree({ document, onNodeSelect, className = '' }: XMLTreeProps
           onToggle={handleToggle}
           onSelect={handleSelect}
           selectedNodeId={selectedNode?.id}
+          onDrop={handleDrop}
+          matchedNodeIds={matchedNodeIds}
         />
       </div>
 
