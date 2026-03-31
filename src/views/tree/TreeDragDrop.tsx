@@ -1,4 +1,4 @@
-import { useRef, useCallback } from 'react';
+import { useCallback } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { XMLNode } from '@/services/xml/TreeBuilder';
 

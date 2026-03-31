@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { XMLNode } from '@/services/xml/TreeBuilder';
+import { useTreeDragDrop } from './TreeDragDrop';
+import { TreeContextMenu } from './TreeContextMenu';
 import './XMLTree.css';
 
 /**
@@ -18,6 +20,10 @@ interface TreeNodeProps {
   onSelect?: (node: XMLNode) => void;
   /** Currently selected node ID */
   selectedNodeId?: string;
+  /** Callback when node is dropped on this node */
+  onDrop?: (draggedNode: XMLNode, targetNode: XMLNode) => void;
+  /** Set of matched node IDs from search */
+  matchedNodeIds?: Set<string>;
 }
 
 /**
@@ -44,12 +50,35 @@ export function TreeNode({
   onToggle,
   onSelect,
   selectedNodeId,
+  onDrop,
+  matchedNodeIds,
 }: TreeNodeProps) {
   const hasChildren = node.children.length > 0;
   const hasAttributes = Object.keys(node.attributes).length > 0;
   const paddingLeft = `${level * 20}px`;
   const isSelected = selectedNodeId === node.id;
   const expanded = expandedNodes.has(node.id);
+
+  // Context menu state
+  const [contextMenu, setContextMenu] = useState<{
+    visible: boolean;
+    x: number;
+    y: number;
+  }>({ visible: false, x: 0, y: 0 });
+
+  // Drag-drop functionality (only enable if onDrop is provided)
+  const { dragRef, dropRef, isDragging, isOver } = useTreeDragDrop({
+    node,
+    onDrop: onDrop || (() => {})
+  });
+
+  // Combine refs for drag and drop
+  const combinedRef = (element: HTMLDivElement | null) => {
+    if (onDrop) {
+      dragRef(element);
+      dropRef(element);
+    }
+  };
 
   const handleClick = () => {
     onSelect?.(node);
@@ -70,12 +99,26 @@ export function TreeNode({
     }
   };
 
+  const handleContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setContextMenu({
+      visible: true,
+      x: e.clientX,
+      y: e.clientY
+    });
+  };
+
+  const isHighlighted = matchedNodeIds?.has(node.id);
+
   return (
     <div>
       <div
-        className={`tree-node ${isSelected ? 'selected' : ''}`}
+        ref={combinedRef}
+        className={`tree-node ${isSelected ? 'selected' : ''} ${isDragging ? 'dragging' : ''} ${isOver ? 'drop-target' : ''} ${isHighlighted ? 'search-highlight' : ''}`}
         style={{ paddingLeft }}
         onClick={handleClick}
+        onContextMenu={handleContextMenu}
         onKeyDown={handleKeyDown}
         role="treeitem"
         aria-expanded={expanded}
@@ -117,6 +160,31 @@ export function TreeNode({
         )}
       </div>
 
+      {contextMenu.visible && (
+        <TreeContextMenu
+          node={node}
+          position={contextMenu}
+          visible={contextMenu.visible}
+          onClose={() => setContextMenu({ ...contextMenu, visible: false })}
+          onAddChild={(n) => {
+            // Will be handled by parent
+            console.log('Add child to', n.id);
+          }}
+          onEdit={(n) => {
+            // Will be handled by parent
+            console.log('Edit', n.id);
+          }}
+          onDelete={(n) => {
+            // Will be handled by parent
+            console.log('Delete', n.id);
+          }}
+          onDuplicate={(n) => {
+            // Will be handled by parent
+            console.log('Duplicate', n.id);
+          }}
+        />
+      )}
+
       {hasChildren && expanded && (
         <div className="tree-node-children" role="group">
           {node.children.map((child) => (
@@ -128,6 +196,8 @@ export function TreeNode({
               onToggle={onToggle}
               onSelect={onSelect}
               selectedNodeId={selectedNodeId}
+              onDrop={onDrop}
+              matchedNodeIds={matchedNodeIds}
             />
           ))}
         </div>

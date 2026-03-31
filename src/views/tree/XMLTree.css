@@ -309,3 +309,12 @@
 .tree-node.search-highlight {
   background: #fff9c4;
 }
+
+.tree-node.dragging {
+  opacity: 0.5;
+}
+
+.tree-node.drop-target {
+  background: #e3f2fd;
+  outline: 2px dashed #2196f3;
+}
