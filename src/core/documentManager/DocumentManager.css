@@ -199,8 +199,10 @@
 }
 
 /* XSD View Toggle */
-.xsd-view-toggle {
+.xsd-view-toggle,
+.xml-view-toggle {
   display: flex;
+  flex-wrap: wrap;
   gap: 2px;
   padding: 4px 8px;
   border-top: 1px solid #ccc;
