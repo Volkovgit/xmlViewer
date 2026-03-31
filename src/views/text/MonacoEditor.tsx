@@ -58,6 +58,8 @@ export interface MonacoEditorProps {
   className?: string;
   /** Callback when cursor position changes */
   onDidChangeCursorPosition?: (event: Monaco.editor.ICursorPositionChangedEvent) => void;
+  /** Callback when save keyboard shortcut is triggered */
+  onSave?: () => void;
 }
 
 /**
@@ -142,6 +144,7 @@ export const MonacoEditor = forwardRef<MonacoEditorHandle, MonacoEditorProps>(
       loading,
       className,
       onDidChangeCursorPosition,
+      onSave,
     },
     ref
   ) => {
@@ -162,8 +165,12 @@ export const MonacoEditor = forwardRef<MonacoEditorHandle, MonacoEditorProps>(
       editor.addCommand(
         monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS,
         () => {
-          // Prevent default save behavior - will be handled by parent component
-          console.log('Save command triggered in Monaco Editor');
+          // Trigger save handler
+          if (onSave) {
+            onSave();
+          } else {
+            console.log('Save command triggered in Monaco Editor');
+          }
         }
       );
 

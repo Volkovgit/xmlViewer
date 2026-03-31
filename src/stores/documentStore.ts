@@ -36,6 +36,8 @@ interface DocumentStoreActions {
   // Content updates
   /** Update document content and mark as dirty */
   updateDocumentContent: (id: string, content: string) => void;
+  /** Update document metadata (e.g. name, filePath, fileHandle) */
+  updateDocumentMetadata: (id: string, metadata: Partial<Document>) => void;
 
   // Status management
   /** Mark a document as saved (clears dirty flag) */
@@ -145,6 +147,22 @@ export const useDocumentStore = create<DocumentStore>((set, get) => ({
         content,
         modifiedAt: new Date(),
         status: DocumentStatus.DIRTY,
+      });
+      return { documents: newDocuments };
+    });
+  },
+
+  updateDocumentMetadata: (id, metadata) => {
+    set((state) => {
+      const document = state.documents.get(id);
+      if (!document) {
+        return {};
+      }
+
+      const newDocuments = new Map(state.documents);
+      newDocuments.set(id, {
+        ...document,
+        ...metadata,
       });
       return { documents: newDocuments };
     });

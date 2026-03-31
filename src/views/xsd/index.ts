@@ -1,0 +1,1 @@
+export { XSDVisualizer } from './XSDVisualizer';

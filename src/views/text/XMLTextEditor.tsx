@@ -21,6 +21,8 @@ export interface XMLTextEditorProps {
   document: Document;
   /** Callback when content changes */
   onContentChange?: (content: string) => void;
+  /** Callback when save is requested */
+  onSave?: () => void;
   /** Whether editor is read-only */
   readOnly?: boolean;
 }
@@ -69,6 +71,7 @@ interface DocumentStats {
 export function XMLTextEditor({
   document,
   onContentChange,
+  onSave,
   readOnly = false,
 }: XMLTextEditorProps) {
   const { updateDocumentContent } = useDocumentStore();
@@ -164,6 +167,7 @@ export function XMLTextEditor({
         language="xml"
         onChange={handleChange}
         onDidChangeCursorPosition={handleCursorChange}
+        onSave={onSave}
         readOnly={readOnly}
         height="calc(100% - 30px)"
         options={{

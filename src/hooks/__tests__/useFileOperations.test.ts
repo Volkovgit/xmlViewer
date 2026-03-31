@@ -24,6 +24,7 @@ describe('useFileOperations', () => {
   const mockGetRecentDocuments = vi.fn();
   const mockAddToRecents = vi.fn();
   const mockHasDirtyDocuments = vi.fn(() => false);
+  const mockUpdateDocumentMetadata = vi.fn();
 
   const createMockDocument = (overrides?: Partial<Document>): Document => {
     const now = new Date();
@@ -60,6 +61,7 @@ describe('useFileOperations', () => {
       getRecentDocuments: mockGetRecentDocuments,
       addToRecents: mockAddToRecents,
       hasDirtyDocuments: () => mockHasDirtyDocuments(),
+      updateDocumentMetadata: mockUpdateDocumentMetadata,
     });
   });
 
@@ -153,7 +155,7 @@ describe('useFileOperations', () => {
 
       expect(returnedDoc).toBeNull();
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        'Failed to open file:',
+        'Failed to open files:',
         expect.any(Error)
       );
       expect(mockAddDocument).not.toHaveBeenCalled();
@@ -206,47 +208,48 @@ describe('useFileOperations', () => {
       expect(mockMarkDocumentSaved).toHaveBeenCalledWith(mockUntitledDocument.id);
     });
 
-    it('should save document with filePath using File System Access API', async () => {
-      const mockShowSaveFilePicker = window.showSaveFilePicker as any;
+    it('should save document with filePath using cached fileHandle', async () => {
       const mockWrite = vi.fn().mockResolvedValue(undefined);
       const mockClose = vi.fn().mockResolvedValue(undefined);
-
-      mockShowSaveFilePicker.mockResolvedValue({
+      const mockFileHandle = {
         createWritable: vi.fn().mockResolvedValue({
           write: mockWrite,
           close: mockClose,
         }),
-      });
+      };
+
+      const docWithHandle = createMockDocument({ fileHandle: mockFileHandle });
 
       const { result } = renderHook(() => useFileOperations());
 
       let success = false;
 
       await act(async () => {
-        success = await result.current.saveFile(mockDocument);
+        success = await result.current.saveFile(docWithHandle);
       });
 
       expect(success).toBe(true);
-      expect(mockShowSaveFilePicker).toHaveBeenCalledWith({
-        suggestedName: mockDocument.name,
-      });
-      expect(mockWrite).toHaveBeenCalledWith(mockDocument.content);
+      expect(mockFileHandle.createWritable).toHaveBeenCalled();
+      expect(mockWrite).toHaveBeenCalledWith(docWithHandle.content);
       expect(mockClose).toHaveBeenCalled();
-      expect(mockMarkDocumentSaved).toHaveBeenCalledWith(mockDocument.id);
+      expect(mockMarkDocumentSaved).toHaveBeenCalledWith(docWithHandle.id);
     });
 
     it('should handle save errors', async () => {
-      const mockShowSaveFilePicker = window.showSaveFilePicker as any;
       const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-      mockShowSaveFilePicker.mockRejectedValue(new Error('Save failed'));
+      const errorHandle = {
+        createWritable: vi.fn().mockRejectedValue(new Error('Save failed')),
+      };
+
+      const docWithBrokenHandle = createMockDocument({ fileHandle: errorHandle });
 
       const { result } = renderHook(() => useFileOperations());
 
       let success = true;
 
       await act(async () => {
-        success = await result.current.saveFile(mockDocument);
+        success = await result.current.saveFile(docWithBrokenHandle);
       });
 
       expect(success).toBe(false);
@@ -344,23 +347,20 @@ describe('useFileOperations', () => {
 
   describe('saveAllDocuments', () => {
     it('should save all dirty documents', async () => {
-      const dirtyDoc1 = createMockDocument({ id: 'doc1', status: DocumentStatus.DIRTY });
-      const dirtyDoc2 = createMockDocument({ id: 'doc2', status: DocumentStatus.DIRTY });
-
-      mockGetAllDocuments.mockReturnValue([dirtyDoc1, dirtyDoc2]);
-      mockHasDirtyDocuments.mockReturnValue(true);
-
-      // Set up the File System Access API mock
-      const mockShowSaveFilePicker = window.showSaveFilePicker as any;
       const mockWrite = vi.fn().mockResolvedValue(undefined);
       const mockClose = vi.fn().mockResolvedValue(undefined);
-
-      mockShowSaveFilePicker.mockResolvedValue({
+      const mockFileHandle = {
         createWritable: vi.fn().mockResolvedValue({
           write: mockWrite,
           close: mockClose,
         }),
-      });
+      };
+
+      const dirtyDoc1 = createMockDocument({ id: 'doc1', status: DocumentStatus.DIRTY, fileHandle: mockFileHandle });
+      const dirtyDoc2 = createMockDocument({ id: 'doc2', status: DocumentStatus.DIRTY, fileHandle: mockFileHandle });
+
+      mockGetAllDocuments.mockReturnValue([dirtyDoc1, dirtyDoc2]);
+      mockHasDirtyDocuments.mockReturnValue(true);
 
       const { result } = renderHook(() => useFileOperations());
 
@@ -375,27 +375,23 @@ describe('useFileOperations', () => {
     });
 
     it('should return false if any document fails to save', async () => {
-      const dirtyDoc1 = createMockDocument({ id: 'doc1', status: DocumentStatus.DIRTY });
-      const dirtyDoc2 = createMockDocument({ id: 'doc2', status: DocumentStatus.DIRTY });
+      const goodHandle = {
+        createWritable: vi.fn().mockResolvedValue({
+          write: vi.fn().mockResolvedValue(undefined),
+          close: vi.fn().mockResolvedValue(undefined),
+        }),
+      };
+      const badHandle = {
+        createWritable: vi.fn().mockRejectedValue(new Error('Save failed')),
+      };
+
+      const dirtyDoc1 = createMockDocument({ id: 'doc1', status: DocumentStatus.DIRTY, fileHandle: goodHandle });
+      const dirtyDoc2 = createMockDocument({ id: 'doc2', status: DocumentStatus.DIRTY, fileHandle: badHandle });
 
       mockGetAllDocuments.mockReturnValue([dirtyDoc1, dirtyDoc2]);
       mockHasDirtyDocuments.mockReturnValue(true);
 
-      // Set up the File System Access API mock to fail on second call
-      const mockShowSaveFilePicker = window.showSaveFilePicker as any;
-      let callCount = 0;
-      mockShowSaveFilePicker.mockImplementation(async () => {
-        callCount++;
-        if (callCount === 2) {
-          throw new Error('Save failed');
-        }
-        return {
-          createWritable: vi.fn().mockResolvedValue({
-            write: vi.fn().mockResolvedValue(undefined),
-            close: vi.fn().mockResolvedValue(undefined),
-          }),
-        };
-      });
+      vi.spyOn(console, 'error').mockImplementation(() => {});
 
       const { result } = renderHook(() => useFileOperations());
 

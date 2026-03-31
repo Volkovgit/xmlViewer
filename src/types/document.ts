@@ -83,6 +83,8 @@ export interface Document {
   schemaRef?: string;
   /** Optional file system path for saved documents */
   filePath?: string;
+  /** Optional file handle for direct saving via File System Access API */
+  fileHandle?: any;
   /** Timestamp when document was created */
   createdAt: Date;
   /** Timestamp when document was last modified */

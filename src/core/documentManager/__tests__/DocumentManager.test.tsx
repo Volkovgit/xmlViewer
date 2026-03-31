@@ -22,6 +22,10 @@ describe('DocumentManager', () => {
   const mockRemoveDocument = vi.fn();
   const mockGetAllDocuments = vi.fn();
   const mockGetActiveDocument = vi.fn();
+  const mockHasDirtyDocuments = vi.fn();
+  const mockAddToRecents = vi.fn();
+  const mockMarkDocumentSaved = vi.fn();
+  const mockGetRecentDocuments = vi.fn();
 
   const defaultStore = {
     addDocument: mockAddDocument,
@@ -29,6 +33,10 @@ describe('DocumentManager', () => {
     removeDocument: mockRemoveDocument,
     getAllDocuments: mockGetAllDocuments,
     getActiveDocument: mockGetActiveDocument,
+    hasDirtyDocuments: mockHasDirtyDocuments,
+    addToRecents: mockAddToRecents,
+    markDocumentSaved: mockMarkDocumentSaved,
+    getRecentDocuments: mockGetRecentDocuments,
   };
 
   beforeEach(() => {
@@ -36,6 +44,11 @@ describe('DocumentManager', () => {
     vi.mocked(useDocumentStore).mockReturnValue(defaultStore);
     mockGetAllDocuments.mockReturnValue([]);
     mockGetActiveDocument.mockReturnValue(null);
+    mockHasDirtyDocuments.mockReturnValue(false);
+    mockGetRecentDocuments.mockReturnValue([]);
+
+    // Mock file system access API
+    Reflect.deleteProperty(window, 'showSaveFilePicker');
 
     // Mock document factory functions
     vi.mocked(createUntitledDocument).mockReturnValue({

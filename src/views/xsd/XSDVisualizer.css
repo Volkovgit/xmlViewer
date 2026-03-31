@@ -1,0 +1,202 @@
+/* ────────────────────────────────────────────────
+   XSD Visualizer Styles
+   ──────────────────────────────────────────────── */
+
+.xsd-visualizer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 13px;
+  background: var(--bg-primary, #ffffff);
+  color: var(--text-primary, #1e1e1e);
+}
+
+/* Tabs */
+.xsd-visualizer-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 4px 8px;
+  background: var(--bg-secondary, #f3f3f3);
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
+}
+
+.xsd-tab {
+  padding: 6px 16px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary, #666);
+  border-radius: 4px 4px 0 0;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.xsd-tab:hover {
+  background: var(--bg-hover, #e8e8e8);
+}
+
+.xsd-tab.active {
+  background: var(--bg-primary, #ffffff);
+  color: var(--accent-blue, #0066cc);
+  border-bottom: 2px solid var(--accent-blue, #0066cc);
+}
+
+/* Content area */
+.xsd-visualizer-content {
+  flex: 1;
+  overflow: auto;
+  padding: 8px;
+}
+
+/* Tree structure */
+.xsd-tree {
+  line-height: 1.6;
+}
+
+.xsd-tree-branch {
+  margin-left: 4px;
+}
+
+.xsd-tree-children {
+  margin-left: 20px;
+  border-left: 1px solid var(--border-color, #e0e0e0);
+  padding-left: 8px;
+}
+
+/* Nodes */
+.xsd-tree-node {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  cursor: default;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.xsd-tree-node:hover {
+  background: var(--bg-hover, #f0f0f0);
+}
+
+/* Toggle arrow */
+.xsd-toggle {
+  display: inline-block;
+  width: 16px;
+  font-size: 10px;
+  color: var(--text-secondary, #999);
+  transition: transform 0.15s;
+  cursor: pointer;
+}
+
+.xsd-toggle.expanded {
+  transform: rotate(90deg);
+}
+
+/* Icons */
+.xsd-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.xsd-icon-element {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.xsd-icon-attr {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.xsd-icon-type {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+/* Names */
+.xsd-element-name {
+  font-weight: 600;
+  color: #1565c0;
+}
+
+.xsd-attr-name {
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+.xsd-type-name {
+  font-weight: 600;
+  color: #7b1fa2;
+}
+
+/* Badges */
+.xsd-type-badge {
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: var(--bg-secondary, #f5f5f5);
+  color: var(--text-secondary, #666);
+  margin-left: 2px;
+}
+
+.xsd-occurrence-badge {
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.xsd-required-badge {
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 8px;
+  background: #ffebee;
+  color: #c62828;
+  font-weight: 600;
+}
+
+.xsd-mixed-badge {
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 8px;
+  background: #e0f7fa;
+  color: #006064;
+}
+
+.xsd-default-value {
+  font-size: 11px;
+  color: var(--text-secondary, #999);
+  font-style: italic;
+}
+
+.xsd-enum-list {
+  font-size: 11px;
+  color: var(--text-secondary, #888);
+  margin-left: 4px;
+}
+
+/* Empty/Error states */
+.xsd-empty {
+  color: var(--text-secondary, #999);
+  font-style: italic;
+  padding: 16px;
+}
+
+.xsd-visualizer-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-secondary, #999);
+}
