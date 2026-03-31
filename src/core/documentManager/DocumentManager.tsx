@@ -26,6 +26,7 @@ export function DocumentManager() {
     setActiveDocument,
     removeDocument,
     addDocument,
+    updateDocumentContent,
   } = useDocumentStore();
 
   const {
@@ -197,6 +198,17 @@ export function DocumentManager() {
     alert(`Schema "${xsdDocs[index].name}" assigned to "${activeDoc.name}".`);
   }, [getActiveDocument, getAllDocuments]);
 
+  // Handle grid cell value changes
+  const handleGridCellValueChanged = useCallback(
+    (newXml: string) => {
+      const activeDoc = getActiveDocument();
+      if (!activeDoc) return;
+
+      updateDocumentContent(activeDoc.id, newXml);
+    },
+    [getActiveDocument, updateDocumentContent]
+  );
+
   // ─── Render ────────────────────────────────────
 
   const documents = getAllDocuments();
@@ -258,7 +270,7 @@ export function DocumentManager() {
               xmlViewMode === 'tree' ? (
                 <XMLTree document={activeDocument} />
               ) : xmlViewMode === 'grid' ? (
-                <XMLGrid document={activeDocument} />
+                <XMLGrid document={activeDocument} onCellValueChanged={handleGridCellValueChanged} />
               ) : (
                 <XMLTextEditor
                   document={activeDocument}

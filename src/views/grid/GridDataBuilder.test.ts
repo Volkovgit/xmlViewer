@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { buildGridData } from './GridDataBuilder';
+import { describe, it, expect } from 'vitest';
+import { buildGridData, updateXMLFromGrid, GridUpdateData } from './GridDataBuilder';
 
 describe('GridDataBuilder', () => {
   describe('buildGridData', () => {
@@ -272,6 +272,248 @@ describe('GridDataBuilder', () => {
         columns: ['_nodeId', 'text'],
         rootElement: 'root'
       });
+    });
+  });
+
+  describe('updateXMLFromGrid', () => {
+    it('should update text content of an element', () => {
+      const originalXml = '<root><person id="1">John</person></root>';
+      const gridData = buildGridData(originalXml);
+
+      const updatedRow = { ...gridData.rows[0], text: 'Jane' };
+      const updateData: GridUpdateData = {
+        originalXml,
+        originalGridData: gridData,
+        updatedRows: [updatedRow]
+      };
+
+      const result = updateXMLFromGrid(updateData);
+
+      expect(result).toContain('>Jane</person>');
+      expect(result).toContain('id="1"');
+      expect(result).not.toContain('>John</person>');
+    });
+
+    it('should update attribute values', () => {
+      const originalXml = '<root><person id="1" name="John">Content</person></root>';
+      const gridData = buildGridData(originalXml);
+
+      const updatedRow = { ...gridData.rows[0], id: '2', name: 'Jane' };
+      const updateData: GridUpdateData = {
+        originalXml,
+        originalGridData: gridData,
+        updatedRows: [updatedRow]
+      };
+
+      const result = updateXMLFromGrid(updateData);
+
+      expect(result).toContain('id="2"');
+      expect(result).toContain('name="Jane"');
+      expect(result).toContain('>Content</person>');
+      expect(result).not.toContain('id="1"');
+      expect(result).not.toContain('name="John"');
+    });
+
+    it('should update multiple rows', () => {
+      const originalXml = `
+        <root>
+          <person id="1">John</person>
+          <person id="2">Jane</person>
+        </root>
+      `;
+      const gridData = buildGridData(originalXml);
+
+      const updatedRows = gridData.rows.map(row => ({
+        ...row,
+        text: row.text === 'John' ? 'Johnny' : 'Janey'
+      }));
+
+      const updateData: GridUpdateData = {
+        originalXml,
+        originalGridData: gridData,
+        updatedRows
+      };
+
+      const result = updateXMLFromGrid(updateData);
+
+      expect(result).toContain('>Johnny</person>');
+      expect(result).toContain('>Janey</person>');
+      expect(result).not.toContain('>John</person>');
+      expect(result).not.toContain('>Jane</person>');
+    });
+
+    it('should handle adding new attributes', () => {
+      const originalXml = '<root><person id="1">John</person></root>';
+      const gridData = buildGridData(originalXml);
+
+      const updatedRow = { ...gridData.rows[0], active: 'true' };
+      const updateData: GridUpdateData = {
+        originalXml,
+        originalGridData: gridData,
+        updatedRows: [updatedRow]
+      };
+
+      const result = updateXMLFromGrid(updateData);
+
+      expect(result).toContain('active="true"');
+      expect(result).toContain('id="1"');
+    });
+
+    it('should handle removing attributes', () => {
+      const originalXml = '<root><person id="1" name="John">Content</person></root>';
+      const gridData = buildGridData(originalXml);
+
+      // Remove name attribute by setting it to undefined
+      const { name: _name, ...rowWithoutName } = gridData.rows[0];
+      const updatedRow = { ...rowWithoutName, name: undefined as unknown as string };
+
+      const updateData: GridUpdateData = {
+        originalXml,
+        originalGridData: gridData,
+        updatedRows: [updatedRow]
+      };
+
+      const result = updateXMLFromGrid(updateData);
+
+      expect(result).toContain('id="1"');
+      expect(result).not.toContain('name=');
+    });
+
+    it('should handle empty text content updates', () => {
+      const originalXml = '<root><person id="1">John</person></root>';
+      const gridData = buildGridData(originalXml);
+
+      const updatedRow = { ...gridData.rows[0], text: '' };
+      const updateData: GridUpdateData = {
+        originalXml,
+        originalGridData: gridData,
+        updatedRows: [updatedRow]
+      };
+
+      const result = updateXMLFromGrid(updateData);
+
+      expect(result).toContain('<person id="1"/>');
+      expect(result).not.toContain('>John</person>');
+    });
+
+    it('should handle special characters in text content', () => {
+      const originalXml = '<root><item id="1">Simple text</item></root>';
+      const gridData = buildGridData(originalXml);
+
+      const updatedRow = { ...gridData.rows[0], text: 'Text with <tags> & "quotes"' };
+      const updateData: GridUpdateData = {
+        originalXml,
+        originalGridData: gridData,
+        updatedRows: [updatedRow]
+      };
+
+      const result = updateXMLFromGrid(updateData);
+
+      expect(result).toContain('Text with');
+    });
+
+    it('should handle special characters in attributes', () => {
+      const originalXml = '<root><item id="1">Content</item></root>';
+      const gridData = buildGridData(originalXml);
+
+      const updatedRow = { ...gridData.rows[0], desc: 'A & B "quoted"' };
+      const updateData: GridUpdateData = {
+        originalXml,
+        originalGridData: gridData,
+        updatedRows: [updatedRow]
+      };
+
+      const result = updateXMLFromGrid(updateData);
+
+      expect(result).toContain('desc=');
+    });
+
+    it('should only update rows that have changes', () => {
+      const originalXml = `
+        <root>
+          <person id="1">John</person>
+          <person id="2">Jane</person>
+        </root>
+      `;
+      const gridData = buildGridData(originalXml);
+
+      // Only update first row
+      const updatedRow = { ...gridData.rows[0], text: 'Johnny' };
+      const updateData: GridUpdateData = {
+        originalXml,
+        originalGridData: gridData,
+        updatedRows: [updatedRow]
+      };
+
+      const result = updateXMLFromGrid(updateData);
+
+      expect(result).toContain('>Johnny</person>');
+      expect(result).toContain('>Jane</person>');
+    });
+
+    it('should handle elements with only attributes (no text)', () => {
+      const originalXml = '<root><person id="1" name="John"/></root>';
+      const gridData = buildGridData(originalXml);
+
+      const updatedRow = { ...gridData.rows[0], name: 'Jane' };
+      const updateData: GridUpdateData = {
+        originalXml,
+        originalGridData: gridData,
+        updatedRows: [updatedRow]
+      };
+
+      const result = updateXMLFromGrid(updateData);
+
+      expect(result).toContain('name="Jane"');
+      expect(result).not.toContain('name="John"');
+    });
+
+    it('should handle adding text to empty elements', () => {
+      const originalXml = '<root><person id="1"/></root>';
+      const gridData = buildGridData(originalXml);
+
+      const updatedRow = { ...gridData.rows[0], text: 'John' };
+      const updateData: GridUpdateData = {
+        originalXml,
+        originalGridData: gridData,
+        updatedRows: [updatedRow]
+      };
+
+      const result = updateXMLFromGrid(updateData);
+
+      expect(result).toContain('>John</person>');
+      expect(result).not.toContain('<person id="1"/>');
+    });
+
+    it('should throw error for invalid XML', () => {
+      const invalidXml = '<root><unclosed></root>';
+      const gridData = buildGridData('<root></root>');
+
+      const updateData: GridUpdateData = {
+        originalXml: invalidXml,
+        originalGridData: gridData,
+        updatedRows: []
+      };
+
+      expect(() => updateXMLFromGrid(updateData)).toThrow();
+    });
+
+    it('should preserve XML declaration and structure', () => {
+      const originalXml = '<?xml version="1.0" encoding="UTF-8"?>\n<root><person id="1">John</person></root>';
+      const gridData = buildGridData(originalXml);
+
+      const updatedRow = { ...gridData.rows[0], text: 'Jane' };
+      const updateData: GridUpdateData = {
+        originalXml,
+        originalGridData: gridData,
+        updatedRows: [updatedRow]
+      };
+
+      const result = updateXMLFromGrid(updateData);
+
+      expect(result).toContain('<?xml version="1.0"');
+      expect(result).toContain('<root>');
+      expect(result).toContain('</root>');
     });
   });
 });

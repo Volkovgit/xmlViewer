@@ -12,7 +12,7 @@ import type {
   GridOptions,
 } from 'ag-grid-community';
 import { Document } from '@/types/document';
-import { buildGridData, GridRowData } from './GridDataBuilder';
+import { buildGridData, updateXMLFromGrid } from './GridDataBuilder';
 import './XMLGrid.css';
 
 // Import AG-Grid styles
@@ -77,12 +77,18 @@ export const XMLGrid: React.FC<XMLGridProps> = ({
       if (!onCellValueChanged) return;
 
       try {
-        // Rebuild XML from updated grid data
-        const updatedXml = rebuildXmlFromGrid(
-          gridData.rootElement,
-          event.data,
-          gridData.rows
+        // Create updated rows array with the modified row
+        const updatedRows = gridData.rows.map(row =>
+          row._nodeId === event.data._nodeId ? event.data : row
         );
+
+        // Update XML from grid changes
+        const updatedXml = updateXMLFromGrid({
+          originalXml: document.content,
+          originalGridData: gridData,
+          updatedRows
+        });
+
         onCellValueChanged(updatedXml);
       } catch (err) {
         setError({
@@ -94,7 +100,7 @@ export const XMLGrid: React.FC<XMLGridProps> = ({
         });
       }
     },
-    [gridData, onCellValueChanged]
+    [gridData, document.content, onCellValueChanged]
   );
 
   // Grid options configuration
@@ -167,37 +173,3 @@ export const XMLGrid: React.FC<XMLGridProps> = ({
 };
 
 export default XMLGrid;
-
-/**
- * Helper function to rebuild XML string from modified grid data
- * Note: This is a basic implementation. A full implementation would need to:
- * - Track original DOM structure
- * - Handle nested elements
- * - Preserve comments and processing instructions
- * - Maintain proper attribute ordering
- */
-function rebuildXmlFromGrid(
-  rootElement: string,
-  updatedRow: GridRowData,
-  allRows: GridRowData[]
-): string {
-  // Find the index of the updated row
-  const rowIndex = allRows.findIndex(row => row._nodeId === updatedRow._nodeId);
-  if (rowIndex === -1) {
-    throw new Error('Cannot locate updated row in grid data');
-  }
-
-  // Build XML from all rows
-  const rowsXml = allRows
-    .map(row => {
-      const { _nodeId, text, ...attrs } = row;
-      const attributes = Object.entries(attrs)
-        .map(([key, value]) => `${key}="${value}"`)
-        .join(' ');
-      const attrStr = attributes ? ` ${attributes}` : '';
-      return `<element${attrStr}${text ? `>${text}</element>` : ' />'}`;
-    })
-    .join('\n  ');
-
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<${rootElement}>\n  ${rowsXml}\n</${rootElement}>`;
-}
