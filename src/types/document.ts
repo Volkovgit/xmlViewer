@@ -64,6 +64,8 @@ export interface ValidationError {
   path?: string;
 }
 
+import type { XSDSchema } from '@/services/xsd/XSDParser';
+
 /**
  * Main document interface
  * Represents an open document in the XML editor
@@ -81,6 +83,10 @@ export interface Document {
   status: DocumentStatus;
   /** Optional reference to XSD schema for validation (Phase 2) */
   schemaRef?: string;
+  /** Optional cached parsed XSD schema for autocompletion */
+  xsdSchema?: XSDSchema;
+  /** Optional path to XSD file (if attached) */
+  xsdPath?: string;
   /** Optional file system path for saved documents */
   filePath?: string;
   /** Optional file handle for direct saving via File System Access API */
