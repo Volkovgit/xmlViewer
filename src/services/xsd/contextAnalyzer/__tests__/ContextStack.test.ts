@@ -8,7 +8,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { ContextStack } from '../ContextStack';
 import type { XMLContext } from '../XMLContextAnalyzer';
-import type { Position } from 'monaco-editor';
 
 describe('ContextStack', () => {
   let contextStack: ContextStack;
@@ -17,55 +16,35 @@ describe('ContextStack', () => {
     contextStack = new ContextStack();
   });
 
+  const mockContext: XMLContext = {
+    elementPath: ['root', 'child'],
+    currentElement: 'child',
+    position: 0, // ContextPosition.INSIDE_CONTENT
+  };
+
   describe('storing and retrieving context', () => {
     it('should store and retrieve context for a given position', () => {
-      const position: Position = { lineNumber: 1, column: 5 };
-      const context: XMLContext = {
-        currentElement: 'book',
-        parentElement: 'library',
-        namespace: null,
-        availableAttributes: ['id', 'title', 'author'],
-        availableChildElements: ['chapter', 'appendix'],
-        schemaType: 'complexType',
-        isInAttribute: false,
-        isInElementContent: true,
-        currentAttribute: null,
-        depth: 2,
-      };
+      const position = { lineNumber: 1, column: 5 };
 
-      contextStack.set(position, context);
+      contextStack.set(position, mockContext);
       const retrieved = contextStack.get(position);
 
       expect(retrieved).toBeDefined();
-      expect(retrieved).toEqual(context);
+      expect(retrieved).toEqual(mockContext);
     });
 
     it('should store multiple contexts at different positions', () => {
-      const position1: Position = { lineNumber: 1, column: 5 };
-      const position2: Position = { lineNumber: 3, column: 10 };
+      const position1 = { lineNumber: 1, column: 5 };
+      const position2 = { lineNumber: 3, column: 10 };
       const context1: XMLContext = {
+        elementPath: ['root', 'book'],
         currentElement: 'book',
-        parentElement: 'library',
-        namespace: null,
-        availableAttributes: ['id', 'title'],
-        availableChildElements: ['chapter'],
-        schemaType: 'complexType',
-        isInAttribute: false,
-        isInElementContent: true,
-        currentAttribute: null,
-        depth: 2,
+        position: 0,
       };
       const context2: XMLContext = {
+        elementPath: ['root', 'book', 'chapter'],
         currentElement: 'chapter',
-        parentElement: 'book',
-        namespace: null,
-        availableAttributes: ['number'],
-        availableChildElements: ['paragraph'],
-        schemaType: 'complexType',
-        isInAttribute: false,
-        isInElementContent: true,
-        currentAttribute: null,
-        depth: 3,
+        position: 1,
       };
 
       contextStack.set(position1, context1);
@@ -76,30 +55,16 @@ describe('ContextStack', () => {
     });
 
     it('should overwrite context at the same position', () => {
-      const position: Position = { lineNumber: 1, column: 5 };
+      const position = { lineNumber: 1, column: 5 };
       const context1: XMLContext = {
+        elementPath: ['root', 'book'],
         currentElement: 'book',
-        parentElement: 'library',
-        namespace: null,
-        availableAttributes: ['id'],
-        availableChildElements: [],
-        schemaType: 'complexType',
-        isInAttribute: false,
-        isInElementContent: true,
-        currentAttribute: null,
-        depth: 2,
+        position: 0,
       };
       const context2: XMLContext = {
+        elementPath: ['root', 'chapter'],
         currentElement: 'chapter',
-        parentElement: 'book',
-        namespace: null,
-        availableAttributes: ['number'],
-        availableChildElements: [],
-        schemaType: 'complexType',
-        isInAttribute: false,
-        isInElementContent: true,
-        currentAttribute: null,
-        depth: 3,
+        position: 1,
       };
 
       contextStack.set(position, context1);
@@ -113,50 +78,26 @@ describe('ContextStack', () => {
 
   describe('returning undefined for non-existent position', () => {
     it('should return undefined for position that was not stored', () => {
-      const position: Position = { lineNumber: 10, column: 20 };
+      const position = { lineNumber: 10, column: 20 };
       const retrieved = contextStack.get(position);
 
       expect(retrieved).toBeUndefined();
     });
 
     it('should return undefined for different position with same line number', () => {
-      const position1: Position = { lineNumber: 5, column: 10 };
-      const position2: Position = { lineNumber: 5, column: 15 };
-      const context: XMLContext = {
-        currentElement: 'book',
-        parentElement: 'library',
-        namespace: null,
-        availableAttributes: ['id'],
-        availableChildElements: [],
-        schemaType: 'complexType',
-        isInAttribute: false,
-        isInElementContent: true,
-        currentAttribute: null,
-        depth: 2,
-      };
+      const position1 = { lineNumber: 5, column: 10 };
+      const position2 = { lineNumber: 5, column: 15 };
 
-      contextStack.set(position1, context);
-      expect(contextStack.get(position1)).toEqual(context);
+      contextStack.set(position1, mockContext);
+      expect(contextStack.get(position1)).toEqual(mockContext);
       expect(contextStack.get(position2)).toBeUndefined();
     });
 
     it('should return undefined after clearing', () => {
-      const position: Position = { lineNumber: 1, column: 5 };
-      const context: XMLContext = {
-        currentElement: 'book',
-        parentElement: 'library',
-        namespace: null,
-        availableAttributes: ['id'],
-        availableChildElements: [],
-        schemaType: 'complexType',
-        isInAttribute: false,
-        isInElementContent: true,
-        currentAttribute: null,
-        depth: 2,
-      };
+      const position = { lineNumber: 1, column: 5 };
 
-      contextStack.set(position, context);
-      expect(contextStack.get(position)).toEqual(context);
+      contextStack.set(position, mockContext);
+      expect(contextStack.get(position)).toEqual(mockContext);
 
       contextStack.clear();
       expect(contextStack.get(position)).toBeUndefined();
@@ -165,44 +106,23 @@ describe('ContextStack', () => {
 
   describe('clearing all contexts', () => {
     it('should clear all stored contexts', () => {
-      const position1: Position = { lineNumber: 1, column: 5 };
-      const position2: Position = { lineNumber: 3, column: 10 };
-      const position3: Position = { lineNumber: 5, column: 15 };
+      const position1 = { lineNumber: 1, column: 5 };
+      const position2 = { lineNumber: 3, column: 10 };
+      const position3 = { lineNumber: 5, column: 15 };
       const context1: XMLContext = {
+        elementPath: ['root', 'book'],
         currentElement: 'book',
-        parentElement: 'library',
-        namespace: null,
-        availableAttributes: ['id'],
-        availableChildElements: [],
-        schemaType: 'complexType',
-        isInAttribute: false,
-        isInElementContent: true,
-        currentAttribute: null,
-        depth: 2,
+        position: 0,
       };
       const context2: XMLContext = {
+        elementPath: ['root', 'book', 'chapter'],
         currentElement: 'chapter',
-        parentElement: 'book',
-        namespace: null,
-        availableAttributes: ['number'],
-        availableChildElements: [],
-        schemaType: 'complexType',
-        isInAttribute: false,
-        isInElementContent: true,
-        currentAttribute: null,
-        depth: 3,
+        position: 1,
       };
       const context3: XMLContext = {
+        elementPath: ['root', 'book', 'chapter', 'paragraph'],
         currentElement: 'paragraph',
-        parentElement: 'chapter',
-        namespace: null,
-        availableAttributes: [],
-        availableChildElements: [],
-        schemaType: 'complexType',
-        isInAttribute: false,
-        isInElementContent: true,
-        currentAttribute: null,
-        depth: 4,
+        position: 0,
       };
 
       contextStack.set(position1, context1);
@@ -221,41 +141,27 @@ describe('ContextStack', () => {
     });
 
     it('should allow adding new contexts after clearing', () => {
-      const position: Position = { lineNumber: 1, column: 5 };
-      const context: XMLContext = {
+      const position = { lineNumber: 1, column: 5 };
+      const context1: XMLContext = {
+        elementPath: ['root', 'book'],
         currentElement: 'book',
-        parentElement: 'library',
-        namespace: null,
-        availableAttributes: ['id'],
-        availableChildElements: [],
-        schemaType: 'complexType',
-        isInAttribute: false,
-        isInElementContent: true,
-        currentAttribute: null,
-        depth: 2,
+        position: 0,
       };
 
-      contextStack.set(position, context);
-      expect(contextStack.get(position)).toEqual(context);
+      contextStack.set(position, context1);
+      expect(contextStack.get(position)).toEqual(context1);
 
       contextStack.clear();
       expect(contextStack.get(position)).toBeUndefined();
 
-      const newContext: XMLContext = {
+      const context2: XMLContext = {
+        elementPath: ['root', 'chapter'],
         currentElement: 'chapter',
-        parentElement: 'book',
-        namespace: null,
-        availableAttributes: ['number'],
-        availableChildElements: [],
-        schemaType: 'complexType',
-        isInAttribute: false,
-        isInElementContent: true,
-        currentAttribute: null,
-        depth: 3,
+        position: 1,
       };
 
-      contextStack.set(position, newContext);
-      expect(contextStack.get(position)).toEqual(newContext);
+      contextStack.set(position, context2);
+      expect(contextStack.get(position)).toEqual(context2);
     });
   });
 });

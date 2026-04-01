@@ -4,7 +4,7 @@
  * Cache implementation for storing and retrieving XML context at specific positions.
  * This is a performance optimization component for schema-aware editing.
  *
- * The cache stores XMLContext objects keyed by Monaco Position (lineNumber:column).
+ * The cache stores XMLContext objects keyed by Position (lineNumber:column).
  * This avoids re-parsing the XML document to determine context when the cursor
  * hasn't moved significantly.
  *
@@ -24,7 +24,14 @@
  */
 
 import type { XMLContext } from './XMLContextAnalyzer';
-import type { Position } from 'monaco-editor';
+
+/**
+ * Simple position interface for compatibility
+ */
+export interface IPosition {
+  lineNumber: number;
+  column: number;
+}
 
 /**
  * ContextStack Cache
@@ -47,7 +54,7 @@ export class ContextStack {
   /**
    * Store context at a specific position
    *
-   * @param position - Monaco Position (lineNumber, column)
+   * @param position - Position (lineNumber, column)
    * @param context - XMLContext to cache
    *
    * @example
@@ -57,7 +64,7 @@ export class ContextStack {
    * contextStack.set(position, context);
    * ```
    */
-  set(position: Position, context: XMLContext): void {
+  set(position: IPosition, context: XMLContext): void {
     const key = this.generateKey(position);
     this.cache.set(key, context);
   }
@@ -65,7 +72,7 @@ export class ContextStack {
   /**
    * Retrieve context for a specific position
    *
-   * @param position - Monaco Position (lineNumber, column)
+   * @param position - Position (lineNumber, column)
    * @returns XMLContext if found, undefined otherwise
    *
    * @example
@@ -77,7 +84,7 @@ export class ContextStack {
    * }
    * ```
    */
-  get(position: Position): XMLContext | undefined {
+  get(position: IPosition): XMLContext | undefined {
     const key = this.generateKey(position);
     return this.cache.get(key);
   }
@@ -99,9 +106,9 @@ export class ContextStack {
   }
 
   /**
-   * Generate cache key from Monaco Position
+   * Generate cache key from Position
    *
-   * @param position - Monaco Position (lineNumber, column)
+   * @param position - Position (lineNumber, column)
    * @returns Cache key in format "lineNumber:column"
    *
    * @example
@@ -111,7 +118,7 @@ export class ContextStack {
    * // Returns: "1:5"
    * ```
    */
-  private generateKey(position: Position): string {
+  private generateKey(position: IPosition): string {
     return `${position.lineNumber}:${position.column}`;
   }
 }

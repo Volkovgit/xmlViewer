@@ -1,100 +1,122 @@
 /**
  * XMLContextAnalyzer
  *
- * Analyzes XML document to determine context at a specific cursor position.
- * This enables schema-aware autocompletion by understanding:
- * - Current element and its parent hierarchy
- * - Available attributes and child elements based on XSD schema
- * - Whether cursor is in element content or attribute value
- *
- * NOTE: This is a placeholder for Task 5. The full implementation will be done in Task 5.
+ * Analyzes XML cursor position to determine context.
+ * Uses caching for performance via ContextStack.
  */
 
-import type { Position } from 'monaco-editor';
-import type { XSDSchema } from '@/services/xsd/XSDParser';
+import { ContextStack, type IPosition } from './ContextStack';
 
 /**
- * XMLContext
- *
- * Represents the XML context at a specific cursor position.
- * Used for schema-aware autocompletion and validation.
+ * Context position types
+ */
+export enum ContextPosition {
+  /** Cursor inside opening tag <book|> */
+  INSIDE_OPENING_TAG,
+  /** Cursor inside closing tag </book|> */
+  INSIDE_CLOSING_TAG,
+  /** Cursor inside element content <book>|content|</book> */
+  INSIDE_CONTENT,
+  /** Cursor between attributes <book id="|" attr=""> */
+  INSIDE_ATTRIBUTES,
+  /** Cursor inside attribute value <book id="|"|> */
+  INSIDE_ATTRIBUTE_VALUE,
+}
+
+/**
+ * XML context at cursor position
  */
 export interface XMLContext {
-  /**
-   * The name of the current element (closest to cursor)
-   */
+  /** Full path from root to current position */
+  elementPath: string[];
+  /** Current element (where cursor is) */
   currentElement: string | null;
-
-  /**
-   * The name of the parent element
-   */
-  parentElement: string | null;
-
-  /**
-   * The namespace URI of the current element
-   */
-  namespace: string | null;
-
-  /**
-   * Available attributes for the current element based on XSD schema
-   */
-  availableAttributes: string[];
-
-  /**
-   * Available child elements for the current element based on XSD schema
-   */
-  availableChildElements: string[];
-
-  /**
-   * The XSD schema type (complexType, simpleType, etc.)
-   */
-  schemaType: string | null;
-
-  /**
-   * Whether the cursor is inside an attribute value
-   */
-  isInAttribute: boolean;
-
-  /**
-   * Whether the cursor is in element content (between tags)
-   */
-  isInElementContent: boolean;
-
-  /**
-   * The name of the current attribute (if in attribute)
-   */
-  currentAttribute: string | null;
-
-  /**
-   * The depth of the current element in the XML hierarchy
-   */
-  depth: number;
+  /** Position type within element */
+  position: ContextPosition;
+  /** Current attribute name (if inside attribute value) */
+  currentAttribute?: string;
 }
 
 /**
  * XMLContextAnalyzer
  *
- * Placeholder class for Task 5 implementation.
- * This will analyze XML documents to determine context at cursor positions.
+ * Analyzes XML cursor position to determine context.
+ * Uses caching for performance.
  */
 export class XMLContextAnalyzer {
-  /**
-   * Analyze XML context at a specific position
-   *
-   * NOTE: This is a placeholder. Full implementation in Task 5.
-   *
-   * @param xmlContent - The XML document content
-   * @param position - Cursor position in the document
-   * @param schema - Optional XSD schema for schema-aware analysis
-   * @returns XMLContext object describing the position
-   */
-  static analyzeAtPosition(
-    xmlContent: string,
-    position: Position,
-    schema?: XSDSchema
-  ): XMLContext | null {
-    // Placeholder implementation
-    // Will be implemented in Task 5
-    return null;
+  private stack: ContextStack;
+
+  constructor() {
+    this.stack = new ContextStack();
   }
+
+  /**
+   * Get context for cursor position
+   */
+  getContext(model: ITextModel, position: IPosition): XMLContext {
+    // Check cache first
+    const cached = this.stack.get(position);
+    if (cached) {
+      return cached;
+    }
+
+    // Parse context anew
+    const context = this.parseContext(model, position);
+    this.stack.set(position, context);
+    return context;
+  }
+
+  /**
+   * Invalidate context cache
+   */
+  invalidateCache(): void {
+    this.stack.clear();
+  }
+
+  /**
+   * Parse XML context at position
+   */
+  private parseContext(model: ITextModel, position: IPosition): XMLContext {
+    const content = model.getValue();
+    const offset = model.getOffsetAt(position);
+
+    const elementPath: string[] = [];
+    let currentElement: string | null = null;
+    let pos = ContextPosition.INSIDE_CONTENT;
+
+    // Simple heuristic: find element containing cursor
+    // TODO: Implement proper tree traversal
+    const lines = content.split('\n');
+    const currentLine = lines[position.lineNumber - 1] || '';
+
+    // Determine position type
+    if (currentLine.includes('<') && currentLine.indexOf('<') < offset) {
+      if (currentLine.includes('</') && currentLine.indexOf('</') < offset) {
+        pos = ContextPosition.INSIDE_CLOSING_TAG;
+      } else {
+        pos = ContextPosition.INSIDE_OPENING_TAG;
+      }
+    }
+
+    // Extract current element from line
+    const tagMatch = currentLine.match(/<(\w+)/);
+    if (tagMatch) {
+      currentElement = tagMatch[1];
+      elementPath.push(currentElement);
+    }
+
+    return {
+      elementPath,
+      currentElement,
+      position: pos,
+    };
+  }
+}
+
+/**
+ * Simple text model interface for compatibility
+ */
+export interface ITextModel {
+  getValue(): string;
+  getOffsetAt(position: IPosition): number;
 }
