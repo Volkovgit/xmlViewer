@@ -5,11 +5,13 @@
  * Integrates with MonacoEditor for syntax highlighting and DocumentStore for state management.
  */
 
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { MonacoEditor } from './MonacoEditor';
 import { xmlValidator } from '@/core/validatorEngine';
 import { useDocumentStore } from '@/stores';
 import { useViewSync } from '@/hooks/useViewSync';
+import { viewCoordinator } from '@/core/viewManager/ViewCoordinator';
+import { ViewUpdate, ViewType } from '@/core/viewManager/ViewUpdate';
 import type { Document } from '@/types';
 import type * as Monaco from 'monaco-editor';
 import './XMLTextEditor.css';
@@ -80,11 +82,17 @@ export function XMLTextEditor({
   const { updateDocumentContent } = useDocumentStore();
 
   // View synchronization - notify other views of changes
-  const { notifyViewChanged } = useViewSync(document, 'text' as const);
+  const { notifyViewChanged } = useViewSync(document, ViewType.TEXT);
 
   // State for validation errors and cursor position
   const [errors, setErrors] = useState(0);
   const [position, setPosition] = useState<EditorPosition>({ line: 1, column: 1 });
+
+  // Track if we're processing an external update to prevent update loops
+  const isProcessingExternalUpdate = useRef(false);
+
+  // Track current editor value to detect external changes
+  const [editorValue, setEditorValue] = useState(document.content);
 
   /**
    * Calculate document statistics
@@ -115,6 +123,11 @@ export function XMLTextEditor({
    */
   const handleChange = useCallback(
     (value: string) => {
+      // Skip if we're processing an external update (prevent update loops)
+      if (isProcessingExternalUpdate.current) {
+        return;
+      }
+
       // Update document in store (marks dirty, updates timestamp)
       updateDocumentContent(document.id, value);
 
@@ -161,6 +174,48 @@ export function XMLTextEditor({
   }, [document.id, document.validationErrors, document.content]);
 
   /**
+   * Sync editor value with document content when document changes
+   * This handles cases where the document is switched or content changes externally
+   */
+  useEffect(() => {
+    if (!isProcessingExternalUpdate.current) {
+      setEditorValue(document.content);
+    }
+  }, [document.id]);
+
+  /**
+   * Handle incoming updates from other views (grid, tree)
+   */
+  useEffect(() => {
+    const listener = (update: ViewUpdate) => {
+      // Ignore own updates
+      if (update.sourceView === ViewType.TEXT) return;
+
+      // Don't process if content hasn't changed
+      if (update.content === document.content) return;
+
+      console.log('[TextView] Received update from', update.sourceView);
+
+      // Mark that we're processing external update
+      isProcessingExternalUpdate.current = true;
+
+      // Update editor value (this will trigger Monaco to update)
+      setEditorValue(update.content);
+
+      // Reset flag after update
+      setTimeout(() => {
+        isProcessingExternalUpdate.current = false;
+      }, 0);
+    };
+
+    const unsubscribe = viewCoordinator.registerViewListener(ViewType.TEXT, listener);
+
+    return () => {
+      unsubscribe();
+    };
+  }, [document.id, document.content]);
+
+  /**
    * Clean up validator state on unmount
    */
   useEffect(() => {
@@ -172,7 +227,7 @@ export function XMLTextEditor({
   return (
     <div className="xml-text-editor">
       <MonacoEditor
-        value={document.content}
+        value={editorValue}
         language="xml"
         onChange={handleChange}
         onDidChangeCursorPosition={handleCursorChange}

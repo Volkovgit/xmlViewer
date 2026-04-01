@@ -1,11 +1,12 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { XMLNode, treeBuilder } from '@/services/xml/TreeBuilder';
 import { treeManipulator } from '@/services/xml/TreeManipulator';
 import { Document } from '@/types';
 import { TreeNode } from './TreeNode';
 import { TreeSearch } from './TreeSearch';
 import { useViewSync } from '@/hooks/useViewSync';
-import { ChangeType, ViewType } from '@/core/viewManager/ViewUpdate';
+import { viewCoordinator } from '@/core/viewManager/ViewCoordinator';
+import { ViewUpdate, ViewType, ChangeType } from '@/core/viewManager/ViewUpdate';
 import { useDocumentStore } from '@/stores/documentStore';
 import './XMLTree.css';
 
@@ -46,6 +47,9 @@ export function XMLTree({ document, onNodeSelect, className = '' }: XMLTreeProps
   const { notifyViewChanged } = useViewSync(document, ViewType.TREE);
   const { updateDocumentContent } = useDocumentStore();
 
+  // Track if we're processing an external update to prevent update loops
+  const isProcessingExternalUpdate = useRef(false);
+
   useEffect(() => {
     // Reset ID counter for consistent IDs on document change
     treeBuilder.resetIdCounter();
@@ -79,9 +83,48 @@ export function XMLTree({ document, onNodeSelect, className = '' }: XMLTreeProps
     }
   }, [document.content]);
 
+  /**
+   * Handle incoming updates from other views (text, grid)
+   */
+  useEffect(() => {
+    const listener = (update: ViewUpdate) => {
+      // Ignore own updates
+      if (update.sourceView === ViewType.TREE) return;
+
+      // Don't process if content hasn't changed
+      if (update.content === document.content) return;
+
+      console.log('[TreeView] Received update from', update.sourceView);
+
+      // Mark that we're processing external update
+      isProcessingExternalUpdate.current = true;
+
+      // The tree will be rebuilt by the existing useEffect above
+      // which watches document.content. Since document.content is already
+      // updated by the document store, we just need to mark this as external
+      // to prevent update loops in our manipulation handlers
+
+      // Reset flag after update
+      setTimeout(() => {
+        isProcessingExternalUpdate.current = false;
+      }, 100);
+    };
+
+    const unsubscribe = viewCoordinator.registerViewListener(ViewType.TREE, listener);
+
+    return () => {
+      unsubscribe();
+    };
+  }, [document.id, document.content]);
+
   // Node manipulation callbacks
   const handleDrop = useCallback((draggedNode: XMLNode, targetNode: XMLNode) => {
     if (!tree) return;
+
+    // Skip if we're processing an external update (prevent update loops)
+    if (isProcessingExternalUpdate.current) {
+      return;
+    }
 
     try {
       // Remove from old location
@@ -108,6 +151,11 @@ export function XMLTree({ document, onNodeSelect, className = '' }: XMLTreeProps
 
   const handleAddChild = useCallback((parent: XMLNode) => {
     if (!tree) return;
+
+    // Skip if we're processing an external update (prevent update loops)
+    if (isProcessingExternalUpdate.current) {
+      return;
+    }
 
     const newChild: XMLNode = {
       id: `node-${Date.now()}`,
@@ -140,6 +188,11 @@ export function XMLTree({ document, onNodeSelect, className = '' }: XMLTreeProps
   const handleDeleteNode = useCallback((node: XMLNode) => {
     if (!tree) return;
 
+    // Skip if we're processing an external update (prevent update loops)
+    if (isProcessingExternalUpdate.current) {
+      return;
+    }
+
     const confirmed = confirm(`Delete node "${node.name}"?`);
     if (!confirmed) return;
 
@@ -162,6 +215,11 @@ export function XMLTree({ document, onNodeSelect, className = '' }: XMLTreeProps
 
   const handleDuplicateNode = useCallback((node: XMLNode) => {
     if (!tree) return;
+
+    // Skip if we're processing an external update (prevent update loops)
+    if (isProcessingExternalUpdate.current) {
+      return;
+    }
 
     const updatedTree = treeManipulator.duplicateNode(tree, node.id);
     setTree(updatedTree);

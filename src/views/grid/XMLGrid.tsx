@@ -5,7 +5,7 @@
  * Supports inline editing, sorting, filtering, and column resizing.
  */
 
-import React, { useMemo, useCallback, useState } from 'react';
+import React, { useMemo, useCallback, useState, useRef, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import type {
@@ -15,7 +15,8 @@ import type {
 import { Document } from '@/types/document';
 import { buildGridData, updateXMLFromGrid } from './GridDataBuilder';
 import { useViewSync } from '@/hooks/useViewSync';
-import { ChangeType, ViewType } from '@/core/viewManager/ViewUpdate';
+import { viewCoordinator } from '@/core/viewManager/ViewCoordinator';
+import { ViewUpdate, ViewType, ChangeType } from '@/core/viewManager/ViewUpdate';
 import { useDocumentStore } from '@/stores/documentStore';
 import './XMLGrid.css';
 
@@ -51,11 +52,18 @@ export const XMLGrid: React.FC<XMLGridProps> = ({
   const { notifyViewChanged } = useViewSync(document, ViewType.GRID);
   const { updateDocumentContent } = useDocumentStore();
 
+  // Track if we're processing an external update to prevent update loops
+  const isProcessingExternalUpdate = useRef(false);
+
+  // Track the original XML content separately from document.content
+  // This allows us to detect external changes
+  const [originalXml, setOriginalXml] = useState(document.content);
+
   // Parse document content into grid data
   const gridData = useMemo(() => {
     try {
       setError(null);
-      return buildGridData(document.content);
+      return buildGridData(originalXml);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : 'Unknown parsing error';
@@ -65,7 +73,7 @@ export const XMLGrid: React.FC<XMLGridProps> = ({
       });
       return { rows: [], columns: [], rootElement: 'root' };
     }
-  }, [document.content]);
+  }, [originalXml]);
 
   // Build column definitions
   const columnDefs = useMemo<ColDef[]>(() => {
@@ -84,6 +92,11 @@ export const XMLGrid: React.FC<XMLGridProps> = ({
   // Handle cell value changes
   const handleCellValueChanged = useCallback(
     (event: any) => {
+      // Skip if we're processing an external update (prevent update loops)
+      if (isProcessingExternalUpdate.current) {
+        return;
+      }
+
       try {
         // Create updated rows array with the modified row
         const updatedRows = gridData.rows.map(row =>
@@ -92,16 +105,19 @@ export const XMLGrid: React.FC<XMLGridProps> = ({
 
         // Update XML from grid changes
         const updatedXml = updateXMLFromGrid({
-          originalXml: document.content,
+          originalXml: originalXml,
           originalGridData: gridData,
           updatedRows
         });
+
+        // Update originalXml state
+        setOriginalXml(updatedXml);
 
         // Update document in store
         updateDocumentContent(document.id, updatedXml);
 
         // Notify other views of change
-        notifyViewChanged(updatedXml, ChangeType.CONTENT);
+        notifyViewChanged(updatedXml);
 
         // Call original callback if provided
         onCellValueChanged?.(updatedXml);
@@ -115,7 +131,7 @@ export const XMLGrid: React.FC<XMLGridProps> = ({
         });
       }
     },
-    [gridData, document, updateDocumentContent, notifyViewChanged, onCellValueChanged]
+    [gridData, originalXml, document, updateDocumentContent, notifyViewChanged, onCellValueChanged]
   );
 
   // Grid options configuration
@@ -136,6 +152,48 @@ export const XMLGrid: React.FC<XMLGridProps> = ({
     }),
     [handleCellValueChanged]
   );
+
+  /**
+   * Sync originalXml with document content when document changes
+   * This handles cases where the document is switched or content changes externally
+   */
+  useEffect(() => {
+    if (!isProcessingExternalUpdate.current && document.content !== originalXml) {
+      setOriginalXml(document.content);
+    }
+  }, [document.id, document.content, originalXml]);
+
+  /**
+   * Handle incoming updates from other views (text, tree)
+   */
+  useEffect(() => {
+    const listener = (update: ViewUpdate) => {
+      // Ignore own updates
+      if (update.sourceView === ViewType.GRID) return;
+
+      // Don't process if content hasn't changed
+      if (update.content === originalXml) return;
+
+      console.log('[GridView] Received update from', update.sourceView);
+
+      // Mark that we're processing external update
+      isProcessingExternalUpdate.current = true;
+
+      // Update originalXml state (this will trigger useMemo to regenerate grid data)
+      setOriginalXml(update.content);
+
+      // Reset flag after update
+      setTimeout(() => {
+        isProcessingExternalUpdate.current = false;
+      }, 0);
+    };
+
+    const unsubscribe = viewCoordinator.registerViewListener(ViewType.GRID, listener);
+
+    return () => {
+      unsubscribe();
+    };
+  }, [document.id, originalXml]);
 
   // Error state UI
   if (error) {
