@@ -58,9 +58,9 @@ export class SchemaCompletionProvider implements Monaco.languages.CompletionItem
   provideCompletionItems(
     model: Monaco.editor.ITextModel,
     position: Monaco.Position,
-    context: Monaco.languages.CompletionContext,
-    token: Monaco.CancellationToken
-  ): Monaco.languages.CompletionList | Monaco.languages.CompletionItem[] | null {
+    _context: Monaco.languages.CompletionContext,
+    _token: Monaco.CancellationToken
+  ): Monaco.languages.ProviderResult<Monaco.languages.CompletionList> {
     // Return null if no schema attached
     if (!this.currentDocument) {
       return null;
@@ -73,7 +73,10 @@ export class SchemaCompletionProvider implements Monaco.languages.CompletionItem
     const suggestions = this.generateSuggestions(xmlContext);
 
     return {
-      suggestions: suggestions as Monaco.languages.CompletionItem[]
+      suggestions: suggestions as Monaco.languages.CompletionItem[],
+      dispose: () => {
+        // No-op for now - dispose is called by Monaco
+      }
     };
   }
 

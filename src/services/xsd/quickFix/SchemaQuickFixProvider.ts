@@ -46,14 +46,19 @@ export class SchemaQuickFixProvider implements monaco.languages.CodeActionProvid
    * ```
    */
   provideCodeActions(
-    model: monaco.editor.ITextModel,
-    range: monaco.IRange,
-    context: monaco.languages.CodeActionContext,
+    _model: monaco.editor.ITextModel,
+    _range: monaco.IRange,
+    _context: monaco.languages.CodeActionContext,
     token: monaco.CancellationToken
   ): monaco.languages.ProviderResult<monaco.languages.CodeActionList> {
     // Check for cancellation
     if (token.isCancellationRequested) {
-      return { actions: [] };
+      return {
+        actions: [],
+        dispose: () => {
+          // No-op for now
+        }
+      };
     }
 
     // TODO: Implement quick fix detection logic
@@ -65,6 +70,9 @@ export class SchemaQuickFixProvider implements monaco.languages.CodeActionProvid
     // Skeleton implementation - return empty actions
     return {
       actions: [],
+      dispose: () => {
+        // No-op for now
+      }
     };
   }
 }

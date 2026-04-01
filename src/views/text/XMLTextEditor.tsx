@@ -13,7 +13,11 @@ import { useViewSync } from '@/hooks/useViewSync';
 import { viewCoordinator } from '@/core/viewManager/ViewCoordinator';
 import { ViewUpdate, ViewType } from '@/core/viewManager/ViewUpdate';
 import type { Document } from '@/types';
-import type * as Monaco from 'monaco-editor';
+import * as Monaco from 'monaco-editor';
+import { SchemaProvider } from '@/services/xsd/schemaProvider/SchemaProvider';
+import { SchemaCompletionProvider } from '@/services/xsd/completion/SchemaCompletionProvider';
+import { SchemaDecorationProvider } from '@/services/xsd/decorations/SchemaDecorationProvider';
+import { SchemaQuickFixProvider } from '@/services/xsd/quickFix/SchemaQuickFixProvider';
 import './XMLTextEditor.css';
 
 /**
@@ -93,6 +97,12 @@ export function XMLTextEditor({
 
   // Track current editor value to detect external changes
   const [editorValue, setEditorValue] = useState(document.content);
+
+  // Initialize schema-aware editing providers
+  // Note: SchemaProvider is a static class, no instantiation needed
+  const completionProvider = useMemo(() => new SchemaCompletionProvider(), []);
+  const decorationProvider = useMemo(() => new SchemaDecorationProvider(), []);
+  const quickFixProvider = useMemo(() => new SchemaQuickFixProvider(), []);
 
   /**
    * Calculate document statistics
@@ -184,6 +194,22 @@ export function XMLTextEditor({
   }, [document.id]);
 
   /**
+   * Detect schema location from XML content
+   * Automatically detects XSD schema references and loads schema (Task 11 will implement actual loading)
+   */
+  useEffect(() => {
+    // Only detect if no schema is attached yet and document has content
+    if (!document.xsdSchema && document.content) {
+      const schemaPath = SchemaProvider.detectSchemaLocation(document.content);
+      if (schemaPath) {
+        console.log('[XMLTextEditor] Detected schema path:', schemaPath);
+        // TODO: Load schema from file (Task 11 will implement this)
+        // TODO: Call SchemaProvider.loadSchemaFromContent() and attachSchemaToDocument()
+      }
+    }
+  }, [document.id, document.content, document.xsdSchema]);
+
+  /**
    * Handle incoming updates from other views (grid, tree)
    */
   useEffect(() => {
@@ -214,6 +240,49 @@ export function XMLTextEditor({
       unsubscribe();
     };
   }, [document.id, document.content]);
+
+  /**
+   * Register Monaco language providers for schema-aware editing
+   * Only register when not in read-only mode
+   */
+  useEffect(() => {
+    if (readOnly) {
+      return; // Don't register providers in read-only mode
+    }
+
+    // Register completion provider for XML
+    const completionDisposable = Monaco.languages.registerCompletionItemProvider(
+      'xml',
+      completionProvider
+    );
+
+    // Register quick fix provider for XML
+    const quickFixDisposable = Monaco.languages.registerCodeActionProvider(
+      'xml',
+      quickFixProvider
+    );
+
+    return () => {
+      // Clean up providers on unmount
+      completionDisposable.dispose();
+      quickFixDisposable.dispose();
+      completionProvider.detach();
+    };
+  }, [readOnly, completionProvider, quickFixProvider]);
+
+  /**
+   * Update decorations when schema changes
+   * Placeholder for now - Task 11 will implement actual decoration application
+   */
+  useEffect(() => {
+    if (document.xsdSchema) {
+      // TODO: Get editor ref and apply decorations
+      // For now, just calculate and log them
+      const decorations = decorationProvider.getDecorations(document.content, document.xsdSchema);
+      console.log('[XMLTextEditor] Calculated decorations:', decorations.length);
+      // TODO: Apply decorations to editor model (Task 11)
+    }
+  }, [document.content, document.xsdSchema, decorationProvider]);
 
   /**
    * Clean up validator state on unmount

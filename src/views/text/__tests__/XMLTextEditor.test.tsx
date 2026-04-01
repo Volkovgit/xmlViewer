@@ -25,6 +25,37 @@ vi.mock('@/core/validatorEngine', () => ({
   },
 }));
 
+// Mock schema-aware editing providers
+vi.mock('@/services/xsd/schemaProvider/SchemaProvider', () => ({
+  SchemaProvider: {
+    detectSchemaLocation: vi.fn(() => null),
+    loadSchemaFromContent: vi.fn(() => null),
+    attachSchemaToDocument: vi.fn(),
+    detachSchema: vi.fn(),
+  },
+}));
+
+vi.mock('@/services/xsd/completion/SchemaCompletionProvider', () => ({
+  SchemaCompletionProvider: vi.fn(() => ({
+    provideCompletionItems: vi.fn(() => null),
+    attachToDocument: vi.fn(),
+    detach: vi.fn(),
+  })),
+}));
+
+vi.mock('@/services/xsd/decorations/SchemaDecorationProvider', () => ({
+  SchemaDecorationProvider: vi.fn(() => ({
+    getDecorations: vi.fn(() => []),
+    clearDecorations: vi.fn(),
+  })),
+}));
+
+vi.mock('@/services/xsd/quickFix/SchemaQuickFixProvider', () => ({
+  SchemaQuickFixProvider: vi.fn(() => ({
+    provideCodeActions: vi.fn(() => ({ actions: [], dispose: vi.fn() })),
+  })),
+}));
+
 // Mock Monaco Editor (we don't want to render the actual Monaco in tests)
 vi.mock('../MonacoEditor', () => ({
   MonacoEditor: ({ value, onChange, onDidChangeCursorPosition, readOnly }: any) => {
