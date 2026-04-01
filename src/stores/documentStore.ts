@@ -2,6 +2,11 @@ import { create } from 'zustand';
 import { Document, DocumentStatus } from '@/types';
 
 /**
+ * View mode type for different document views
+ */
+export type ViewMode = 'text' | 'tree' | 'grid';
+
+/**
  * Document Store State Interface
  * Contains all state properties for document management
  */
@@ -12,6 +17,10 @@ interface DocumentStoreState {
   activeDocumentId: string | null;
   /** Array of document IDs in order of recent access */
   recentDocuments: string[];
+  /** Active view mode for each document */
+  documentViewModes: Map<string, ViewMode>;
+  /** Last update timestamp per document/view to prevent update loops */
+  viewUpdateTimestamps: Map<string, Map<string, number>>;
 }
 
 /**
@@ -60,6 +69,18 @@ interface DocumentStoreActions {
   getActiveDocument: () => Document | null;
   /** Check if any document has unsaved changes */
   hasDirtyDocuments: () => boolean;
+
+  // View synchronization
+  /** Set the active view mode for a document */
+  setDocumentViewMode: (documentId: string, viewMode: ViewMode) => void;
+  /** Get the active view mode for a document (defaults to 'text') */
+  getDocumentViewMode: (documentId: string) => ViewMode;
+  /** Record a view update timestamp to prevent update loops */
+  recordViewUpdate: (documentId: string, view: ViewMode) => void;
+  /** Check if a view update should be processed (prevents loops within 100ms) */
+  shouldProcessViewUpdate: (documentId: string, sourceView: ViewMode) => boolean;
+  /** Clear all view update timestamps for a document */
+  clearViewUpdateTimestamps: (documentId: string) => void;
 }
 
 /**
@@ -89,6 +110,8 @@ export const useDocumentStore = create<DocumentStore>((set, get) => ({
   documents: new Map(),
   activeDocumentId: null,
   recentDocuments: [],
+  documentViewModes: new Map(),
+  viewUpdateTimestamps: new Map(),
 
   // Document CRUD operations
   addDocument: (document) => {
@@ -250,5 +273,47 @@ export const useDocumentStore = create<DocumentStore>((set, get) => ({
     return Array.from(documents.values()).some(
       (doc) => doc.status === DocumentStatus.DIRTY
     );
+  },
+
+  // View synchronization implementation
+  setDocumentViewMode: (documentId, viewMode) => {
+    set((state) => {
+      const newViewModes = new Map(state.documentViewModes);
+      newViewModes.set(documentId, viewMode);
+      return { documentViewModes: newViewModes };
+    });
+  },
+
+  getDocumentViewMode: (documentId) => {
+    return get().documentViewModes.get(documentId) || 'text';
+  },
+
+  recordViewUpdate: (documentId, view) => {
+    set((state) => {
+      const newTimestamps = new Map(state.viewUpdateTimestamps);
+      const docTimestamps = newTimestamps.get(documentId) || new Map();
+      docTimestamps.set(view, Date.now());
+      newTimestamps.set(documentId, docTimestamps);
+      return { viewUpdateTimestamps: newTimestamps };
+    });
+  },
+
+  shouldProcessViewUpdate: (documentId, sourceView) => {
+    const timestamps = get().viewUpdateTimestamps.get(documentId);
+    if (!timestamps) return true;
+
+    const sourceTime = timestamps.get(sourceView) || 0;
+    const now = Date.now();
+
+    // Don't process if source view was updated within last 100ms
+    return (now - sourceTime) > 100;
+  },
+
+  clearViewUpdateTimestamps: (documentId) => {
+    set((state) => {
+      const newTimestamps = new Map(state.viewUpdateTimestamps);
+      newTimestamps.set(documentId, new Map());
+      return { viewUpdateTimestamps: newTimestamps };
+    });
   },
 }));
