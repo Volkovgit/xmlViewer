@@ -9,6 +9,7 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { MonacoEditor } from './MonacoEditor';
 import { xmlValidator } from '@/core/validatorEngine';
 import { useDocumentStore } from '@/stores';
+import { useViewSync } from '@/hooks/useViewSync';
 import type { Document } from '@/types';
 import type * as Monaco from 'monaco-editor';
 import './XMLTextEditor.css';
@@ -25,6 +26,8 @@ export interface XMLTextEditorProps {
   onSave?: () => void;
   /** Whether editor is read-only */
   readOnly?: boolean;
+  /** Callback when external update is received from another view */
+  onExternalUpdate?: (newContent: string) => void;
 }
 
 /**
@@ -76,6 +79,9 @@ export function XMLTextEditor({
 }: XMLTextEditorProps) {
   const { updateDocumentContent } = useDocumentStore();
 
+  // View synchronization - notify other views of changes
+  const { notifyViewChanged } = useViewSync(document, 'text' as const);
+
   // State for validation errors and cursor position
   const [errors, setErrors] = useState(0);
   const [position, setPosition] = useState<EditorPosition>({ line: 1, column: 1 });
@@ -105,7 +111,7 @@ export function XMLTextEditor({
 
   /**
    * Handle content changes from Monaco Editor
-   * Updates document store and triggers validation
+   * Updates document store, notifies other views, and triggers validation
    */
   const handleChange = useCallback(
     (value: string) => {
@@ -115,13 +121,16 @@ export function XMLTextEditor({
       // Notify parent if needed
       onContentChange?.(value);
 
+      // Notify other views of the change for synchronization
+      notifyViewChanged(value);
+
       // Validate using real-time validation (debounced internally by validator)
       const validationErrors = xmlValidator.validateRealTime(value);
 
       // Update errors count for status bar
       setErrors(validationErrors.length);
     },
-    [document.id, onContentChange, updateDocumentContent]
+    [document.id, onContentChange, updateDocumentContent, notifyViewChanged]
   );
 
   /**

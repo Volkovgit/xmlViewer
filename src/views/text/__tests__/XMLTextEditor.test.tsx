@@ -79,6 +79,8 @@ describe('XMLTextEditor', () => {
     vi.clearAllMocks();
     (useDocumentStore as any).mockReturnValue({
       updateDocumentContent: mockUpdateDocumentContent,
+      recordViewUpdate: vi.fn(),
+      shouldProcessViewUpdate: vi.fn(() => true),
     });
     (xmlValidator.validateRealTime as any).mockReturnValue([]);
   });
