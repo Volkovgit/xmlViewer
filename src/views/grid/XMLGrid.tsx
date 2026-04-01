@@ -14,6 +14,9 @@ import type {
 } from 'ag-grid-community';
 import { Document } from '@/types/document';
 import { buildGridData, updateXMLFromGrid } from './GridDataBuilder';
+import { useViewSync } from '@/hooks/useViewSync';
+import { ChangeType, ViewType } from '@/core/viewManager/ViewUpdate';
+import { useDocumentStore } from '@/stores/documentStore';
 import './XMLGrid.css';
 
 // Register AG-Grid modules
@@ -43,6 +46,10 @@ export const XMLGrid: React.FC<XMLGridProps> = ({
   onCellValueChanged,
 }) => {
   const [error, setError] = useState<XMLGridError | null>(null);
+
+  // View synchronization
+  const { notifyViewChanged } = useViewSync(document, ViewType.GRID);
+  const { updateDocumentContent } = useDocumentStore();
 
   // Parse document content into grid data
   const gridData = useMemo(() => {
@@ -77,8 +84,6 @@ export const XMLGrid: React.FC<XMLGridProps> = ({
   // Handle cell value changes
   const handleCellValueChanged = useCallback(
     (event: any) => {
-      if (!onCellValueChanged) return;
-
       try {
         // Create updated rows array with the modified row
         const updatedRows = gridData.rows.map(row =>
@@ -92,7 +97,14 @@ export const XMLGrid: React.FC<XMLGridProps> = ({
           updatedRows
         });
 
-        onCellValueChanged(updatedXml);
+        // Update document in store
+        updateDocumentContent(document.id, updatedXml);
+
+        // Notify other views of change
+        notifyViewChanged(updatedXml, ChangeType.CONTENT);
+
+        // Call original callback if provided
+        onCellValueChanged?.(updatedXml);
       } catch (err) {
         setError({
           message:
@@ -103,7 +115,7 @@ export const XMLGrid: React.FC<XMLGridProps> = ({
         });
       }
     },
-    [gridData, document.content, onCellValueChanged]
+    [gridData, document, updateDocumentContent, notifyViewChanged, onCellValueChanged]
   );
 
   // Grid options configuration
