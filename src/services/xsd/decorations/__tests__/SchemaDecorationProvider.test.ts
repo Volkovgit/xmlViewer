@@ -24,6 +24,7 @@ describe('SchemaDecorationProvider', () => {
         {
           name: 'book',
           type: 'bookType',
+          occurrence: { minOccurs: 1, maxOccurs: 1 },
           complexType: {
             name: 'bookType',
             attributes: [
@@ -40,11 +41,13 @@ describe('SchemaDecorationProvider', () => {
                 occurrence: { minOccurs: 1, maxOccurs: 1 },
               },
             ],
+            mixed: false,
           },
         },
       ],
       complexTypes: [],
       simpleTypes: [],
+      raw: '<xs:schema></xs:schema>',
     };
 
     const decorations = provider.getDecorations(xmlContent, schema);
@@ -53,9 +56,13 @@ describe('SchemaDecorationProvider', () => {
     expect(decorations.length).toBeGreaterThanOrEqual(1);
 
     // Find the missing required attribute error
-    const missingAttrError = decorations.find((d) =>
-      d.options.hoverMessage?.value.includes('Missing required attribute "isbn"')
-    );
+    const missingAttrError = decorations.find((d) => {
+      const hoverMessage = d.options.hoverMessage;
+      if (Array.isArray(hoverMessage)) {
+        return hoverMessage.some(msg => msg.value.includes('Missing required attribute "isbn"'));
+      }
+      return hoverMessage?.value.includes('Missing required attribute "isbn"');
+    });
 
     expect(missingAttrError).toBeDefined();
     expect(missingAttrError?.options.className).toBe('xml-schema-error');
@@ -74,6 +81,7 @@ describe('SchemaDecorationProvider', () => {
         {
           name: 'book',
           type: 'bookType',
+          occurrence: { minOccurs: 1, maxOccurs: 1 },
           complexType: {
             name: 'bookType',
             attributes: [
@@ -90,11 +98,13 @@ describe('SchemaDecorationProvider', () => {
                 occurrence: { minOccurs: 1, maxOccurs: 1 },
               },
             ],
+            mixed: false,
           },
         },
       ],
       complexTypes: [],
       simpleTypes: [],
+      raw: '<xs:schema></xs:schema>',
     };
 
     const decorations = provider.getDecorations(xmlContent, schema);

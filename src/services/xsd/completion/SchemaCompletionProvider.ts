@@ -7,7 +7,7 @@
 
 import { XMLContextAnalyzer, type XMLContext, ContextPosition } from '@/services/xsd/contextAnalyzer/XMLContextAnalyzer';
 import { generateElementSuggestion, generateAttributeSuggestion } from './CompletionItems';
-import type { XSDSchema, XSDElement, XSDAttribute } from '@/services/xsd/XSDParser';
+import type { XSDSchema, XSDElement } from '@/services/xsd/XSDParser';
 import type * as Monaco from 'monaco-editor';
 
 /**

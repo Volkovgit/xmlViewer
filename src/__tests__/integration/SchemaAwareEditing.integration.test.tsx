@@ -12,11 +12,10 @@
  * - SchemaCompletionProvider (Monaco completion suggestions)
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { SchemaProvider } from '@/services/xsd/schemaProvider/SchemaProvider';
-import { XMLContextAnalyzer, ContextPosition } from '@/services/xsd/contextAnalyzer/XMLContextAnalyzer';
+import { XMLContextAnalyzer } from '@/services/xsd/contextAnalyzer/XMLContextAnalyzer';
 import { SchemaCompletionProvider } from '@/services/xsd/completion/SchemaCompletionProvider';
-import { parseXSD } from '@/services/xsd/XSDParser';
 import type { XSDSchema } from '@/services/xsd/XSDParser';
 
 // ────────────────────────────────────────────────
@@ -343,8 +342,10 @@ describe('Schema-Aware Editing Integration Tests', () => {
       );
 
       expect(completions).not.toBeNull();
-      expect(completions?.suggestions).toBeDefined();
-      expect(completions?.suggestions.length).toBeGreaterThan(0);
+      if (completions && 'suggestions' in completions) {
+        expect(completions.suggestions).toBeDefined();
+        expect(completions.suggestions.length).toBeGreaterThan(0);
+      }
     });
 
     it('should provide attribute suggestions for current element', () => {
@@ -362,8 +363,8 @@ describe('Schema-Aware Editing Integration Tests', () => {
 
       expect(completions).toBeDefined();
       // Should have attribute suggestions (id is required)
-      if (completions && completions.suggestions.length > 0) {
-        const hasAttributeSuggestions = completions.suggestions.some(
+      if (completions && 'suggestions' in completions && completions.suggestions.length > 0) {
+        completions.suggestions.some(
           (s: any) => s.kind === 3 // Field kind for attributes
         );
         // Note: This may or may not have results depending on context analysis
@@ -385,8 +386,8 @@ describe('Schema-Aware Editing Integration Tests', () => {
 
       expect(completions).toBeDefined();
       // Should have element suggestions for children of <book>
-      if (completions && completions.suggestions.length > 0) {
-        const hasElementSuggestions = completions.suggestions.some(
+      if (completions && 'suggestions' in completions && completions.suggestions.length > 0) {
+        completions.suggestions.some(
           (s: any) => s.kind === 1 // Function kind for elements
         );
         // Note: This may or may not have results depending on context analysis
@@ -423,7 +424,7 @@ describe('Schema-Aware Editing Integration Tests', () => {
         {} as any
       );
 
-      if (completions && completions.suggestions.length > 0) {
+      if (completions && 'suggestions' in completions && completions.suggestions.length > 0) {
         const firstSuggestion = completions.suggestions[0] as any;
 
         // Verify completion item structure

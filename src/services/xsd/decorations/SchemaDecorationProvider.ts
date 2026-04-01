@@ -6,7 +6,7 @@
  * and hover messages showing schema validation issues.
  */
 
-import type { IModelDecoration, IModelDeltaDecoration } from 'monaco-editor';
+import type * as Monaco from 'monaco-editor';
 import { validateXMLAgainstSchema } from '../XSDValidator';
 import type { XSDSchema } from '../XSDParser';
 import type { ValidationError } from '@/types';
@@ -32,12 +32,12 @@ export class SchemaDecorationProvider {
   getDecorations(
     xmlContent: string,
     schema: XSDSchema
-  ): IModelDeltaDecoration[] {
+  ): Monaco.editor.IModelDeltaDecoration[] {
     // Validate the XML against the schema
     const errors = validateXMLAgainstSchema(xmlContent, schema);
 
     // Convert each error to a decoration
-    const decorations: IModelDeltaDecoration[] = errors.map((error) =>
+    const decorations: Monaco.editor.IModelDeltaDecoration[] = errors.map((error) =>
       this.errorToDecoration(error, xmlContent)
     );
 
@@ -57,7 +57,7 @@ export class SchemaDecorationProvider {
   private errorToDecoration(
     error: ValidationError,
     xmlContent: string
-  ): IModelDeltaDecoration {
+  ): Monaco.editor.IModelDeltaDecoration {
     // Calculate line/column position
     // Monaco uses 0-based line numbers, but our errors use 1-based
     const lineNumber = error.line - 1;

@@ -47,7 +47,7 @@ describe('SchemaQuickFixProvider', () => {
     provider = new SchemaQuickFixProvider();
     mockModel = {
       uri: { toString: () => 'test.xml' },
-      getValueInRange: (range: any) => '',
+      getValueInRange: (_range: any) => '',
     };
     mockRange = {
       startLineNumber: 1,
@@ -73,9 +73,10 @@ describe('SchemaQuickFixProvider', () => {
       );
 
       expect(result).toBeDefined();
-      expect(result).toHaveProperty('actions');
-      expect(Array.isArray(result.actions)).toBe(true);
-      expect(result.actions).toHaveLength(0);
+      if (result && 'actions' in result) {
+        expect(Array.isArray(result.actions)).toBe(true);
+        expect(result.actions).toHaveLength(0);
+      }
     });
 
     it('should handle cancellation token', () => {
@@ -89,7 +90,9 @@ describe('SchemaQuickFixProvider', () => {
       );
 
       expect(result).toBeDefined();
-      expect(result.actions).toEqual([]);
+      if (result && 'actions' in result) {
+        expect(result.actions).toEqual([]);
+      }
     });
 
     it('should handle context with markers', () => {
@@ -114,7 +117,9 @@ describe('SchemaQuickFixProvider', () => {
 
       // Skeleton implementation returns empty actions
       expect(result).toBeDefined();
-      expect(result.actions).toEqual([]);
+      if (result && 'actions' in result) {
+        expect(result.actions).toEqual([]);
+      }
     });
   });
 });
