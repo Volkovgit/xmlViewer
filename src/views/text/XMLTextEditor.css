@@ -80,3 +80,28 @@
     display: none;
   }
 }
+
+/* Schema validation error decorations */
+.xml-schema-error {
+  text-decoration: wavy underline;
+  text-decoration-color: #d32f2f;
+  text-decoration-skip-ink: none;
+}
+
+/* Schema validation warning decorations */
+.xml-schema-warning {
+  text-decoration: wavy underline;
+  text-decoration-color: #f57c00;
+  text-decoration-skip-ink: none;
+}
+
+/* Dark theme support for decorations */
+@media (prefers-color-scheme: dark) {
+  .xml-schema-error {
+    text-decoration-color: #f44336;
+  }
+
+  .xml-schema-warning {
+    text-decoration-color: #ff9800;
+  }
+}
