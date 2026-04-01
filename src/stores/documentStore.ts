@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { Document, DocumentStatus } from '@/types';
+import type { XSDSchema } from '@/services/xsd/XSDParser';
 
 /**
  * View mode type for different document views
@@ -81,6 +82,14 @@ interface DocumentStoreActions {
   shouldProcessViewUpdate: (documentId: string, sourceView: ViewMode) => boolean;
   /** Clear all view update timestamps for a document */
   clearViewUpdateTimestamps: (documentId: string) => void;
+
+  // Schema management
+  /** Attach an XSD schema to a document for validation */
+  attachSchema: (documentId: string, schemaPath: string, schema: XSDSchema) => void;
+  /** Detach the XSD schema from a document */
+  detachSchema: (documentId: string) => void;
+  /** Update the XSD schema on a document */
+  updateSchema: (documentId: string, schema: XSDSchema) => void;
 }
 
 /**
@@ -314,6 +323,59 @@ export const useDocumentStore = create<DocumentStore>((set, get) => ({
       const newTimestamps = new Map(state.viewUpdateTimestamps);
       newTimestamps.set(documentId, new Map());
       return { viewUpdateTimestamps: newTimestamps };
+    });
+  },
+
+  // Schema management implementation
+  attachSchema: (documentId, schemaPath, schema) => {
+    set((state) => {
+      const document = state.documents.get(documentId);
+      if (!document) {
+        return {};
+      }
+
+      const newDocuments = new Map(state.documents);
+      newDocuments.set(documentId, {
+        ...document,
+        xsdSchema: schema,
+        xsdPath: schemaPath,
+        modifiedAt: new Date(),
+      });
+      return { documents: newDocuments };
+    });
+  },
+
+  detachSchema: (documentId) => {
+    set((state) => {
+      const document = state.documents.get(documentId);
+      if (!document) {
+        return {};
+      }
+
+      const newDocuments = new Map(state.documents);
+      const { xsdSchema, xsdPath, ...restOfDocument } = document;
+      newDocuments.set(documentId, {
+        ...restOfDocument,
+        modifiedAt: new Date(),
+      });
+      return { documents: newDocuments };
+    });
+  },
+
+  updateSchema: (documentId, schema) => {
+    set((state) => {
+      const document = state.documents.get(documentId);
+      if (!document) {
+        return {};
+      }
+
+      const newDocuments = new Map(state.documents);
+      newDocuments.set(documentId, {
+        ...document,
+        xsdSchema: schema,
+        modifiedAt: new Date(),
+      });
+      return { documents: newDocuments };
     });
   },
 }));
