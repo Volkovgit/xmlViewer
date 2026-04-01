@@ -4,6 +4,9 @@ import { treeManipulator } from '@/services/xml/TreeManipulator';
 import { Document } from '@/types';
 import { TreeNode } from './TreeNode';
 import { TreeSearch } from './TreeSearch';
+import { useViewSync } from '@/hooks/useViewSync';
+import { ChangeType, ViewType } from '@/core/viewManager/ViewUpdate';
+import { useDocumentStore } from '@/stores/documentStore';
 import './XMLTree.css';
 
 /**
@@ -38,6 +41,10 @@ export function XMLTree({ document, onNodeSelect, className = '' }: XMLTreeProps
   const [selectedNode, setSelectedNode] = useState<XMLNode | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [matchedNodeIds, setMatchedNodeIds] = useState<Set<string>>(new Set());
+
+  // View synchronization
+  const { notifyViewChanged } = useViewSync(document, ViewType.TREE);
+  const { updateDocumentContent } = useDocumentStore();
 
   useEffect(() => {
     // Reset ID counter for consistent IDs on document change
@@ -83,12 +90,21 @@ export function XMLTree({ document, onNodeSelect, className = '' }: XMLTreeProps
       updatedTree = treeManipulator.addChild(targetNode, draggedNode);
       setTree(updatedTree);
 
+      // Generate updated XML
+      const newXml = treeManipulator.toXML(updatedTree);
+
+      // Update document in store
+      updateDocumentContent(document.id, newXml);
+
+      // Notify other views
+      notifyViewChanged(newXml, ChangeType.STRUCTURE);
+
       // Expand target to show dropped node
       setExpandedNodes(prev => new Set(prev).add(targetNode.id));
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Drop failed');
     }
-  }, [tree]);
+  }, [tree, document.id, updateDocumentContent, notifyViewChanged]);
 
   const handleAddChild = useCallback((parent: XMLNode) => {
     if (!tree) return;
@@ -103,8 +119,18 @@ export function XMLTree({ document, onNodeSelect, className = '' }: XMLTreeProps
 
     const updatedTree = treeManipulator.addChild(parent, newChild);
     setTree(updatedTree);
+
+    // Generate updated XML
+    const newXml = treeManipulator.toXML(updatedTree);
+
+    // Update document in store
+    updateDocumentContent(document.id, newXml);
+
+    // Notify other views
+    notifyViewChanged(newXml, ChangeType.STRUCTURE);
+
     setExpandedNodes(prev => new Set(prev).add(parent.id));
-  }, [tree]);
+  }, [tree, document.id, updateDocumentContent, notifyViewChanged]);
 
   const handleEditNode = useCallback((node: XMLNode) => {
     // TODO: Implement edit dialog
@@ -120,17 +146,35 @@ export function XMLTree({ document, onNodeSelect, className = '' }: XMLTreeProps
     try {
       const updatedTree = treeManipulator.removeNode(tree, node.id);
       setTree(updatedTree);
+
+      // Generate updated XML
+      const newXml = treeManipulator.toXML(updatedTree);
+
+      // Update document in store
+      updateDocumentContent(document.id, newXml);
+
+      // Notify other views
+      notifyViewChanged(newXml, ChangeType.STRUCTURE);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Delete failed');
     }
-  }, [tree]);
+  }, [tree, document.id, updateDocumentContent, notifyViewChanged]);
 
   const handleDuplicateNode = useCallback((node: XMLNode) => {
     if (!tree) return;
 
     const updatedTree = treeManipulator.duplicateNode(tree, node.id);
     setTree(updatedTree);
-  }, [tree]);
+
+    // Generate updated XML
+    const newXml = treeManipulator.toXML(updatedTree);
+
+    // Update document in store
+    updateDocumentContent(document.id, newXml);
+
+    // Notify other views
+    notifyViewChanged(newXml, ChangeType.STRUCTURE);
+  }, [tree, document.id, updateDocumentContent, notifyViewChanged]);
 
   // Prevent unused warnings - handlers will be connected to context menu in TreeNode
   void { handleAddChild, handleEditNode, handleDeleteNode, handleDuplicateNode };
