@@ -49,7 +49,7 @@ export type UpdateProcessor = (update: ViewUpdate) => void;
 export class ViewSyncManager {
   private debounceDelay: number;
   private onProcessUpdate: UpdateProcessor;
-  private timeoutId: NodeJS.Timeout | null = null;
+  private timeoutId: ReturnType<typeof setTimeout> | null = null;
   private pendingUpdate: ViewUpdate | null = null;
   private isDestroyed: boolean = false;
 

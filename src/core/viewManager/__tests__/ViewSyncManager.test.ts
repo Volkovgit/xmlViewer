@@ -9,7 +9,7 @@ import { ViewSyncManager } from '../ViewSyncManager';
 import { ViewUpdate, ChangeType, ViewType, createViewUpdate } from '../ViewUpdate';
 
 describe('ViewSyncManager', () => {
-  let mockCallback: ReturnType<typeof vi.fn>;
+  let mockCallback: any;
   let manager: ViewSyncManager;
 
   beforeEach(() => {

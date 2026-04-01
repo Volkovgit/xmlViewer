@@ -9,7 +9,6 @@ import {
   TextPosition,
   TreeSelection,
   GridSelection,
-  ViewUpdate,
   createViewUpdate,
 } from '../ViewUpdate';
 

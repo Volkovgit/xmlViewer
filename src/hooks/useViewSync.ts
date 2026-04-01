@@ -99,7 +99,7 @@ export function useViewSync(
   useEffect(() => {
     const listener = (update: ViewUpdate) => {
       // Check if we should process this update (prevents update loops)
-      if (!shouldProcessViewUpdate(document.id, update.sourceView as 'text' | 'tree' | 'grid')) {
+      if (!shouldProcessViewUpdate(document.id, update.sourceView as any)) {
         return;
       }
 
@@ -133,7 +133,7 @@ export function useViewSync(
       }
 
       const update = createViewUpdate(currentView, newContent, changeType);
-      recordViewUpdate(document.id, currentView as 'text' | 'tree' | 'grid');
+      recordViewUpdate(document.id, currentView as any);
       syncManager?.scheduleUpdate(update);
       lastUpdateRef.current = now;
     },

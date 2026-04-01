@@ -15,10 +15,9 @@
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, waitFor, fireEvent, act } from '@testing-library/react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useState, useEffect } from 'react';
 import { useDocumentStore } from '@/stores/documentStore';
-import { viewCoordinator, ViewCoordinator } from '@/core/viewManager/ViewCoordinator';
+import { viewCoordinator } from '@/core/viewManager/ViewCoordinator';
 import { ViewSyncManager } from '@/core/viewManager/ViewSyncManager';
 import { ViewType, ChangeType, createViewUpdate } from '@/core/viewManager/ViewUpdate';
 import { Document, DocumentType, DocumentStatus } from '@/types';
@@ -46,13 +45,13 @@ function TestViewSyncComponent({
 }: {
   document: Document;
   viewType: ViewType;
-  onUpdate?: (update: ViewUpdate) => void;
+  onUpdate?: (update: any) => void;
 }) {
   const { notifyViewChanged } = useViewSync(document, viewType);
 
   // Listen for updates from other views
-  React.useEffect(() => {
-    const listener = (update: ViewUpdate) => {
+  useEffect(() => {
+    const listener = (update: any) => {
       if (update.sourceView !== viewType) {
         onUpdate?.(update);
       }
@@ -73,15 +72,6 @@ function TestViewSyncComponent({
       <span data-testid={`content-${viewType}`}>{document.content}</span>
     </div>
   );
-}
-
-const React = require('react');
-
-/**
- * Wrapper component with DndProvider for drag-drop tests
- */
-function wrapper({ children }: { children: React.ReactNode }) {
-  return <DndProvider backend={HTML5Backend}>{children}</DndProvider>;
 }
 
 describe('View Synchronization Integration Tests', () => {
@@ -208,7 +198,7 @@ describe('View Synchronization Integration Tests', () => {
 
     it('should debounce subsequent content updates', async () => {
       await new Promise<void>((resolve) => {
-        const processor = vi.fn((update) => {
+        const processor = vi.fn((_update) => {
           // Resolve when we get the second call (debounced update)
           if (processor.mock.calls.length === 2) {
             setTimeout(() => {
@@ -474,7 +464,7 @@ describe('View Synchronization Integration Tests', () => {
 
       function TextEditor() {
         const { notifyViewChanged } = useViewSync(mockDocument, ViewType.TEXT);
-        const [content, setContent] = React.useState(mockDocument.content);
+        const [content, setContent] = useState(mockDocument.content);
 
         return (
           <div>
@@ -881,10 +871,10 @@ describe('View Synchronization Integration Tests', () => {
       let syncManager: ViewSyncManager | null = null;
 
       function TestComponent() {
-        const [manager] = React.useState(() => new ViewSyncManager(vi.fn()));
+        const [manager] = useState(() => new ViewSyncManager(vi.fn()));
         syncManager = manager;
 
-        React.useEffect(() => {
+        useEffect(() => {
           return () => {
             manager.destroy();
           };

@@ -16,7 +16,7 @@ import { Document } from '@/types/document';
 import { buildGridData, updateXMLFromGrid } from './GridDataBuilder';
 import { useViewSync } from '@/hooks/useViewSync';
 import { viewCoordinator } from '@/core/viewManager/ViewCoordinator';
-import { ViewUpdate, ViewType, ChangeType } from '@/core/viewManager/ViewUpdate';
+import { ViewUpdate, ViewType } from '@/core/viewManager/ViewUpdate';
 import { useDocumentStore } from '@/stores/documentStore';
 import './XMLGrid.css';
 
