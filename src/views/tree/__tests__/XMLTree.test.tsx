@@ -81,7 +81,7 @@ describe('XMLTree Component', () => {
   it('should select nodes', () => {
     const onNodeSelect = vi.fn();
     const document = createMockDocument('<root>content</root>');
-    render(<XMLTree document={document} onNodeSelect={onNodeSelect} />);
+    render(<XMLTree document={document} onNodeSelect={onNodeSelect} />, { wrapper });
 
     const rootNode = screen.getByText('root').closest('.tree-node');
     fireEvent.click(rootNode!);
@@ -182,7 +182,8 @@ describe('XMLTree Component', () => {
 
   it('should rebuild tree when document content changes', () => {
     const { rerender, container } = render(
-      <XMLTree document={createMockDocument('<root>old</root>')} />
+      <XMLTree document={createMockDocument('<root>old</root>')} />,
+      { wrapper }
     );
 
     expect(container.textContent).toContain('old');
@@ -196,7 +197,8 @@ describe('XMLTree Component', () => {
   it('should apply custom className', () => {
     const document = createMockDocument('<root>content</root>');
     const { container } = render(
-      <XMLTree document={document} className="custom-class" />
+      <XMLTree document={document} className="custom-class" />,
+      { wrapper }
     );
 
     const treeElement = container.querySelector('.xml-tree');

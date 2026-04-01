@@ -1,9 +1,9 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { XMLTree } from '@/views/tree/XMLTree';
-import { Document, DocumentType } from '@/types';
+import { Document, DocumentType, DocumentStatus } from '@/types';
 
 function wrapper({ children }: { children: React.ReactNode }) {
   return (
@@ -19,9 +19,9 @@ describe('Enhanced Tree Integration', () => {
     name: 'test.xml',
     type: DocumentType.XML,
     content,
-    status: 'clean' as const,
-    createdAt: Date.now(),
-    modifiedAt: Date.now()
+    status: DocumentStatus.READY,
+    createdAt: new Date(),
+    modifiedAt: new Date()
   });
 
   it('should display tree and support search', async () => {
@@ -32,7 +32,7 @@ describe('Enhanced Tree Integration', () => {
       </root>
     `;
 
-    const { container } = render(
+    render(
       <XMLTree document={createDocument(xml)} />,
       { wrapper }
     );
