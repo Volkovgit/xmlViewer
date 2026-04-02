@@ -1,4 +1,4 @@
-import type { XSDSchema, XSDElement } from '@/services/xsd';
+import type { XSDSchema, XSDElement, XSDComplexType, XSDSimpleType } from '@/services/xsd';
 import type { Node, Edge } from 'reactflow';
 
 export interface GraphBuildResult {
@@ -80,8 +80,35 @@ export class GraphBuilder {
       data: { element }
     });
 
-    // Create reference edge to type
-    if (element.type) {
+    // Handle inline complexType/simpleType or reference to named type
+    if (element.complexType) {
+      // Element has inline anonymous complexType
+      const typeId = `type:${element.name}Type`;
+      edges.push({
+        id: `${nodeId}-${typeId}`,
+        source: nodeId,
+        target: typeId,
+        type: 'reference',
+        label: '<<inline type>>',
+        labelStyle: { fill: '#ff9800', fontWeight: 700 },
+        style: { stroke: '#ff9800', strokeWidth: 2, strokeDasharray: '5,5' }
+      });
+      this.buildInlineComplexTypeNode(element.complexType, element.name, schema, nodes, edges, visited, currentDepth + 1, maxDepth);
+    } else if (element.simpleType) {
+      // Element has inline anonymous simpleType
+      const typeId = `type:${element.name}Type`;
+      edges.push({
+        id: `${nodeId}-${typeId}`,
+        source: nodeId,
+        target: typeId,
+        type: 'reference',
+        label: '<<inline type>>',
+        labelStyle: { fill: '#ff9800', fontWeight: 700 },
+        style: { stroke: '#ff9800', strokeWidth: 2, strokeDasharray: '5,5' }
+      });
+      this.buildInlineSimpleTypeNode(element.simpleType, element.name, nodes);
+    } else if (element.type) {
+      // Element references a named type
       // Strip namespace prefix if present (e.g., "tns:MyType" -> "MyType", "xs:string" -> "string")
       const typeName = this.stripNamespacePrefix(element.type);
 
@@ -243,5 +270,77 @@ export class GraphBuilder {
         }
       });
     }
+  }
+
+  private buildInlineComplexTypeNode(
+    complexType: XSDComplexType,
+    elementName: string,
+    schema: XSDSchema,
+    nodes: Node[],
+    edges: Edge[],
+    visited: Set<string>,
+    currentDepth: number,
+    maxDepth: number
+  ): void {
+    const nodeId = `type:${elementName}Type`;
+
+    // Cycle detection
+    if (visited.has(nodeId)) {
+      this.createCircularRefNode(nodeId, nodes);
+      return;
+    }
+    visited.add(nodeId);
+
+    nodes.push({
+      id: nodeId,
+      type: 'complexTypeNode',
+      position: { x: 0, y: 0 },
+      data: { type: complexType }
+    });
+
+    // Recursively build child elements
+    complexType.elements.forEach(childElement => {
+      // Strip namespace prefix from child element type if present for lookup
+      const childElementType = childElement.type
+        ? this.stripNamespacePrefix(childElement.type)
+        : undefined;
+
+      const childNodeId = `element:${childElement.name}`;
+      edges.push({
+        id: `${nodeId}-${childNodeId}`,
+        source: nodeId,
+        target: childNodeId,
+        type: 'composition',
+        label: `[${childElement.occurrence.minOccurs}..${childElement.occurrence.maxOccurs}]`,
+        labelStyle: { fill: '#2196f3', fontWeight: 700 },
+        style: { stroke: '#2196f3', strokeWidth: 2 }
+      });
+
+      // Pass child element with potentially modified type
+      this.buildElementNode(
+        { ...childElement, type: childElementType },
+        schema,
+        nodes,
+        edges,
+        visited,
+        currentDepth + 1,
+        maxDepth
+      );
+    });
+  }
+
+  private buildInlineSimpleTypeNode(
+    simpleType: XSDSimpleType,
+    elementName: string,
+    nodes: Node[]
+  ): void {
+    const nodeId = `type:${elementName}Type`;
+
+    nodes.push({
+      id: nodeId,
+      type: 'simpleTypeNode',
+      position: { x: 0, y: 0 },
+      data: { type: simpleType }
+    });
   }
 }
