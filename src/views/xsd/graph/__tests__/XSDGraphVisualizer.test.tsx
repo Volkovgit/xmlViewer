@@ -28,6 +28,7 @@ describe('XSDGraphVisualizer', () => {
   it('should render graph controls', () => {
     render(<XSDGraphVisualizer schema={mockSchema} />);
     expect(screen.getByText('Element:')).toBeInTheDocument();
+    expect(screen.getByText('Max Depth:')).toBeInTheDocument();
     expect(screen.getByTitle('Zoom In')).toBeInTheDocument();
     expect(screen.getByTitle('Zoom Out')).toBeInTheDocument();
   });
@@ -61,5 +62,15 @@ describe('XSDGraphVisualizer', () => {
     const searchInput = screen.getByPlaceholderText('Search nodes...');
     fireEvent.change(searchInput, { target: { value: 'Test' } });
     expect(searchInput).toHaveValue('Test');
+  });
+
+  it('should change max depth', () => {
+    render(<XSDGraphVisualizer schema={mockSchema} />);
+    const maxDepthInput = screen.getByLabelText('Max Depth:');
+    expect(maxDepthInput).toBeInTheDocument();
+    expect(maxDepthInput).toHaveValue(10);
+
+    fireEvent.change(maxDepthInput, { target: { value: '15' } });
+    expect(maxDepthInput).toHaveValue(15);
   });
 });

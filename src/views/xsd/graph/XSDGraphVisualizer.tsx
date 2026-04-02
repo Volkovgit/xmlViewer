@@ -33,6 +33,7 @@ export interface XSDGraphVisualizerProps {
 
 export function XSDGraphVisualizer({ schema }: XSDGraphVisualizerProps) {
   const [selectedElement, setSelectedElement] = useState<string | null>(null);
+  const [maxDepth, setMaxDepth] = useState<number>(10);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
@@ -43,11 +44,11 @@ export function XSDGraphVisualizer({ schema }: XSDGraphVisualizerProps) {
 
   const handleElementSelect = useCallback((elementName: string) => {
     setSelectedElement(elementName);
-    const { nodes: builtNodes, edges: builtEdges } = graphBuilder.buildGraph(schema, elementName);
+    const { nodes: builtNodes, edges: builtEdges } = graphBuilder.buildGraph(schema, elementName, maxDepth);
     const layoutedNodes = layoutEngine.layout(builtNodes, builtEdges);
     setNodes(layoutedNodes);
     setEdges(builtEdges);
-  }, [schema, graphBuilder, layoutEngine, setNodes, setEdges]);
+  }, [schema, graphBuilder, layoutEngine, setNodes, setEdges, maxDepth]);
 
   const handleZoomIn = useCallback(() => {
     reactFlowInstance.current?.zoomIn();
@@ -106,7 +107,9 @@ export function XSDGraphVisualizer({ schema }: XSDGraphVisualizerProps) {
       <GraphControls
         schema={schema}
         selectedElement={selectedElement}
+        maxDepth={maxDepth}
         onElementSelect={handleElementSelect}
+        onMaxDepthChange={setMaxDepth}
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
         onFitView={handleFitView}

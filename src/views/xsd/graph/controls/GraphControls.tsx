@@ -4,7 +4,9 @@ import './GraphControls.css';
 export interface GraphControlsProps {
   schema: XSDSchema;
   selectedElement: string | null;
+  maxDepth: number;
   onElementSelect: (elementName: string) => void;
+  onMaxDepthChange: (depth: number) => void;
   onZoomIn: () => void;
   onZoomOut: () => void;
   onFitView: () => void;
@@ -16,7 +18,9 @@ export interface GraphControlsProps {
 export function GraphControls({
   schema,
   selectedElement,
+  maxDepth,
   onElementSelect,
+  onMaxDepthChange,
   onZoomIn,
   onZoomOut,
   onFitView,
@@ -41,6 +45,20 @@ export function GraphControls({
             </option>
           ))}
         </select>
+      </div>
+
+      <div className="graph-controls-section">
+        <label htmlFor="max-depth">Max Depth:</label>
+        <input
+          id="max-depth"
+          type="number"
+          min="1"
+          max="20"
+          value={maxDepth}
+          onChange={(e) => onMaxDepthChange(Math.max(1, Math.min(20, parseInt(e.target.value) || 5)))}
+          className="graph-number-input"
+          title="Maximum graph depth (1-20)"
+        />
       </div>
 
       <div className="graph-controls-section">
