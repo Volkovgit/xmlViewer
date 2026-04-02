@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useRef } from 'react';
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import ReactFlow, {
   Background,
   Controls,
@@ -39,16 +39,25 @@ export function XSDGraphVisualizer({ schema }: XSDGraphVisualizerProps) {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const reactFlowInstance = useRef<any>(null);
 
-  const graphBuilder = useMemo(() => new GraphBuilder(), []);
-  const layoutEngine = useMemo(() => new GraphLayoutEngine(), []);
+  const graphBuilder = useRef(new GraphBuilder());
+  const layoutEngine = useRef(new GraphLayoutEngine());
 
   const handleElementSelect = useCallback((elementName: string) => {
     setSelectedElement(elementName);
-    const { nodes: builtNodes, edges: builtEdges } = graphBuilder.buildGraph(schema, elementName, maxDepth);
-    const layoutedNodes = layoutEngine.layout(builtNodes, builtEdges);
-    setNodes(layoutedNodes);
-    setEdges(builtEdges);
-  }, [schema, graphBuilder, layoutEngine, setNodes, setEdges, maxDepth]);
+  }, []);
+
+  // Rebuild graph when selectedElement or maxDepth changes
+  useEffect(() => {
+    if (selectedElement) {
+      const { nodes: builtNodes, edges: builtEdges } = graphBuilder.current.buildGraph(schema, selectedElement, maxDepth);
+      const layoutedNodes = layoutEngine.current.layout(builtNodes, builtEdges);
+      setNodes(layoutedNodes);
+      setEdges(builtEdges);
+    } else {
+      setNodes([]);
+      setEdges([]);
+    }
+  }, [selectedElement, maxDepth, schema]); // Remove setNodes/setEdges from deps
 
   const handleZoomIn = useCallback(() => {
     reactFlowInstance.current?.zoomIn();
