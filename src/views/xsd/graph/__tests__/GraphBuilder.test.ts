@@ -331,8 +331,11 @@ describe('GraphBuilder', () => {
     // Should have missing type node with special ID
     const missingNode = result.nodes.find(n => n.id === 'type:MissingType:missing');
     expect(missingNode).toBeDefined();
-    expect(missingNode.type).toBe('missingTypeNode');
-    expect(missingNode.data.label).toContain('MissingType');
-    expect(missingNode.data.label).toContain('not found');
+
+    if (missingNode) {
+      expect(missingNode.type).toBe('missingTypeNode');
+      expect(missingNode.data.label).toContain('MissingType');
+      expect(missingNode.data.label).toContain('not found');
+    }
   });
 });
