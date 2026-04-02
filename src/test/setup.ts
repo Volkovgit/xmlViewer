@@ -14,4 +14,15 @@ class ResizeObserverMock {
   disconnect = vi.fn();
 }
 
-global.ResizeObserver = ResizeObserverMock;
+// Extend global interface with ResizeObserver
+declare global {
+  interface Window {
+    ResizeObserver: any;
+  }
+}
+
+if (typeof window !== 'undefined') {
+  window.ResizeObserver = ResizeObserverMock;
+}
+
+export {};

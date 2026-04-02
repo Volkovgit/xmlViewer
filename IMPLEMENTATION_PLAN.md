@@ -331,6 +331,58 @@
 
 ---
 
+### Этап 3.5: XSD Graph Visualization (Post-MVP Enhancement)
+
+**Status:** ✅ **COMPLETE**
+
+Added interactive graph visualization for XSD schemas with dependency tracking and hierarchical layout.
+
+**Implementation Details:**
+
+**Services:**
+- `GraphBuilder.ts` — Traverses XSD schema dependencies (elements → complexTypes → simpleTypes)
+- `GraphLayoutEngine.ts` — dagre-based automatic layout with configurable directions (TB, LR, RL, BT)
+- Smart node positioning with edge routing and cycle detection
+
+**Components:**
+- `ElementNode.tsx` — Custom React Flow node for XSD elements (blue styling, type info)
+- `ComplexTypeNode.tsx` — Complex type visualization (purple styling, element/attribute counts)
+- `SimpleTypeNode.tsx` — Simple type representation (green styling, base type display)
+- `BuiltInTypeNode.tsx` — XSD built-in types (gray styling, read-only)
+- `GraphControls.tsx` — Zoom in/out, fit view, layout direction, search filtering
+- `XSDGraphVisualizer.tsx` — Main graph container with ReactFlow integration
+
+**Integration:**
+- Added as third tab in `XSDVisualizer.tsx` (tabs: Tree, Components, Graph)
+- Element selector dropdown for root node selection
+- Real-time node search and filtering
+- Interactive navigation (pan, zoom, click to select)
+
+**Testing:**
+- Component tests: GraphBuilder (10 tests), GraphLayoutEngine (7 tests), XSDGraphVisualizer (5 tests)
+- All 22 tests passing
+- Coverage: GraphBuilder 96.29%, GraphLayoutEngine 100%, XSDGraphVisualizer 59.18%
+
+**Dependencies:**
+- `reactflow` — Interactive graph rendering
+- `dagre` — Automatic graph layout algorithm
+- `@xyflow/react` — React Flow library
+
+**Files Created:** 14 new files
+**Tests Added:** 22 new tests passing
+**Total Test Count:** 715 tests passing (698 + 17 graph tests)
+
+**Key Features:**
+- Automatic dependency graph generation from XSD schema
+- Hierarchical layout with configurable direction (top-to-bottom, left-to-right)
+- Interactive zoom, pan, and fit-to-view controls
+- Real-time node search and filtering
+- Color-coded nodes by type (element/complexType/simpleType/built-in)
+- Type information display on hover
+- Empty state handling for schemas without elements
+
+---
+
 ### Этап 4: Трансформации (Недели 11-13)
 
 **Цель:** Поддержка XSLT и XQuery
