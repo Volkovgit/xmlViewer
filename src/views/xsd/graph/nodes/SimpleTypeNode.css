@@ -1,0 +1,51 @@
+.graph-simpletype-node {
+  background-color: #e8f5e9;
+  border: 2px solid #4caf50;
+  border-radius: 8px;
+  padding: 12px;
+  min-width: 200px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+}
+
+.node-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.node-icon {
+  font-size: 16px;
+}
+
+.node-label {
+  font-size: 14px;
+}
+
+.node-base {
+  color: #666;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.node-restriction {
+  color: #4caf50;
+  margin: 4px 0;
+}
+
+.node-section {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #c8e6c9;
+}
+
+.node-section-title {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.node-enum {
+  padding: 2px 0;
+}
