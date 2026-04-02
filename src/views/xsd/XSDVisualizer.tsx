@@ -8,6 +8,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import { parseXSD } from '@/services/xsd';
 import type { XSDElement, XSDComplexType, XSDSimpleType, XSDAttribute } from '@/services/xsd';
+import { XSDGraphVisualizer } from './graph/XSDGraphVisualizer';
 import './XSDVisualizer.css';
 
 // ────────────────────────────────────────────────
@@ -139,9 +140,9 @@ function ElementNode({ element }: { element: XSDElement }) {
 export function XSDVisualizer({ xsdContent }: XSDVisualizerProps) {
   const schema = useMemo(() => parseXSD(xsdContent), [xsdContent]);
 
-  const [activeTab, setActiveTab] = useState<'elements' | 'types'>('elements');
+  const [activeTab, setActiveTab] = useState<'elements' | 'types' | 'graph'>('elements');
 
-  const handleTabClick = useCallback((tab: 'elements' | 'types') => {
+  const handleTabClick = useCallback((tab: 'elements' | 'types' | 'graph') => {
     setActiveTab(tab);
   }, []);
 
@@ -167,6 +168,13 @@ export function XSDVisualizer({ xsdContent }: XSDVisualizerProps) {
           onClick={() => handleTabClick('types')}
         >
           Types ({schema.complexTypes.length + schema.simpleTypes.length})
+        </button>
+        <button
+          className={`xsd-tab ${activeTab === 'graph' ? 'active' : ''}`}
+          onClick={() => handleTabClick('graph')}
+          data-testid="xsd-graph-tab"
+        >
+          Graph View
         </button>
       </div>
 
@@ -197,6 +205,12 @@ export function XSDVisualizer({ xsdContent }: XSDVisualizerProps) {
                 ))}
               </>
             )}
+          </div>
+        )}
+
+        {activeTab === 'graph' && (
+          <div className="xsd-graph-view" data-testid="xsd-graph-view">
+            <XSDGraphVisualizer schema={schema} />
           </div>
         )}
       </div>
