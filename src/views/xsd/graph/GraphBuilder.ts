@@ -1,4 +1,4 @@
-import type { XSDSchema, XSDElement, XSDComplexType, XSDSimpleType } from '@/services/xsd';
+import type { XSDSchema, XSDElement } from '@/services/xsd';
 import type { Node, Edge } from 'reactflow';
 
 export interface GraphBuildResult {

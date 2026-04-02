@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { GraphBuilder } from '../GraphBuilder';
 import type { XSDSchema } from '@/services/xsd';
-import type { Node, Edge } from 'reactflow';
 
 describe('GraphBuilder', () => {
   it('should build simple element graph with type', () => {
