@@ -42,9 +42,14 @@ export function XSDGraphVisualizer({ schema }: XSDGraphVisualizerProps) {
   const layoutEngine = useMemo(() => new GraphLayoutEngine(), []);
 
   const handleElementSelect = useCallback((elementName: string) => {
+    console.log('[XSDGraphVisualizer] Element selected:', elementName);
+    console.log('[XSDGraphVisualizer] Schema:', schema);
     setSelectedElement(elementName);
     const { nodes: builtNodes, edges: builtEdges } = graphBuilder.buildGraph(schema, elementName);
+    console.log('[XSDGraphVisualizer] Built nodes:', builtNodes);
+    console.log('[XSDGraphVisualizer] Built edges:', builtEdges);
     const layoutedNodes = layoutEngine.layout(builtNodes, builtEdges);
+    console.log('[XSDGraphVisualizer] Layouted nodes:', layoutedNodes);
     setNodes(layoutedNodes);
     setEdges(builtEdges);
   }, [schema, graphBuilder, layoutEngine, setNodes, setEdges]);

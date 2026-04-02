@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Purchase Order Type -->
+  <xs:complexType name="PurchaseOrderType">
+    <xs:sequence>
+      <xs:element name="shipTo" type="AddressType" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="billTo" type="AddressType" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="comment" type="xs:string" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="items" type="ItemsType" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="orderDate" type="xs:date" use="required"/>
+  </xs:complexType>
+
+  <!-- Address Type (shared by shipTo and billTo) -->
+  <xs:complexType name="AddressType">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="street" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="city" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="state" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="zip" type="xs:decimal" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="country" type="xs:string" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:ID" use="required"/>
+  </xs:complexType>
+
+  <!-- Items Type -->
+  <xs:complexType name="ItemsType">
+    <xs:sequence>
+      <xs:element name="item" type="ItemType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Item Type -->
+  <xs:complexType name="ItemType">
+    <xs:sequence>
+      <xs:element name="productName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="quantity" type="xs:positiveInteger" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="price" type="xs:decimal" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="partNum" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <!-- Simple Type with restrictions -->
+  <xs:simpleType name="SKU">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{3}-[A-Z]{2}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Root element -->
+  <xs:element name="purchaseOrder" type="PurchaseOrderType"/>
+
+</xs:schema>

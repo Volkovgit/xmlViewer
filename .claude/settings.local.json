@@ -27,7 +27,13 @@
       "Bash(curl:*)",
       "Bash(/tmp/test_app.js << 'EOF'\n// Проверка основных функций Phase 1 и Phase 2\nconsole.log\\('=== Phase 1 & 2 Verification Checklist ===\\\\n'\\);\n\nconsole.log\\('✅ Application server running: http://localhost:5173/'\\);\nconsole.log\\('\\\\nManual Testing Steps:'\\);\nconsole.log\\('\\\\n1. Open http://localhost:5173/ in browser'\\);\nconsole.log\\('2. Create a new XML file \\(File → New\\)'\\);\nconsole.log\\('3. Test typing: <root><item>test</item></root>'\\);\nconsole.log\\('4. Verify syntax highlighting works'\\);\nconsole.log\\('5. Introduce error: <root><unclosed>'\\);\nconsole.log\\('6. Verify error appears in validation panel'\\);\nconsole.log\\('7. Fix error and verify it disappears'\\);\nconsole.log\\('8. Switch to Tree View'\\);\nconsole.log\\('9. Verify tree structure displays correctly'\\);\nconsole.log\\('10. Open test-sample.xml \\(File → Open\\)'\\);\nconsole.log\\('11. Open test-schema.xsd \\(File → Open\\)'\\);\nconsole.log\\('12. Verify XSD syntax highlighting'\\);\nconsole.log\\('13. With XML file active: Tools → Generate XSD'\\);\nconsole.log\\('14. Verify XSD generation creates new tab'\\);\nconsole.log\\('15. With XSD file active: Tools → Generate XML'\\);\nconsole.log\\('16. Verify XML instance generation works'\\);\nconsole.log\\('17. Assign XSD schema to XML \\(Assign Schema button\\)'\\);\nconsole.log\\('18. Validate against XSD \\(Validate button\\)'\\);\nconsole.log\\('\\\\nAll 10 MVP scenarios should work! 🎉'\\);\nEOF)",
       "Bash(npx vite:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(git checkout:*)",
+      "Bash(git pull:*)",
+      "Bash(git push:*)",
+      "Bash(test:*)",
+      "Bash(git check-ignore:*)",
+      "Bash(gh pr create:*)"
     ]
   }
 }

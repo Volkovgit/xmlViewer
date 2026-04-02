@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="urn://x-artefacts-nbp-ebs-ru/increasing/complete/1.0.1" elementFormDefault="qualified" targetNamespace="urn://x-artefacts-nbp-ebs-ru/increasing/complete/1.0.1"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" vc:minVersion="1.1">
+    <xs:annotation>
+        <xs:documentation>Вид сведений для повышения уровня биометрии ФЛ в ЕБС.</xs:documentation>
+    </xs:annotation>
+    <xs:element name="IncreaseCompleteRequest" type="tns:IncreaseCompleteRequestType"/>
+    <xs:element name="IncreaseCompleteResponse" type="tns:IncreaseCompleteResponseType"/>
+    <xs:complexType name="IncreaseCompleteRequestType">
+        <xs:annotation>
+            <xs:documentation>Запрос на повышение уровня биометрии ФЛ в ЕБС</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="SessionId" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Идентификатор сессии верификации.</xs:documentation>
+                </xs:annotation>
+            </xs:element>    
+            <xs:element name="ExtendedResult" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>JWT, подписанный оператором ИС и содержащий идентификатор сессии верификации и расширенный результат верификации.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Id" type="xs:ID" use="required">
+				<xs:annotation>
+					<xs:documentation>Идентификатор подписываемых данных</xs:documentation>
+				</xs:annotation>
+		</xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="IncreaseCompleteResponseType">
+        <xs:annotation>
+            <xs:documentation>Ответ на запрос повышения уровня биометрии ФЛ в ЕБС</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Status" type="tns:IncreaseCompleteStatusRespType">
+                <xs:annotation>
+                    <xs:documentation>Результат обработки запроса на повышение уровня биометрии ФЛ в ЕБС</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ErrorCode" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Код ошибки</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ErrorMessage" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Сообщение об ошибке</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:simpleType name="IncreaseCompleteStatusRespType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SUCCESS"/>
+            <xs:enumeration value="FAILED"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

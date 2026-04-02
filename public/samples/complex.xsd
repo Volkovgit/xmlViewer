@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Circular reference test -->
+  <xs:complexType name="NodeType">
+    <xs:sequence>
+      <xs:element name="nodeName" type="xs:string"/>
+      <xs:element name="child" type="NodeType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:ID" use="required"/>
+  </xs:complexType>
+
+  <!-- Complex inheritance -->
+  <xs:complexType name="PersonType">
+    <xs:sequence>
+      <xs:element name="firstName" type="xs:string"/>
+      <xs:element name="lastName" type="xs:string"/>
+      <xs:element name="birthDate" type="xs:date"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="EmployeeType">
+    <xs:complexContent>
+      <xs:extension base="PersonType">
+        <xs:sequence>
+          <xs:element name="employeeId" type="xs:integer"/>
+          <xs:element name="department" type="xs:string"/>
+        </xs:sequence>
+        <xs:attribute name="status" type="EmployeeStatusType" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- Simple type with enumeration -->
+  <xs:simpleType name="EmployeeStatusType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Active"/>
+      <xs:enumeration value="Inactive"/>
+      <xs:enumeration value="OnLeave"/>
+      <xs:enumeration value="Terminated"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Elements -->
+  <xs:element name="nodeTree" type="NodeType"/>
+  <xs:element name="employee" type="EmployeeType"/>
+
+</xs:schema>

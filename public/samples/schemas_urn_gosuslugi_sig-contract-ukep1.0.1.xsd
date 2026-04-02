@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="urn://gosuslugi/sig-contract-ukep/1.0.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn://gosuslugi/sig-contract-ukep/1.0.1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:simpleType name="string-20">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z0-9а-яА-Я\.&quot;,^()!\-«»;№+_\\'\s]{1,20}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string-50">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z0-9а-яА-Я\.&quot;,^()!\-«»;№+_\\'\s]{1,50}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string-60">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z0-9а-яА-Я\.&quot;,^()!\-«»;№+_\\'\s]{1,60}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string-250">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z0-9а-яА-Я\.&quot;,^()!\-«»;№+_\\'\s]{1,250}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string-250-Backlink">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="(https?):((//)|(\\))+[\w\d:#@%/;$()~_?+\-=\.&amp;]*"/>
+			<xs:minLength value="6"/>
+			<xs:maxLength value="250"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string-255">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z0-9а-яА-Я\.&quot;,^()!\-«»;№+_\\'\s]{1,255}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string-1000">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z0-9а-яА-Я\.&quot;,^()!\-«»;№+_\\'\s]{1,1000}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IdType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z0-9-]{35,60}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="docIdType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z0-9-]{35,50}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="uuidType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z0-9-]{35,60}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="mimeTypeDoc" final="restriction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="application/pdf"/>
+			<xs:enumeration value="image/tiff"/>
+			<xs:enumeration value="text/plain"/>
+			<xs:enumeration value="application/xml"/>
+			<xs:enumeration value="image/jpeg"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="mimeTypeSig" final="restriction">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="application/x-pkcs7-signature"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OIDType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{1,20}"/>
+		</xs:restriction>
+	</xs:simpleType>	
+	<xs:simpleType name="SNILSType">
+		<xs:restriction base="xs:string">
+			<xs:length value="14"/>
+			<xs:pattern value="[0-9]{3}[-][0-9]{3}[-][0-9]{3} [0-9]{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PhoneType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\+7 \(\d{3}\) \d{3} \d{2} \d{2}"/>
+		</xs:restriction>
+	</xs:simpleType>	
+	<xs:complexType name="AddDataType">
+		<xs:annotation>
+			<xs:documentation>Дополнительные атрибуты</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AttrName" type="tns:string-60">
+				<xs:annotation>
+					<xs:documentation>Мнемоника атрибута</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AttrValue" type="tns:string-255">
+				<xs:annotation>
+					<xs:documentation>Значение атрибута</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SignRejectType">
+		<xs:annotation>
+			<xs:documentation>
+                Отказ от подписания
+            </xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="ErrorType">
+		<xs:annotation>
+			<xs:documentation>
+                Описание ошибки
+            </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ErrorCode" type="xs:byte">
+				<xs:annotation>
+					<xs:documentation>Код ошибки</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ErrorMessage" type="tns:string-250">
+				<xs:annotation>
+					<xs:documentation>Сообщение об ошибке</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InformStateType">
+    <xs:annotation>
+      <xs:documentation>
+                Информационный статус
+            </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="InformCode" type="xs:byte">
+        <xs:annotation>
+          <xs:documentation>Код сообщения</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="InformMessage" type="tns:string-250">
+        <xs:annotation>
+          <xs:documentation>Информация о статусе</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="StateMediumType">
+    <xs:annotation>
+      <xs:documentation>
+                Промежуточный статус
+            </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="TemporaryCode" type="xs:byte">
+        <xs:annotation>
+          <xs:documentation>Код сообщения</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="StateMessage" type="tns:string-250">
+        <xs:annotation>
+          <xs:documentation>Информация о статусе</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+	<xs:complexType name="RequestType">
+		<xs:annotation>
+			<xs:documentation>Общая часть всех запросов</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="Id" type="tns:IdType" use="required" >
+			<xs:annotation>
+				<xs:documentation>Идентификатор запроса</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="timestamp" type="xs:dateTime" use="required">
+			<xs:annotation>
+				<xs:documentation>Дата и время формирования запроса</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ResponseType">
+		<xs:annotation>
+			<xs:documentation>Общая часть всех ответов</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="Id" type="tns:IdType" use="required">
+			<xs:annotation>
+				<xs:documentation>Идентификатор ответа</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ReqId" type="tns:IdType" use="required">
+			<xs:annotation>
+				<xs:documentation>Идентификатор запроса</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="timestamp" type="xs:dateTime" use="required">
+			<xs:annotation>
+				<xs:documentation>Дата и время формирования ответа</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="DocumentTypeDoc">
+		<xs:annotation>
+			<xs:documentation>Описание документов</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AddData" type="tns:AddDataType" minOccurs="0" maxOccurs="10"/>
+		</xs:sequence>
+		<xs:attribute name="docId" type="tns:docIdType" use="required">
+			<xs:annotation>
+				<xs:documentation>Имя-идентификатор вложения с документом</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+        <xs:attribute name="mimeType" type="tns:mimeTypeDoc" use="required">
+            <xs:annotation>
+                <xs:documentation>Тип содержимого</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+		<xs:attribute name="uuid" type="tns:uuidType" use="required">
+			<xs:annotation>
+				<xs:documentation>Идентификатор документа внутри вложения</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="description" type="tns:string-250">
+			<xs:annotation>
+				<xs:documentation>Название документа</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+		<xs:complexType name="DocumentTypeSig">
+		<xs:annotation>
+			<xs:documentation>Описание подписи документов</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AddData" type="tns:AddDataType" minOccurs="0" maxOccurs="10"/>
+		</xs:sequence>
+		<xs:attribute name="docId" type="tns:docIdType" use="required">
+			<xs:annotation>
+				<xs:documentation>Имя-идентификатор вложения с документом</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	    <xs:attribute name="mimeType" type="tns:mimeTypeSig" use="required">
+            <xs:annotation>
+                <xs:documentation>Тип содержимого</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+		<xs:attribute name="uuid" type="tns:uuidType" use="required">
+			<xs:annotation>
+				<xs:documentation>Идентификатор файла в сообщении СМЭВ</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="description" type="tns:string-250">
+			<xs:annotation>
+				<xs:documentation>Название документа</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="RequestSignUkep">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="tns:RequestType">
+					<xs:sequence>
+						<xs:choice>
+							<xs:element name="SNILS" type="tns:SNILSType">
+								<xs:annotation>
+									<xs:documentation>СНИЛС</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="OID" type="tns:OIDType">
+								<xs:annotation>
+									<xs:documentation>Идентификатор пользователя в ЕСИА</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Phone" type="tns:PhoneType">
+								<xs:annotation>
+									<xs:documentation>Номер телефона</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:choice>
+						<xs:element name="routeNumber" type="tns:string-20" >
+			                    <xs:annotation>
+										<xs:documentation>Маршрутная информация</xs:documentation>
+							   </xs:annotation>
+						</xs:element>
+						<xs:element name="signExp" type="xs:dateTime">
+							<xs:annotation>
+								<xs:documentation>Максимальный срок для подписания документа в московской таймзоне</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="descDoc" type="tns:string-255">
+							<xs:annotation>
+								<xs:documentation>Общее описание документов на подпись</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="Contracts">
+							<xs:annotation>
+								<xs:documentation>Блок описания документов на подпись</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="Contract" maxOccurs="1000">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:annotation>
+													<xs:documentation>Документы на подпись</xs:documentation>
+												</xs:annotation>
+												<xs:element name="Document" type="tns:DocumentTypeDoc">
+													<xs:annotation>
+														<xs:documentation>Документ на подпись</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="Signature" type="tns:DocumentTypeSig">
+													<xs:annotation>
+														<xs:documentation>Подпись документа со стороны инициатора
+                                                        </xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="Backlink" type="tns:string-250-Backlink" minOccurs="0"/>
+						<xs:element name="AddData" type="tns:AddDataType" minOccurs="0" maxOccurs="10">
+							<xs:annotation>
+								<xs:documentation>Дополнительные данные</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ResponseSignUkep">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="tns:ResponseType">
+					<xs:sequence>
+						<xs:choice>
+							<xs:element name="SNILS" type="tns:SNILSType">
+								<xs:annotation>
+									<xs:documentation>СНИЛС</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="OID" type="tns:OIDType">
+								<xs:annotation>
+									<xs:documentation>Идентификатор пользователя в ЕСИА</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Phone" type="tns:PhoneType">
+								<xs:annotation>
+									<xs:documentation>Номер телефона</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:choice>
+						<xs:choice>
+							<xs:element name="Documents">
+								<xs:complexType>
+									<xs:annotation>
+										<xs:documentation>Подписанные документы</xs:documentation>
+									</xs:annotation>
+									<xs:sequence>
+										<xs:element name="Document" maxOccurs="1000">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:annotation>
+														<xs:documentation>Подписанные документы</xs:documentation>
+													</xs:annotation>
+													<xs:element name="ID" type="tns:docIdType"/>
+													<xs:element name="SignatureGosKey" type="tns:DocumentTypeSig">
+	<xs:annotation>
+														<xs:documentation>Файлы с подписью документа в МП «Госключ»</xs:documentation>
+													</xs:annotation>
+	</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="SignReject" type="tns:SignRejectType">
+								<xs:annotation>
+									<xs:documentation>Отказ от подписания</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Error" type="tns:ErrorType">
+								<xs:annotation>
+									<xs:documentation>Ошибка</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						<xs:element name="InformState" type="tns:InformStateType">
+								<xs:annotation>
+									<xs:documentation>Информационный</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						<xs:element name="StateMedium" type="tns:StateMediumType">
+								<xs:annotation>
+									<xs:documentation>Промежуточный</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:choice>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
