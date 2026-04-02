@@ -1,0 +1,96 @@
+<h2>Какой визуальный стиль выбрать?</h2>
+<p class="subtitle">Выберите цветовую схему и стиль оформления</p>
+
+<div class="cards">
+  <div class="card" data-choice="modern-blue" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);height:120px;"></div>
+    <div class="card-body">
+      <h3>Современный синий</h3>
+      <p>Акцентный синий (#2196f3), градиенты, мягкие тени, скругленные углы</p>
+      <div class="mockup">
+        <div class="mockup-body">
+          <div style="padding:15px;background:#f8f9fa;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+            <button style="padding:10px 20px;background:#2196f3;color:white;border:none;border-radius:8px;box-shadow:0 2px 4px rgba(33,150,243,0.3);">
+              📊 Show Graph
+            </button>
+            <button style="padding:10px 20px;background:white;color:#2196f3;border:2px solid #2196f3;border-radius:8px;margin-left:8px;">
+              Generate
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-choice="minimal" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#212121;height:120px;"></div>
+    <div class="card-body">
+      <h3>Минимальный темный</h3>
+      <p>Темная тема, монохромные акценты, плоский дизайн</p>
+      <div class="mockup">
+        <div class="mockup-body">
+          <div style="padding:15px;background:#2d2d2d;border-radius:4px;">
+            <button style="padding:10px 20px;background:#4caf50;color:white;border:none;border-radius:2px;">
+              📊 Show Graph
+            </button>
+            <button style="padding:10px 20px;background:#333;color:#fff;border:none;border-radius:2px;margin-left:8px;">
+              Generate
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-choice="vscode" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#1e1e1e;height:120px;border-bottom:2px solid #007acc;"></div>
+    <div class="card-body">
+      <h3>VS Code стиль</h3>
+      <p>Темная тема как в VS Code, синие акценты (#007acc), привычно разработчикам</p>
+      <div class="mockup">
+        <div class="mockup-body">
+          <div style="padding:15px;background:#252526;border:1px solid #3c3c3c;">
+            <button style="padding:10px 20px;background:#007acc;color:white;border:none;border-radius:2px;">
+              📊 Show Graph
+            </button>
+            <button style="padding:10px 20px;background:#3c3c3c;color:#ccc;border:none;border-radius:2px;margin-left:8px;">
+              Generate
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Дополнительные элементы стиля:</h3>
+  <p class="subtitle">Что добавить для современного вида?</p>
+
+  <div class="options" data-multiselect>
+    <div class="option" data-choice="icons" onclick="toggleSelect(this)">
+      <div class="content">
+        <h3>SVG иконки</h3>
+        <p>Использовать иконки Lucide/Heroicons вместо emoji</p>
+      </div>
+    </div>
+    <div class="option" data-choice="animations" onclick="toggleSelect(this)">
+      <div class="content">
+        <h3>Микро-анимации</h3>
+        <p>Hover эффекты, плавные переходы между состояниями</p>
+      </div>
+    </div>
+    <div class="option" data-choice="tooltips" onclick="toggleSelect(this)">
+      <div class="content">
+        <h3>Тултипы</h3>
+        <p>Всплывающие подсказки при наведении на кнопки</p>
+      </div>
+    </div>
+    <div class="option" data-choice="badges" onclick="toggleSelect(this)">
+      <div class="content">
+        <h3>Бейджи уведомлений</h3>
+        <p>Кружочки с числом ошибок, точка для dirty файлов</p>
+      </div>
+    </div>
+  </div>
+</div>

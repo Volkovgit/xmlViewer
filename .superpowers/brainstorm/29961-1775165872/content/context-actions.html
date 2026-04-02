@@ -1,0 +1,107 @@
+<h2>Как организовать кнопки с контекстными действиями?</h2>
+<p class="subtitle">Выберите подход для отображения кнопок в зависимости от типа файла</p>
+
+<div class="options">
+  <div class="option" data-choice="dynamic" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Динамические кнопки</h3>
+      <p>Кнопки появляются/исчезают в зависимости от активного файла</p>
+      <div class="mockup">
+        <div class="mockup-header">Слева: боковая панель действий</div>
+        <div class="split">
+          <div class="mockup">
+            <div class="mockup-header">Когда выбран .xsd файл:</div>
+            <div class="mock-body" style="padding:10px;background:#f5f5f5;">
+              <div style="font-weight:600;margin-bottom:10px;">Actions for XSD</div>
+              <div style="padding:8px;background:#2196f3;color:white;border-radius:4px;margin-bottom:5px;">📊 Show Graph</div>
+              <div style="padding:8px;border:1px solid #ddd;border-radius:4px;margin-bottom:5px;">📄 Generate XML</div>
+              <div style="padding:8px;border:1px solid #ddd;border-radius:4px;margin-bottom:5px;">✓ Validate</div>
+            </div>
+          </div>
+          <div class="mockup">
+            <div class="mockup-header">Когда выбран .xml файл:</div>
+            <div class="mock-body" style="padding:10px;background:#f5f5f5;">
+              <div style="font-weight:600;margin-bottom:10px;">Actions for XML</div>
+              <div style="padding:8px;border:1px solid #ddd;border-radius:4px;margin-bottom:5px;">📋 Generate XSD</div>
+              <div style="padding:8px;border:1px solid #ddd;border-radius:4px;margin-bottom:5px;">🔗 Assign Schema</div>
+              <div style="padding:8px;border:1px solid #ddd;border-radius:4px;margin-bottom:5px;">✓ Validate XSD</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pros-cons">
+        <div class="pros"><h4>✓ Плюсы</h4><ul><li>Только нужные кнопки</li><li>Чистый интерфейс</li><li>Меньше путаницы</li></ul></div>
+        <div class="cons"><h4>✗ Минусы</h4><ul><li>Кнопки "прыгают"</li><li>Нужно запоминать где что</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="grouped" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Группировка по типу</h3>
+      <p>Все кнопки видны, но сгруппированы с визуальным разделением</p>
+      <div class="mockup">
+        <div class="mockup-header">Слева: боковая панель действий</div>
+        <div class="mockup-body" style="padding:10px;background:#f5f5f5;">
+          <div style="padding:8px;background:#e3f2fd;border-radius:4px;margin-bottom:10px;">
+            <div style="font-weight:600;margin-bottom:5px;">XSD Actions</div>
+            <div style="padding:6px;background:#2196f3;color:white;border-radius:3px;margin-bottom:3px;">📊 Show Graph</div>
+            <div style="padding:6px;border:1px solid #ccc;border-radius:3px;margin-bottom:3px;opacity:0.5;">📄 Generate XML</div>
+            <div style="padding:6px;border:1px solid #ccc;border-radius:3px;opacity:0.5;">✓ Validate</div>
+          </div>
+          <div style="padding:8px;background:#fff3e0;border-radius:4px;">
+            <div style="font-weight:600;margin-bottom:5px;">XML Actions</div>
+            <div style="padding:6px;border:1px solid #ccc;border-radius:3px;margin-bottom:3px;opacity:0.5;">📋 Generate XSD</div>
+            <div style="padding:6px;border:1px solid #ccc;border-radius:3px;margin-bottom:3px;opacity:0.5;">🔗 Assign Schema</div>
+            <div style="padding:6px;border:1px solid #ccc;border-radius:3px;opacity:0.5;">✓ Validate XSD</div>
+          </div>
+          <div style="font-size:11px;color:#666;margin-top:5px;">
+            * Неприменимые кнопки затемнены
+          </div>
+        </div>
+      </div>
+      <div class="pros-cons">
+        <div class="pros"><h4>✓ Плюсы</h4><ul><li>Все действия на виду</li><li>Явная группировка</li><li>Легко найти нужное</li></ul></div>
+        <div class="cons"><h4>✗ Минусы</h4><ul><li>Больше места занимает</li><li>Визуальный шум</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="hybrid" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Гибрид: быстрые действия + меню</h3>
+      <p>Основные действия всегда видны, остальные в выпадающем меню</p>
+      <div class="mockup">
+        <div class="mockup-header">Слева: боковая панель действий</div>
+        <div class="mockup-body" style="padding:10px;background:#f5f5f5;">
+          <div style="padding:8px;background:#2196f3;color:white;border-radius:4px;margin-bottom:5px;">
+            📊 Show Graph
+          </div>
+          <div style="padding:8px;border:1px solid #ddd;border-radius:4px;margin-bottom:5px;background:white;">
+            <span>Generate & Validate ▼</span>
+            <div style="margin-top:5px;padding-left:10px;font-size:12px;">
+              <div>📄 Generate XML</div>
+              <div>📋 Generate XSD</div>
+              <div>✓ Validate Schema</div>
+            </div>
+          </div>
+          <div style="padding:8px;border:1px solid #ddd;border-radius:4px;margin-bottom:5px;background:white;">
+            <span>File Actions ▼</span>
+            <div style="margin-top:5px;padding-left:10px;font-size:12px;">
+              <div>💾 Save</div>
+              <div>💾 Save As</div>
+              <div>📂 Open File</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pros-cons">
+        <div class="pros"><h4>✓ Плюсы</h4><ul><li>Компактно</li><li>Главное на виду</li><li>Легко расширять</li></ul></div>
+        <div class="cons"><h4>✗ Минусы</h4><ul><li>Нужен клик для действий</li><li>Меньшая наглядность</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>

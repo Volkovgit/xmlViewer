@@ -1,0 +1,88 @@
+<h2>Как расположить главные элементы интерфейса?</h2>
+<p class="subtitle">Выберите наиболее удобную компоновку для работы с XML/XSD файлами</p>
+
+<div class="options">
+  <div class="option" data-choice="classic" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Классическая компоновка</h3>
+      <p>Панель инструментов сверху → вкладки → контент снизу</p>
+      <div class="mockup">
+        <div class="mockup-header">Toolbar (New, Open, Save, Generate XSD/XML)</div>
+        <div class="mockup-body">
+          <div class="mock-tabs">File1.xsd | File2.xml | +</div>
+          <div style="display:flex;height:200px;">
+            <div class="mock-sidebar" style="flex:0 0 200px;border-right:1px solid #ddd;padding:10px;">
+              <div style="font-size:11px;margin-bottom:5px;">Views</div>
+              <div style="padding:5px;background:#e3f2fd;border-radius:3px;">📊 Graph</div>
+              <div style="padding:5px;">📄 Text</div>
+              <div style="padding:5px;">🌳 Tree</div>
+            </div>
+            <div class="mock-content" style="flex:1;padding:10px;">XSD Schema Content</div>
+          </div>
+        </div>
+      </div>
+      <div class="pros-cons">
+        <div class="pros"><h4>✓ Плюсы</h4><ul><li>Привычный layout</li><li>Много места для контента</li><li>Просто реализовать</li></ul></div>
+        <div class="cons"><h4>✗ Минусы</h4><ul><li>Много прокрутки</li><li>Глубокая вложенность</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="sidebar" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Боковая панель действий</h3>
+      <p>Слева - панель действий и файлы, справа - контент с табами</p>
+      <div class="mockup">
+        <div class="mockup-header">Header: Logo & Title</div>
+        <div class="mockup-body">
+          <div style="display:flex;height:200px;">
+            <div class="mock-sidebar" style="flex:0 0 220px;border-right:1px solid #ddd;padding:10px;background:#f5f5f5;">
+              <div style="font-weight:600;margin-bottom:10px;">Actions</div>
+              <div style="padding:8px;background:#2196f3;color:white;border-radius:4px;margin-bottom:5px;">📊 Show Graph</div>
+              <div style="padding:8px;border:1px solid #ddd;border-radius:4px;margin-bottom:5px;">Generate XML</div>
+              <div style="padding:8px;border:1px solid #ddd;border-radius:4px;margin-bottom:5px;">Validate</div>
+              <div style="margin-top:15px;font-weight:600;">Files</div>
+              <div style="padding:5px;">📄 schema.xsd</div>
+              <div style="padding:5px;">📄 data.xml</div>
+            </div>
+            <div class="mock-content" style="flex:1;">
+              <div class="mock-tabs">schema.xsd | data.xml</div>
+              <div style="padding:10px;">Content with tabs: Graph | Text | Tree</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pros-cons">
+        <div class="pros"><h4>✓ Плюсы</h4><ul><li>Действия всегда видны</li><li>Быстрый доступ к файлам</li><li>Граф на видном месте</li><li>Современный вид</li></ul></div>
+        <div class="cons"><h4>✗ Минусы</h4><ul><li>Меньше места для контента</li><li>Требует адаптивности</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="floating" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Плавающая панель</h3>
+      <p>Контент на весь экран, действия в плавающей панели сверху</p>
+      <div class="mockup">
+        <div class="mockup-body">
+          <div style="position:absolute;top:10px;right:10px;background:white;border:1px solid #ddd;border-radius:8px;padding:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button class="mock-button" style="padding:6px 12px;">📊 Graph</button>
+              <button class="mock-button" style="padding:6px 12px;">Generate</button>
+              <button class="mock-button" style="padding:6px 12px;">Validate</button>
+            </div>
+          </div>
+          <div class="mock-tabs" style="margin-top:40px;">schema.xsd | data.xml</div>
+          <div style="padding:10px;">Full-width content area</div>
+        </div>
+      </div>
+      <div class="pros-cons">
+        <div class="pros"><h4>✓ Плюсы</h4><ul><li>Максимум места для контента</li><li>Визуально современно</li><li>Панель не мешает</li></ul></div>
+        <div class="cons"><h4>✗ Минусы</h4><ul><li>Кнопки могут перекрывать контент</li><li>Сложнее реализовать</li><li>Меньше явно для новых пользователей</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>
