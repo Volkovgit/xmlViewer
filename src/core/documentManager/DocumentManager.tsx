@@ -4,6 +4,8 @@ import { createUntitledDocument } from '@/services/document';
 import { DocumentType, DocumentStatus } from '@/types';
 import { useFileOperations } from '@/hooks/useFileOperations';
 import { generateXSDFromXML, generateXMLFromXSD, validateXMLAgainstXSD } from '@/services/xsd';
+import { AppLayout } from '@/components/layout';
+import { LeftSidebar } from '@/components/layout';
 import { DocumentTabs } from './DocumentTabs';
 import { DocumentToolbar } from './DocumentToolbar';
 import { XMLTextEditor } from '@/views/text';
@@ -217,136 +219,146 @@ export function DocumentManager() {
   const isActiveXSD = activeDocument?.type === DocumentType.XSD;
 
   return (
-    <div
-      className="document-manager"
-      onDragOver={handleDragOver}
-      onDrop={handleDrop}
+    <AppLayout
+      sidebar={
+        <LeftSidebar
+          // Empty for now - ActionsPanel and FilesPanel will be added in later tasks
+          actionsPanel={undefined}
+          filesPanel={undefined}
+        />
+      }
     >
-      <DocumentToolbar
-        onNewFile={handleNewFile}
-        onOpenFile={handleOpenButtonClick}
-        onSaveFile={() => activeDocument && saveFile(activeDocument)}
-        onSaveFileAs={() => activeDocument && saveFileAs(activeDocument)}
-        onSaveAllDocuments={saveAllDocuments}
-        hasDirtyDocuments={hasDirtyDocuments}
-        hasActiveDocument={!!activeDocument}
-        isActiveXML={isActiveXML}
-        isActiveXSD={isActiveXSD}
-        onGenerateXSD={handleGenerateXSD}
-        onGenerateXML={handleGenerateXML}
-        onValidateXSD={handleValidateXSD}
-        onAssignSchema={handleAssignSchema}
-      />
+      <div
+        className="document-manager"
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+      >
+        <DocumentToolbar
+          onNewFile={handleNewFile}
+          onOpenFile={handleOpenButtonClick}
+          onSaveFile={() => activeDocument && saveFile(activeDocument)}
+          onSaveFileAs={() => activeDocument && saveFileAs(activeDocument)}
+          onSaveAllDocuments={saveAllDocuments}
+          hasDirtyDocuments={hasDirtyDocuments}
+          hasActiveDocument={!!activeDocument}
+          isActiveXML={isActiveXML}
+          isActiveXSD={isActiveXSD}
+          onGenerateXSD={handleGenerateXSD}
+          onGenerateXML={handleGenerateXML}
+          onValidateXSD={handleValidateXSD}
+          onAssignSchema={handleAssignSchema}
+        />
 
-      <input
-        ref={fileInputRef}
-        type="file"
-        className="document-file-input"
-        onChange={handleFileSelected}
-        accept=".xml,.xsd,.xsl,.xslt,.xq,.xquery,.json"
-        data-testid="file-input"
-      />
+        <input
+          ref={fileInputRef}
+          type="file"
+          className="document-file-input"
+          onChange={handleFileSelected}
+          accept=".xml,.xsd,.xsl,.xslt,.xq,.xquery,.json"
+          data-testid="file-input"
+        />
 
-      <DocumentTabs
-        documents={documents}
-        activeDocumentId={activeDocument?.id ?? null}
-        onTabClick={handleTabClick}
-        onClose={handleClose}
-      />
+        <DocumentTabs
+          documents={documents}
+          activeDocumentId={activeDocument?.id ?? null}
+          onTabClick={handleTabClick}
+          onClose={handleClose}
+        />
 
-      <div className="document-content">
-        {activeDocument ? (
-          <div className="active-document" data-testid="active-document">
-            {isActiveXSD ? (
-              xsdViewMode === 'visualizer' ? (
-                <XSDVisualizer xsdContent={activeDocument.content} />
+        <div className="document-content">
+          {activeDocument ? (
+            <div className="active-document" data-testid="active-document">
+              {isActiveXSD ? (
+                xsdViewMode === 'visualizer' ? (
+                  <XSDVisualizer xsdContent={activeDocument.content} />
+                ) : (
+                  <XMLTextEditor
+                    document={activeDocument}
+                    onSave={() => saveFile(activeDocument)}
+                  />
+                )
+              ) : isActiveXML ? (
+                xmlViewMode === 'tree' ? (
+                  <XMLTree document={activeDocument} />
+                ) : xmlViewMode === 'grid' ? (
+                  <XMLGrid document={activeDocument} onCellValueChanged={handleGridCellValueChanged} />
+                ) : (
+                  <XMLTextEditor
+                    document={activeDocument}
+                    onSave={() => saveFile(activeDocument)}
+                  />
+                )
               ) : (
                 <XMLTextEditor
                   document={activeDocument}
                   onSave={() => saveFile(activeDocument)}
                 />
-              )
-            ) : isActiveXML ? (
-              xmlViewMode === 'tree' ? (
-                <XMLTree document={activeDocument} />
-              ) : xmlViewMode === 'grid' ? (
-                <XMLGrid document={activeDocument} onCellValueChanged={handleGridCellValueChanged} />
-              ) : (
-                <XMLTextEditor
-                  document={activeDocument}
-                  onSave={() => saveFile(activeDocument)}
-                />
-              )
-            ) : (
-              <XMLTextEditor
-                document={activeDocument}
-                onSave={() => saveFile(activeDocument)}
-              />
-            )}
-            {isActiveXSD && (
-              <div className="xsd-view-toggle">
-                <button
-                  className={`toggle-btn ${xsdViewMode === 'text' ? 'active' : ''}`}
-                  onClick={() => setXsdViewMode('text')}
-                  data-testid="xsd-text-view-btn"
-                >
-                  Text
-                </button>
-                <button
-                  className={`toggle-btn ${xsdViewMode === 'visualizer' ? 'active' : ''}`}
-                  onClick={() => setXsdViewMode('visualizer')}
-                  data-testid="xsd-visual-view-btn"
-                >
-                  Visual
-                </button>
-              </div>
-            )}
-            {isActiveXML && (
-              <div className="xml-view-toggle">
-                <button
-                  className={`toggle-btn ${xmlViewMode === 'text' ? 'active' : ''}`}
-                  onClick={() => setXmlViewMode('text')}
-                  data-testid="xml-text-view-btn"
-                >
-                  Text View
-                </button>
-                <button
-                  className={`toggle-btn ${xmlViewMode === 'tree' ? 'active' : ''}`}
-                  onClick={() => setXmlViewMode('tree')}
-                  data-testid="xml-tree-view-btn"
-                >
-                  Tree View
-                </button>
-                <button
-                  className={`toggle-btn ${xmlViewMode === 'grid' ? 'active' : ''}`}
-                  onClick={() => setXmlViewMode('grid')}
-                  data-testid="xml-grid-view-btn"
-                >
-                  Grid View
-                </button>
-              </div>
-            )}
-            {xsdErrors.length > 0 && isActiveXML && (
-              <div className="xsd-error-panel" data-testid="xsd-error-panel">
-                <h4>XSD Validation Errors</h4>
-                <ul>
-                  {xsdErrors.map((err, i) => (
-                    <li key={i}>{err}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="empty-state" data-testid="empty-state">
-            <div className="empty-state-content">
-              <h2>No Document Open</h2>
-              <p>Create a new file or open an existing file to get started</p>
+              )}
+              {isActiveXSD && (
+                <div className="xsd-view-toggle">
+                  <button
+                    className={`toggle-btn ${xsdViewMode === 'text' ? 'active' : ''}`}
+                    onClick={() => setXsdViewMode('text')}
+                    data-testid="xsd-text-view-btn"
+                  >
+                    Text
+                  </button>
+                  <button
+                    className={`toggle-btn ${xsdViewMode === 'visualizer' ? 'active' : ''}`}
+                    onClick={() => setXsdViewMode('visualizer')}
+                    data-testid="xsd-visual-view-btn"
+                  >
+                    Visual
+                  </button>
+                </div>
+              )}
+              {isActiveXML && (
+                <div className="xml-view-toggle">
+                  <button
+                    className={`toggle-btn ${xmlViewMode === 'text' ? 'active' : ''}`}
+                    onClick={() => setXmlViewMode('text')}
+                    data-testid="xml-text-view-btn"
+                  >
+                    Text View
+                  </button>
+                  <button
+                    className={`toggle-btn ${xmlViewMode === 'tree' ? 'active' : ''}`}
+                    onClick={() => setXmlViewMode('tree')}
+                    data-testid="xml-tree-view-btn"
+                  >
+                    Tree View
+                  </button>
+                  <button
+                    className={`toggle-btn ${xmlViewMode === 'grid' ? 'active' : ''}`}
+                    onClick={() => setXmlViewMode('grid')}
+                    data-testid="xml-grid-view-btn"
+                  >
+                    Grid View
+                  </button>
+                </div>
+              )}
+              {xsdErrors.length > 0 && isActiveXML && (
+                <div className="xsd-error-panel" data-testid="xsd-error-panel">
+                  <h4>XSD Validation Errors</h4>
+                  <ul>
+                    {xsdErrors.map((err, i) => (
+                      <li key={i}>{err}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="empty-state" data-testid="empty-state">
+              <div className="empty-state-content">
+                <h2>No Document Open</h2>
+                <p>Create a new file or open an existing file to get started</p>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </AppLayout>
   );
 }
 
