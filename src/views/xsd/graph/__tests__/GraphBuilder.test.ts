@@ -84,7 +84,8 @@ describe('GraphBuilder', () => {
 
     // Should have: PurchaseOrder (element), PurchaseOrderType (type),
     // ShipTo (element), BillTo (element), AddressType (type), Street (element)
-    expect(result.nodes).toHaveLength(6);
+    // Plus circular ref node for BillTo->AddressType (duplicate type reference)
+    expect(result.nodes).toHaveLength(7);
 
     // Edges:
     // 1. PurchaseOrder->PurchaseOrderType (reference)
@@ -222,11 +223,9 @@ describe('GraphBuilder', () => {
     const result = builder.buildGraph(schema, 'Root');
 
     // Should have: Root (element), CircularType (type), Child (element)
-    // Child is created but its reference to CircularType is skipped due to visited set
-    expect(result.nodes).toHaveLength(3);
-    expect(result.edges).toHaveLength(3); // Root->CircularType + CircularType->Child + Child->CircularType (reference, but target already visited so edge is still created?)
-    // Actually looking at the code, the edge is created before checking if target is visited
-    // So we get: Root->CircularType (ref), CircularType->Child (comp), Child->CircularType (ref) = 3 edges
+    // Plus circular ref node for Child->CircularType (circular reference)
+    expect(result.nodes).toHaveLength(4);
+    expect(result.edges).toHaveLength(3); // Root->CircularType (ref), CircularType->Child (comp), Child->CircularType (ref, but creates circular ref node)
   });
 
   it('should respect maxDepth parameter', () => {
@@ -303,8 +302,37 @@ describe('GraphBuilder', () => {
     // buildElementNode at depth 0 -> creates Level1, then calls buildTypeNode at depth 1
     // buildTypeNode at depth 1 -> creates Type1, then calls buildElementNode at depth 2
     // buildElementNode at depth 2 -> creates Level2, then calls buildTypeNode at depth 3
-    // buildTypeNode at depth 3 -> rejected because 3 > 2
-    // So we have: Level1, Type1, Level2 = 3 nodes
-    expect(result.nodes).toHaveLength(3);
+    // buildTypeNode at depth 3 -> rejected because 3 > 2, creates truncated node
+    // So we have: Level1, Type1, Level2, Type2:truncated = 4 nodes
+    expect(result.nodes).toHaveLength(4);
+  });
+
+  it('should handle missing types', () => {
+    const schema: XSDSchema = {
+      targetNamespace: 'http://example.com',
+      elements: [
+        {
+          name: 'MyElement',
+          type: 'MissingType',
+          occurrence: { minOccurs: 1, maxOccurs: 1 }
+        }
+      ],
+      complexTypes: [],
+      simpleTypes: [],
+      raw: ''
+    };
+
+    const builder = new GraphBuilder();
+    const result = builder.buildGraph(schema, 'MyElement');
+
+    // Should create element node + missing type node
+    expect(result.nodes.length).toBeGreaterThan(0);
+
+    // Should have missing type node with special ID
+    const missingNode = result.nodes.find(n => n.id === 'type:MissingType:missing');
+    expect(missingNode).toBeDefined();
+    expect(missingNode.type).toBe('missingTypeNode');
+    expect(missingNode.data.label).toContain('MissingType');
+    expect(missingNode.data.label).toContain('not found');
   });
 });

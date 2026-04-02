@@ -34,7 +34,12 @@ export class GraphBuilder {
     maxDepth: number
   ): void {
     const nodeId = `element:${element.name}`;
-    if (visited.has(nodeId)) return;
+
+    // Cycle detection
+    if (visited.has(nodeId)) {
+      this.createCircularRefNode(nodeId, nodes);
+      return;
+    }
     visited.add(nodeId);
 
     // Create element node
@@ -72,15 +77,41 @@ export class GraphBuilder {
     currentDepth: number,
     maxDepth: number
   ): void {
-    if (currentDepth > maxDepth) return;
+    if (currentDepth > maxDepth) {
+      // Create truncated node for depth limit
+      const truncatedId = `type:${typeName}:truncated`;
+      if (!nodes.find(n => n.id === truncatedId)) {
+        nodes.push({
+          id: truncatedId,
+          type: 'truncatedNode',
+          position: { x: 0, y: 0 },
+          data: {
+            label: `... (${typeName} too deep, maxDepth=${maxDepth})`,
+            isTruncated: true
+          }
+        });
+      }
+      return;
+    }
 
     const nodeId = `type:${typeName}`;
-    if (visited.has(nodeId)) return;
+
+    // Cycle detection
+    if (visited.has(nodeId)) {
+      this.createCircularRefNode(nodeId, nodes);
+      return;
+    }
     visited.add(nodeId);
 
     // Find type in complexTypes or simpleTypes
     const complexType = schema.complexTypes.find(t => t.name === typeName);
     const simpleType = schema.simpleTypes.find(t => t.name === typeName);
+
+    // Missing type handling
+    if (!complexType && !simpleType && !typeName.startsWith('xs:')) {
+      this.createMissingTypeNode(typeName, nodes);
+      return;
+    }
 
     if (complexType) {
       nodes.push({
@@ -111,6 +142,37 @@ export class GraphBuilder {
         type: 'simpleTypeNode',
         position: { x: 0, y: 0 },
         data: { type: simpleType }
+      });
+    }
+  }
+
+  private createCircularRefNode(nodeId: string, nodes: Node[]): void {
+    const circularId = `${nodeId}:circular`;
+    if (!nodes.find(n => n.id === circularId)) {
+      const name = nodeId.split(':')[1] || nodeId;
+      nodes.push({
+        id: circularId,
+        type: 'circularRefNode',
+        position: { x: 0, y: 0 },
+        data: {
+          label: `🔄 ${name} (circular reference)`,
+          isCircular: true
+        }
+      });
+    }
+  }
+
+  private createMissingTypeNode(typeName: string, nodes: Node[]): void {
+    const missingId = `type:${typeName}:missing`;
+    if (!nodes.find(n => n.id === missingId)) {
+      nodes.push({
+        id: missingId,
+        type: 'missingTypeNode',
+        position: { x: 0, y: 0 },
+        data: {
+          label: `❌ ${typeName} (type not found in schema)`,
+          isMissing: true
+        }
       });
     }
   }
