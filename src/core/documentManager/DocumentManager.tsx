@@ -1,18 +1,20 @@
 import { useCallback, useState, useMemo } from 'react';
 import { useDocumentStore } from '@/stores';
 import { createUntitledDocument } from '@/services/document';
-import { DocumentType, DocumentStatus } from '@/types';
+import { Document, DocumentType, DocumentStatus } from '@/types';
 import { ValidationError } from '@/types';
 import { useFileOperations } from '@/hooks/useFileOperations';
-import { generateXSDFromXML, generateXMLFromXSD, validateXMLAgainstXSD } from '@/services/xsd';
+import { generateXSDFromXML, generateXMLFromXSD, validateXMLAgainstXSD, parseXSD } from '@/services/xsd';
 import { AppLayout } from '@/components/layout';
 import { LeftSidebar } from '@/components/layout';
 import { ActionsPanel } from '@/components/actions';
 import { FilesPanel } from '@/components/files';
+import { ValidationPanel, SchemaSelectionModal } from '@/components/validation';
 import { DocumentTabs } from './DocumentTabs';
 import { TopBar } from '@/components/toolbar';
 import { XMLTextEditor } from '@/views/text';
 import { XSDVisualizer } from '@/views/xsd/XSDVisualizer';
+import { XSDGraphVisualizer } from '@/views/xsd/graph/XSDGraphVisualizer';
 import '@/components/toolbar/TopBar.css';
 import './DocumentManager.css';
 
@@ -30,7 +32,6 @@ export function DocumentManager() {
     setActiveDocument,
     removeDocument,
     addDocument,
-    updateDocumentContent,
   } = useDocumentStore();
 
   const {
@@ -42,17 +43,20 @@ export function DocumentManager() {
 
   // Schema assignment state: maps docId → schemaDocId
   const [schemaAssignments, setSchemaAssignments] = useState<Map<string, string>>(new Map());
-  // Validation errors from XSD validation
-  const [xsdErrors, setXsdErrors] = useState<string[]>([]);
   // XSD view mode: 'text' or 'visualizer'
   const [xsdViewMode, setXsdViewMode] = useState<'text' | 'visualizer'>('text');
+
+  // Validation errors for ValidationPanel
+  const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
+  // Schema selection modal state
+  const [showSchemaModal, setShowSchemaModal] = useState(false);
 
   // Get data for FilesPanel
   const openDocuments = getAllDocuments();
   const activeDocument = getActiveDocument();
 
-  // Validation errors map for FilesPanel - empty for now, will be populated when validation is integrated
-  const validationErrors = useMemo(() => new Map<string, ValidationError[]>(), []);
+  // Validation errors map for FilesPanel - maps document ID to list of errors
+  const validationErrorsMap = useMemo(() => new Map<string, ValidationError[]>(), []);
 
   // Handler for document selection from FilesPanel
   const handleDocumentSelect = useCallback((id: string) => {
@@ -169,11 +173,11 @@ export function DocumentManager() {
 
     const errors = validateXMLAgainstXSD(activeDoc.content, schemaDoc.content);
     if (errors.length === 0) {
-      setXsdErrors([]);
+      setValidationErrors([]);
       alert('✓ XML is valid against the assigned schema.');
     } else {
       const msgs = errors.map((e) => `Line ${e.line}: ${e.message}`);
-      setXsdErrors(msgs);
+      setValidationErrors(errors);
       alert(`✗ ${errors.length} validation error(s):\n\n${msgs.join('\n')}`);
     }
   }, [getActiveDocument, schemaAssignments, getAllDocuments]);
@@ -209,9 +213,43 @@ export function DocumentManager() {
     alert(`Schema "${xsdDocs[index].name}" assigned to "${activeDoc.name}".`);
   }, [getActiveDocument, getAllDocuments]);
 
+  // Handle schema selection from modal
+  const handleSchemaSelect = useCallback((xsdDocument: Document) => {
+    setShowSchemaModal(false);
+
+    const activeDoc = getActiveDocument();
+    if (!activeDoc) return;
+
+    try {
+      const errors = validateXMLAgainstXSD(activeDoc.content, xsdDocument.content);
+      setValidationErrors(errors);
+
+      if (errors.length === 0) {
+        alert(`✓ XML is valid according to ${xsdDocument.name}`);
+      } else {
+        const msgs = errors.map((e) => `Line ${e.line}: ${e.message}`);
+        alert(`✗ ${errors.length} validation error(s):\n\n${msgs.join('\n')}`);
+      }
+    } catch (error) {
+      alert(`Validation error: ${error}`);
+    }
+  }, [getActiveDocument]);
+
+  // Parse XSD schema for graph visualization
+  const parsedSchema = useMemo(() => {
+    const activeDoc = getActiveDocument();
+    if (activeDoc?.type === DocumentType.XSD && xsdViewMode === 'visualizer') {
+      try {
+        return parseXSD(activeDoc.content);
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  }, [getActiveDocument, xsdViewMode]);
+
   // ─── Render ────────────────────────────────────
 
-  const isActiveXML = activeDocument?.type === DocumentType.XML;
   const isActiveXSD = activeDocument?.type === DocumentType.XSD;
 
   const handleShowGraph = useCallback(() => {
@@ -239,7 +277,7 @@ export function DocumentManager() {
               documents={openDocuments}
               activeDocumentId={activeDocument?.id ?? ''}
               onDocumentSelect={handleDocumentSelect}
-              validationErrors={validationErrors}
+              validationErrors={validationErrorsMap}
             />
           }
         />
@@ -299,30 +337,21 @@ export function DocumentManager() {
             <div className="active-document" data-testid="active-document">
               {isActiveXSD ? (
                 xsdViewMode === 'visualizer' ? (
-                  <XSDVisualizer
-                    xsdContent={activeDocument.content}
-                  />
+                  parsedSchema ? (
+                    <XSDGraphVisualizer schema={parsedSchema} />
+                  ) : (
+                    <div className="error-state">
+                      <p>Failed to parse XSD schema for visualization.</p>
+                    </div>
+                  )
                 ) : (
-                  <XMLTextEditor
-                    document={activeDocument}
-                    onSave={() => saveFile(activeDocument)}
-                  />
+                  <XSDVisualizer xsdContent={activeDocument.content} />
                 )
               ) : (
                 <XMLTextEditor
                   document={activeDocument}
                   onSave={() => saveFile(activeDocument)}
                 />
-              )}
-              {xsdErrors.length > 0 && isActiveXML && (
-                <div className="xsd-error-panel" data-testid="xsd-error-panel">
-                  <h4>XSD Validation Errors</h4>
-                  <ul>
-                    {xsdErrors.map((err, i) => (
-                      <li key={i}>{err}</li>
-                    ))}
-                  </ul>
-                </div>
               )}
             </div>
           ) : (
@@ -334,6 +363,25 @@ export function DocumentManager() {
             </div>
           )}
         </div>
+
+        <ValidationPanel
+          errors={validationErrors}
+          visible={validationErrors.length > 0}
+          onErrorClick={(error) => {
+            if (error.line) {
+              // TODO: Implement focus logic for editor line
+              console.log('Focus on line:', error.line);
+            }
+          }}
+        />
+
+        {showSchemaModal && (
+          <SchemaSelectionModal
+            xsdDocuments={getAllDocuments().filter(d => d.type === DocumentType.XSD)}
+            onSelect={handleSchemaSelect}
+            onCancel={() => setShowSchemaModal(false)}
+          />
+        )}
       </div>
     </AppLayout>
   );
