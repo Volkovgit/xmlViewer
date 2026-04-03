@@ -71,3 +71,29 @@
   overflow: hidden;
   min-width: 0;
 }
+
+.app-layout-right-panel {
+  flex: 0 0 320px;
+  background: var(--bg-white);
+  border-left: 1px solid var(--border-color);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  .app-layout-right-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 320px;
+    height: 100vh;
+    z-index: 1000;
+    box-shadow: var(--shadow-md);
+    transform: translateX(100%);
+    transition: transform var(--transition-slow);
+  }
+
+  .app-layout-right-panel.show {
+    transform: translateX(0);
+  }
+}

@@ -11,6 +11,7 @@ import './AppLayout.css';
 interface AppLayoutProps {
   children: ReactNode;
   sidebar?: ReactNode;
+  rightPanel?: ReactNode;
 }
 
 interface AppLayoutContextType {
@@ -30,7 +31,7 @@ export const useAppLayout = (): AppLayoutContextType => {
   return context;
 };
 
-export const AppLayout: React.FC<AppLayoutProps> = ({ children, sidebar }) => {
+export const AppLayout: React.FC<AppLayoutProps> = ({ children, sidebar, rightPanel }) => {
   // Detect mobile screen size
   const [isMobile, setIsMobile] = useState<boolean>(() => window.innerWidth < 768);
 
@@ -97,6 +98,12 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, sidebar }) => {
         )}
 
         <main className="app-layout-content">{children}</main>
+
+        {rightPanel && (
+          <aside className="app-layout-right-panel">
+            {rightPanel}
+          </aside>
+        )}
       </div>
     </AppLayoutContext.Provider>
   );
