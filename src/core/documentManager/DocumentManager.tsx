@@ -13,7 +13,6 @@ import { ValidationPanel, SchemaSelectionModal } from '@/components/validation';
 import { DocumentTabs } from './DocumentTabs';
 import { TopBar } from '@/components/toolbar';
 import { XMLTextEditor } from '@/views/text';
-import { XSDVisualizer } from '@/views/xsd/XSDVisualizer';
 import { XSDGraphVisualizer } from '@/views/xsd/graph/XSDGraphVisualizer';
 import '@/components/toolbar/TopBar.css';
 import './DocumentManager.css';
@@ -277,7 +276,10 @@ export function DocumentManager() {
                     </div>
                   )
                 ) : (
-                  <XSDVisualizer xsdContent={activeDocument.content} />
+                  <XMLTextEditor
+                    document={activeDocument}
+                    onSave={() => saveFile(activeDocument)}
+                  />
                 )
               ) : (
                 <XMLTextEditor
