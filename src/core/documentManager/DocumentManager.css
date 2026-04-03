@@ -170,6 +170,21 @@
   color: var(--text-secondary);
 }
 
+/* Error State */
+.error-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background-color: #fff5f5;
+  color: #c62828;
+}
+
+.error-state p {
+  font-size: 14px;
+  margin: 0;
+}
+
 /* View Mode Bar */
 .view-mode-bar {
   padding: 12px 20px;
