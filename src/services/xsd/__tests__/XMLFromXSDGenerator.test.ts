@@ -162,7 +162,7 @@ describe('XMLFromXSDGenerator', () => {
       // Optional may or may not be included
     });
 
-    it('should use first enumeration value', () => {
+    it('should use enumeration value (any of them)', () => {
       const xsd = `<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="color">
@@ -177,8 +177,30 @@ describe('XMLFromXSDGenerator', () => {
 </xs:schema>`;
 
       const xml = generateXMLFromXSD(xsd);
-      expect(xml).toContain('red');
-      expect(xml).not.toContain('green');
+      expect(xml).toBeTruthy();
+      const match = xml!.match(/<color>(.+)<\/color>/);
+      expect(match).toBeTruthy();
+      expect(['red', 'green', 'blue']).toContain(match![1]);
+    });
+
+    it('should generate deterministic values with seed', () => {
+      const xsd = `<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="color">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="red"/>
+        <xs:enumeration value="green"/>
+        <xs:enumeration value="blue"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+</xs:schema>`;
+
+      const xml1 = generateXMLFromXSD(xsd, { seed: 42 });
+      const xml2 = generateXMLFromXSD(xsd, { seed: 42 });
+
+      expect(xml1).toBe(xml2);
     });
 
     it('should handle named complex types', () => {
@@ -214,7 +236,9 @@ describe('XMLFromXSDGenerator', () => {
 </xs:schema>`;
 
       const xml = generateXMLFromXSD(xsd);
-      expect(xml).toContain('AK');
+      const match = xml!.match(/<state>(.+)<\/state>/);
+      expect(match).toBeTruthy();
+      expect(['AK', 'AL']).toContain(match![1]);
     });
 
     it('should handle simple content with attributes', () => {
