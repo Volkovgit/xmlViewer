@@ -5,6 +5,7 @@ import React, {
   ReactNode,
   useEffect,
 } from 'react';
+import { Menu } from 'lucide-react';
 import './AppLayout.css';
 
 interface AppLayoutProps {
@@ -30,6 +31,9 @@ export const useAppLayout = (): AppLayoutContextType => {
 };
 
 export const AppLayout: React.FC<AppLayoutProps> = ({ children, sidebar }) => {
+  // Detect mobile screen size
+  const [isMobile, setIsMobile] = useState<boolean>(() => window.innerWidth < 768);
+
   // Initialize collapsed state based on window width (mobile-first)
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(
     () => window.innerWidth < 768
@@ -38,8 +42,11 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, sidebar }) => {
   // Handle window resize to update sidebar state
   useEffect(() => {
     const handleResize = () => {
-      const isMobile = window.innerWidth < 768;
-      setIsSidebarCollapsed(isMobile);
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (mobile) {
+        setIsSidebarCollapsed(true); // Auto-collapse on mobile
+      }
     };
 
     window.addEventListener('resize', handleResize);
@@ -67,6 +74,28 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, sidebar }) => {
             {sidebar}
           </aside>
         )}
+
+        {/* Mobile sidebar toggle button */}
+        {isMobile && (
+          <button
+            className="sidebar-toggle"
+            onClick={toggleSidebar}
+            aria-label="Toggle sidebar"
+            aria-expanded={!isSidebarCollapsed}
+          >
+            <Menu size={24} />
+          </button>
+        )}
+
+        {/* Mobile overlay */}
+        {isMobile && !isSidebarCollapsed && (
+          <div
+            className="sidebar-overlay show"
+            onClick={toggleSidebar}
+            aria-hidden="true"
+          />
+        )}
+
         <main className="app-layout-content">{children}</main>
       </div>
     </AppLayoutContext.Provider>
