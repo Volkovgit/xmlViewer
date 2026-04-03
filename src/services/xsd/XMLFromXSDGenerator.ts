@@ -22,6 +22,19 @@ import {
   LengthConstraintGenerator,
   EnumerationSelector,
 } from './generators';
+import { validateXMLAgainstXSD } from './XSDValidator';
+
+/**
+ * Options for XML generation from XSD.
+ */
+export interface GenerateXMLOptions {
+  /** Seed for reproducible random values */
+  seed?: number;
+  /** Maximum regeneration attempts when validation fails (default: 3) */
+  maxAttempts?: number;
+  /** Whether to validate generated XML against XSD (default: true) */
+  validateResult?: boolean;
+}
 
 // Generator instances for constraint-aware value generation
 const patternMatcher = new PatternMatcher();
@@ -213,20 +226,45 @@ function generateElementXML(
  * with sample values for each type.
  *
  * @param xsdContent - XSD schema string
+ * @param options - Generation options (validation loop, seed, attempts)
  * @returns XML instance string, or null if XSD is not valid
  */
-export function generateXMLFromXSD(xsdContent: string): string | null {
+export function generateXMLFromXSD(
+  xsdContent: string,
+  options?: GenerateXMLOptions
+): string | null {
   const schema = parseXSD(xsdContent);
   if (!schema || schema.elements.length === 0) return null;
 
   // Use the first root element
   const rootElement = schema.elements[0];
+  const maxAttempts = options?.maxAttempts ?? 3;
+  const validate = options?.validateResult !== false;
 
-  const lines: string[] = [
-    '<?xml version="1.0" encoding="UTF-8"?>',
-    generateElementXML(rootElement, schema, 0),
-    '',
-  ];
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const lines: string[] = [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      generateElementXML(rootElement, schema, 0),
+      '',
+    ];
 
-  return lines.join('\n');
+    const xml = lines.join('\n');
+
+    // Validate if requested
+    if (validate) {
+      const errors = validateXMLAgainstXSD(xml, xsdContent);
+      if (errors.length === 0) {
+        return xml; // Success!
+      }
+      console.warn(`Validation attempt ${attempt + 1} failed, retrying...`);
+      if (attempt < maxAttempts - 1) {
+        continue; // Try again
+      }
+    }
+
+    // Return XML even if validation failed (after all attempts)
+    return xml;
+  }
+
+  return null; // Should not reach here
 }
