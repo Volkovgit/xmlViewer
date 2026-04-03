@@ -35,13 +35,25 @@ export const ActionsPanel: React.FC<ActionsPanelProps> = ({
         <div className="actions-list">
           {isXSD && (
             <>
-              <PrimaryActionButton icon="Circle" onClick={onShowGraph || (() => {})}>
+              <PrimaryActionButton
+                icon="Circle"
+                onClick={onShowGraph || (() => {})}
+                tooltip="Show dependency graph for XSD schema"
+              >
                 Show Graph
               </PrimaryActionButton>
-              <SecondaryActionButton icon="FileText" onClick={onGenerateXML || (() => {})}>
+              <SecondaryActionButton
+                icon="FileText"
+                onClick={onGenerateXML || (() => {})}
+                tooltip="Generate XML instance from XSD schema"
+              >
                 Generate XML
               </SecondaryActionButton>
-              <SecondaryActionButton icon="CheckCircle" onClick={onValidate || (() => {})}>
+              <SecondaryActionButton
+                icon="CheckCircle"
+                onClick={onValidate || (() => {})}
+                tooltip="Validate XSD schema for errors and warnings"
+              >
                 Validate
               </SecondaryActionButton>
             </>
@@ -49,13 +61,25 @@ export const ActionsPanel: React.FC<ActionsPanelProps> = ({
 
           {isXML && (
             <>
-              <SecondaryActionButton icon="FileCode" onClick={onGenerateXsd || (() => {})}>
+              <SecondaryActionButton
+                icon="FileCode"
+                onClick={onGenerateXsd || (() => {})}
+                tooltip="Generate XSD schema from XML document"
+              >
                 Generate XSD
               </SecondaryActionButton>
-              <SecondaryActionButton icon="Link" onClick={onAssignSchema || (() => {})}>
+              <SecondaryActionButton
+                icon="Link"
+                onClick={onAssignSchema || (() => {})}
+                tooltip="Attach XSD schema to XML document for validation"
+              >
                 Assign Schema
               </SecondaryActionButton>
-              <SecondaryActionButton icon="CheckCircle" onClick={onValidate || (() => {})}>
+              <SecondaryActionButton
+                icon="CheckCircle"
+                onClick={onValidate || (() => {})}
+                tooltip="Validate XML document against attached XSD schema"
+              >
                 Validate XSD
               </SecondaryActionButton>
             </>
