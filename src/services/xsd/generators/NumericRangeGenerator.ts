@@ -17,28 +17,30 @@ export class NumericRangeGenerator {
    * Generate a random integer within the restriction bounds.
    *
    * @param restriction - XSD restriction with min/max constraints
+   * @param seed - Optional seed for deterministic generation
    * @returns Random integer, or null if constraints are conflicting
    */
-  generateInteger(restriction: XSDRestriction): number | null {
+  generateInteger(restriction: XSDRestriction, seed?: number): number | null {
     const min = this.getMinValue(restriction, this.DEFAULT_MIN_INT);
     const max = this.getMaxValue(restriction, this.DEFAULT_MAX_INT);
     const minInclusive = this.isMinInclusive(restriction);
     const maxInclusive = this.isMaxInclusive(restriction);
-    return this.generateInRange(min, max, minInclusive, maxInclusive, true);
+    return this.generateInRange(min, max, minInclusive, maxInclusive, true, seed);
   }
 
   /**
    * Generate a random decimal within the restriction bounds.
    *
    * @param restriction - XSD restriction with min/max constraints
+   * @param seed - Optional seed for deterministic generation
    * @returns Random decimal, or null if constraints are conflicting
    */
-  generateDecimal(restriction: XSDRestriction): number | null {
+  generateDecimal(restriction: XSDRestriction, seed?: number): number | null {
     const min = this.getMinValue(restriction, this.DEFAULT_MIN_DEC);
     const max = this.getMaxValue(restriction, this.DEFAULT_MAX_DEC);
     const minInclusive = this.isMinInclusive(restriction);
     const maxInclusive = this.isMaxInclusive(restriction);
-    return this.generateInRange(min, max, minInclusive, maxInclusive, false);
+    return this.generateInRange(min, max, minInclusive, maxInclusive, false, seed);
   }
 
   /**
@@ -77,7 +79,8 @@ export class NumericRangeGenerator {
     max: number,
     minInclusive: boolean,
     maxInclusive: boolean,
-    isInteger: boolean
+    isInteger: boolean,
+    seed?: number
   ): number | null {
     // Adjust for exclusive bounds
     const effectiveMin = minInclusive ? min : min + (isInteger ? 1 : 0.0001);
@@ -88,10 +91,18 @@ export class NumericRangeGenerator {
       return null;
     }
 
-    // Generate random value
-    const random = Math.random();
+    // Generate random value (seeded or random)
+    const random = seed !== undefined ? this.seededRandom(seed) : Math.random();
     const value = effectiveMin + random * (effectiveMax - effectiveMin);
 
     return isInteger ? Math.floor(value) : value;
+  }
+
+  /**
+   * Generate a seeded random number between 0 and 1.
+   */
+  private seededRandom(seed: number): number {
+    const x = Math.sin(seed) * 10000;
+    return x - Math.floor(x);
   }
 }

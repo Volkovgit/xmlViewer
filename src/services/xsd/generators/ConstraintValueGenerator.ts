@@ -31,12 +31,14 @@ export class ConstraintValueGenerator {
    * @param baseType - Base XSD type (e.g., "xs:string", "xs:integer")
    * @param restriction - Optional XSD restriction
    * @param elementName - Element name (for sample value generation)
+   * @param seed - Optional seed for deterministic generation
    * @returns Generated value respecting constraints
    */
   generateValue(
     baseType: string,
     restriction: XSDRestriction | undefined,
-    elementName: string
+    elementName: string,
+    seed?: number
   ): string {
     // No restrictions - use base type sample
     if (!restriction) {
@@ -45,7 +47,7 @@ export class ConstraintValueGenerator {
 
     // Priority 1: Enumeration (highest priority, most specific)
     if (restriction.enumerations && restriction.enumerations.length > 0) {
-      const value = this.enumSelector.select(restriction.enumerations);
+      const value = this.enumSelector.select(restriction.enumerations, seed);
       return this.lengthGenerator.applyLength(value, restriction);
     }
 
@@ -62,7 +64,7 @@ export class ConstraintValueGenerator {
     let value: string;
 
     if (this.isNumericType(baseType)) {
-      value = this.generateNumericValue(baseType, restriction, elementName);
+      value = this.generateNumericValue(baseType, restriction, elementName, seed);
     } else {
       value = this.getSampleValue(baseType, elementName);
     }
@@ -79,16 +81,17 @@ export class ConstraintValueGenerator {
   private generateNumericValue(
     baseType: string,
     restriction: XSDRestriction,
-    elementName: string
+    elementName: string,
+    seed?: number
   ): string {
     if (this.isIntegerType(baseType)) {
-      const num = this.numericGenerator.generateInteger(restriction);
+      const num = this.numericGenerator.generateInteger(restriction, seed);
       if (num !== null) {
         return num.toString();
       }
       console.warn(`Numeric range conflict for ${elementName}, using default`);
     } else {
-      const num = this.numericGenerator.generateDecimal(restriction);
+      const num = this.numericGenerator.generateDecimal(restriction, seed);
       if (num !== null) {
         return num.toString();
       }

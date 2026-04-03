@@ -41,21 +41,26 @@ const patternMatcher = new PatternMatcher();
 const numericGenerator = new NumericRangeGenerator();
 const lengthGenerator = new LengthConstraintGenerator();
 const enumSelector = new EnumerationSelector();
-const constraintGenerator = new ConstraintValueGenerator(
-  patternMatcher,
-  numericGenerator,
-  lengthGenerator,
-  enumSelector
-);
+
+// Function to create constraint generator with seed
+function createConstraintGenerator(seed?: number) {
+  return new ConstraintValueGenerator(
+    patternMatcher,
+    numericGenerator,
+    lengthGenerator,
+    new EnumerationSelector(seed) // Pass seed to EnumerationSelector
+  );
+}
 
 // ────────────────────────────────────────────────
 // Sample value generators
 // ────────────────────────────────────────────────
 
-function getSampleValue(typeName: string, elementName: string, restriction?: XSDRestriction): string {
+function getSampleValue(typeName: string, elementName: string, restriction?: XSDRestriction, seed?: number): string {
   // If restriction provided, use constraint generator
   if (restriction) {
-    return constraintGenerator.generateValue(typeName, restriction, elementName);
+    const constraintGen = createConstraintGenerator(seed);
+    return constraintGen.generateValue(typeName, restriction, elementName, seed);
   }
 
   const local = typeName.includes(':') ? typeName.split(':')[1] : typeName;
@@ -101,11 +106,12 @@ function getSampleValue(typeName: string, elementName: string, restriction?: XSD
   }
 }
 
-function getSampleValueForSimpleType(st: XSDSimpleType, elementName: string): string {
+function getSampleValueForSimpleType(st: XSDSimpleType, elementName: string, seed?: number): string {
   if (st.restriction) {
-    return constraintGenerator.generateValue(st.restriction.base, st.restriction, elementName);
+    const constraintGen = createConstraintGenerator(seed);
+    return constraintGen.generateValue(st.restriction.base, st.restriction, elementName, seed);
   }
-  return getSampleValue('xs:string', elementName);
+  return getSampleValue('xs:string', elementName, undefined, seed);
 }
 
 // ────────────────────────────────────────────────
@@ -136,7 +142,7 @@ function isBuiltInType(typeName: string): boolean {
   return builtIns.includes(local);
 }
 
-function generateAttributes(attributes: XSDAttribute[], schema: XSDSchema): string {
+function generateAttributes(attributes: XSDAttribute[], schema: XSDSchema, seed?: number): string {
   if (attributes.length === 0) return '';
   const parts: string[] = [];
   for (const attr of attributes) {
@@ -150,7 +156,7 @@ function generateAttributes(attributes: XSDAttribute[], schema: XSDSchema): stri
     } else {
       const simpleType = resolveSimpleType(attr.type, schema);
       const restriction = simpleType?.restriction;
-      value = getSampleValue(attr.type, attr.name, restriction);
+      value = getSampleValue(attr.type, attr.name, restriction, seed);
     }
 
     parts.push(`${attr.name}="${value}"`);
@@ -161,7 +167,8 @@ function generateAttributes(attributes: XSDAttribute[], schema: XSDSchema): stri
 function generateElementXML(
   element: XSDElement,
   schema: XSDSchema,
-  level: number
+  level: number,
+  seed?: number
 ): string {
   const lines: string[] = [];
   const count = Math.max(1, element.occurrence.minOccurs);
@@ -183,31 +190,31 @@ function generateElementXML(
     }
 
     if (complexType) {
-      const attrStr = generateAttributes(complexType.attributes, schema);
+      const attrStr = generateAttributes(complexType.attributes, schema, seed);
 
       if (complexType.elements.length === 0 && complexType.simpleContentBase) {
         // Simple content with attributes
         const simpleType = resolveSimpleType(complexType.simpleContentBase, schema);
         const restriction = simpleType?.restriction;
-        const value = getSampleValue(complexType.simpleContentBase, element.name, restriction);
+        const value = getSampleValue(complexType.simpleContentBase, element.name, restriction, seed);
         lines.push(`${indent(level)}<${element.name}${attrStr}>${value}</${element.name}>`);
       } else if (complexType.elements.length === 0) {
         lines.push(`${indent(level)}<${element.name}${attrStr}/>`);
       } else {
         lines.push(`${indent(level)}<${element.name}${attrStr}>`);
         for (const child of complexType.elements) {
-          lines.push(generateElementXML(child, schema, level + 1));
+          lines.push(generateElementXML(child, schema, level + 1, seed));
         }
         lines.push(`${indent(level)}</${element.name}>`);
       }
     } else if (simpleType) {
-      const value = getSampleValueForSimpleType(simpleType, element.name);
+      const value = getSampleValueForSimpleType(simpleType, element.name, seed);
       lines.push(`${indent(level)}<${element.name}>${value}</${element.name}>`);
     } else {
       // Built-in type or unresolved
       const simpleType = resolveSimpleType(element.type, schema);
       const restriction = simpleType?.restriction;
-      const value = getSampleValue(element.type, element.name, restriction);
+      const value = getSampleValue(element.type, element.name, restriction, seed);
       lines.push(`${indent(level)}<${element.name}>${value}</${element.name}>`);
     }
   }
@@ -240,11 +247,12 @@ export function generateXMLFromXSD(
   const rootElement = schema.elements[0];
   const maxAttempts = options?.maxAttempts ?? 3;
   const validate = options?.validateResult !== false;
+  const seed = options?.seed;
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     const lines: string[] = [
       '<?xml version="1.0" encoding="UTF-8"?>',
-      generateElementXML(rootElement, schema, 0),
+      generateElementXML(rootElement, schema, 0, seed),
       '',
     ];
 
