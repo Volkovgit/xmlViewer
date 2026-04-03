@@ -6,6 +6,7 @@ import { useFileOperations } from '@/hooks/useFileOperations';
 import { generateXSDFromXML, generateXMLFromXSD, validateXMLAgainstXSD } from '@/services/xsd';
 import { AppLayout } from '@/components/layout';
 import { LeftSidebar } from '@/components/layout';
+import { ActionsPanel } from '@/components/actions';
 import { DocumentTabs } from './DocumentTabs';
 import { DocumentToolbar } from './DocumentToolbar';
 import { XMLTextEditor } from '@/views/text';
@@ -218,12 +219,26 @@ export function DocumentManager() {
   const isActiveXML = activeDocument?.type === DocumentType.XML;
   const isActiveXSD = activeDocument?.type === DocumentType.XSD;
 
+  const handleShowGraph = useCallback(() => {
+    if (activeDocument?.type === DocumentType.XSD) {
+      setXsdViewMode('visualizer');
+    }
+  }, [activeDocument]);
+
   return (
     <AppLayout
       sidebar={
         <LeftSidebar
-          // Empty for now - ActionsPanel and FilesPanel will be added in later tasks
-          actionsPanel={undefined}
+          actionsPanel={
+            <ActionsPanel
+              document={activeDocument ?? null}
+              onShowGraph={handleShowGraph}
+              onGenerateXML={handleGenerateXML}
+              onGenerateXsd={handleGenerateXSD}
+              onValidate={handleValidateXSD}
+              onAssignSchema={handleAssignSchema}
+            />
+          }
           filesPanel={undefined}
         />
       }
