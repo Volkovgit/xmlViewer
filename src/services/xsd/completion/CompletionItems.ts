@@ -78,7 +78,7 @@ export function generateElementSuggestion(element: XSDElement): import('monaco-e
   // Build attribute string for required attributes
   const attrStrings = requiredAttrs.map((attr, index) => {
     const placeholder = index + 1; // Tab stop index
-    return ` ${attr.name}="$\{${placeholder}:${attr.defaultValue || ''}}\""`;
+    return ` ${attr.name}="$\{${placeholder}:${attr.defaultValue || ''}}"`;
   });
 
   // Build insert text based on content model

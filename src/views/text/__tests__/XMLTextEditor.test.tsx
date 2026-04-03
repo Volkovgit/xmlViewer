@@ -36,24 +36,24 @@ vi.mock('@/services/xsd/schemaProvider/SchemaProvider', () => ({
 }));
 
 vi.mock('@/services/xsd/completion/SchemaCompletionProvider', () => ({
-  SchemaCompletionProvider: vi.fn(() => ({
-    provideCompletionItems: vi.fn(() => null),
-    attachToDocument: vi.fn(),
-    detach: vi.fn(),
-  })),
+  SchemaCompletionProvider: class {
+    provideCompletionItems = vi.fn(() => null);
+    attachToDocument = vi.fn();
+    detach = vi.fn();
+  },
 }));
 
 vi.mock('@/services/xsd/decorations/SchemaDecorationProvider', () => ({
-  SchemaDecorationProvider: vi.fn(() => ({
-    getDecorations: vi.fn(() => []),
-    clearDecorations: vi.fn(),
-  })),
+  SchemaDecorationProvider: class {
+    getDecorations = vi.fn(() => []);
+    clearDecorations = vi.fn();
+  },
 }));
 
 vi.mock('@/services/xsd/quickFix/SchemaQuickFixProvider', () => ({
-  SchemaQuickFixProvider: vi.fn(() => ({
-    provideCodeActions: vi.fn(() => ({ actions: [], dispose: vi.fn() })),
-  })),
+  SchemaQuickFixProvider: class {
+    provideCodeActions = vi.fn(() => ({ actions: [], dispose: vi.fn() }));
+  },
 }));
 
 // Mock Monaco Editor (we don't want to render the actual Monaco in tests)

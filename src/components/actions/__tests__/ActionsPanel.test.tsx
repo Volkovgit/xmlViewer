@@ -43,7 +43,7 @@ describe('ActionsPanel', () => {
     render(<ActionsPanel document={xsdDocument} {...mockCallbacks} />);
 
     // Check for XSD-specific buttons
-    expect(screen.getByText('Show Graph')).toBeInTheDocument();
+    expect(screen.getByText('Открыть граф')).toBeInTheDocument();
     expect(screen.getByText('Generate XML')).toBeInTheDocument();
     expect(screen.getByText('Validate')).toBeInTheDocument();
 
@@ -71,7 +71,7 @@ describe('ActionsPanel', () => {
     expect(screen.getByText('Validate XSD')).toBeInTheDocument();
 
     // Ensure XSD-specific buttons are not rendered
-    expect(screen.queryByText('Show Graph')).not.toBeInTheDocument();
+    expect(screen.queryByText('Открыть граф')).not.toBeInTheDocument();
     expect(screen.queryByText('Generate XML')).not.toBeInTheDocument();
   });
 
@@ -90,7 +90,7 @@ describe('ActionsPanel', () => {
 
     // Find the Show Graph button
     const showGraphButton = Array.from(container.querySelectorAll('button')).find(
-      btn => btn.textContent === 'Show Graph'
+      btn => btn.textContent === 'Открыть граф'
     );
 
     expect(showGraphButton).toBeDefined();

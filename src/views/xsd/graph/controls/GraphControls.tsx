@@ -10,8 +10,6 @@ export interface GraphControlsProps {
   onZoomIn: () => void;
   onZoomOut: () => void;
   onFitView: () => void;
-  onExportPNG: () => void;
-  onExportSVG: () => void;
   onSearch: (query: string) => void;
 }
 
@@ -24,8 +22,6 @@ export function GraphControls({
   onZoomIn,
   onZoomOut,
   onFitView,
-  onExportPNG,
-  onExportSVG,
   onSearch
 }: GraphControlsProps) {
   return (
@@ -70,15 +66,6 @@ export function GraphControls({
         </button>
         <button onClick={onFitView} className="graph-btn" title="Fit View">
           ⛶
-        </button>
-      </div>
-
-      <div className="graph-controls-section">
-        <button onClick={onExportPNG} className="graph-btn" title="Export PNG">
-          📷 PNG
-        </button>
-        <button onClick={onExportSVG} className="graph-btn" title="Export SVG">
-          📐 SVG
         </button>
       </div>
 

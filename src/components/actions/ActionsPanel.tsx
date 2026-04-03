@@ -40,7 +40,7 @@ export const ActionsPanel: React.FC<ActionsPanelProps> = ({
                 onClick={onShowGraph || (() => {})}
                 tooltip="Show dependency graph for XSD schema"
               >
-                Show Graph
+                Открыть граф
               </PrimaryActionButton>
               <SecondaryActionButton
                 icon="FileText"

@@ -82,7 +82,7 @@ export class SchemaProvider {
       }
 
       return null;
-    } catch (error) {
+    } catch {
       // If parsing fails, return null
       return null;
     }
@@ -112,7 +112,7 @@ export class SchemaProvider {
 
     try {
       return parseXSD(xsdContent);
-    } catch (error) {
+    } catch {
       // If parsing fails, return null
       return null;
     }

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import ReactFlow, {
   Background,
   Controls,
@@ -71,22 +71,6 @@ export function XSDGraphVisualizer({ schema }: XSDGraphVisualizerProps) {
     reactFlowInstance.current?.fitView({ padding: 0.2 });
   }, []);
 
-  const handleExportPNG = useCallback(async () => {
-    if (!reactFlowInstance.current) return;
-    const dataUrl = await reactFlowInstance.current.toPng({
-      backgroundColor: '#f5f5f5'
-    });
-    const link = document.createElement('a');
-    link.download = `${schema.targetNamespace || 'schema'}-graph.png`;
-    link.href = dataUrl;
-    link.click();
-  }, [schema]);
-
-  const handleExportSVG = useCallback(async () => {
-    if (!reactFlowInstance.current) return;
-    alert('SVG export not yet implemented');
-  }, []);
-
   const handleSearch = useCallback((query: string) => {
     if (!query) {
       setNodes(nodes => nodes.map(n => ({ ...n, className: '' })));
@@ -122,8 +106,6 @@ export function XSDGraphVisualizer({ schema }: XSDGraphVisualizerProps) {
         onZoomIn={handleZoomIn}
         onZoomOut={handleZoomOut}
         onFitView={handleFitView}
-        onExportPNG={handleExportPNG}
-        onExportSVG={handleExportSVG}
         onSearch={handleSearch}
       />
       <div className="xsd-graph-container">

@@ -198,9 +198,7 @@ export class GraphBuilder {
       // Recursively build child elements
       complexType.elements.forEach(childElement => {
         // Strip namespace prefix from child element type if present for lookup
-        const childElementType = childElement.type
-          ? this.stripNamespacePrefix(childElement.type)
-          : undefined;
+        const childElementType = this.stripNamespacePrefix(childElement.type);
 
         const childNodeId = `element:${childElement.name}`;
         edges.push({
@@ -301,9 +299,7 @@ export class GraphBuilder {
     // Recursively build child elements
     complexType.elements.forEach(childElement => {
       // Strip namespace prefix from child element type if present for lookup
-      const childElementType = childElement.type
-        ? this.stripNamespacePrefix(childElement.type)
-        : undefined;
+      const childElementType = this.stripNamespacePrefix(childElement.type);
 
       const childNodeId = `element:${childElement.name}`;
       edges.push({

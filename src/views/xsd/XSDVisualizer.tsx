@@ -18,6 +18,10 @@ import './XSDVisualizer.css';
 export interface XSDVisualizerProps {
   /** Raw XSD content to visualize */
   xsdContent: string;
+  /** Currently active tab (controlled) */
+  activeTab?: 'elements' | 'types' | 'graph';
+  /** Callback when tab changes (controlled) */
+  onTabChange?: (tab: 'elements' | 'types' | 'graph') => void;
 }
 
 // ────────────────────────────────────────────────
@@ -137,14 +141,19 @@ function ElementNode({ element }: { element: XSDElement }) {
 // Main component
 // ────────────────────────────────────────────────
 
-export function XSDVisualizer({ xsdContent }: XSDVisualizerProps) {
+export function XSDVisualizer({ xsdContent, activeTab: controlledTab, onTabChange }: XSDVisualizerProps) {
   const schema = useMemo(() => parseXSD(xsdContent), [xsdContent]);
 
-  const [activeTab, setActiveTab] = useState<'elements' | 'types' | 'graph'>('elements');
+  // Internal state for uncontrolled mode
+  const [internalTab, setInternalTab] = useState<'elements' | 'types' | 'graph'>('elements');
+
+  // Use controlled tab if provided, otherwise use internal state
+  const activeTab = controlledTab !== undefined ? controlledTab : internalTab;
+  const setActiveTab = onTabChange || setInternalTab;
 
   const handleTabClick = useCallback((tab: 'elements' | 'types' | 'graph') => {
     setActiveTab(tab);
-  }, []);
+  }, [setActiveTab]);
 
   if (!schema) {
     return (

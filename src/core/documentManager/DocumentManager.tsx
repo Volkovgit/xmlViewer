@@ -48,6 +48,8 @@ export function DocumentManager() {
   const [xsdErrors, setXsdErrors] = useState<string[]>([]);
   // XSD view mode: 'text' or 'visualizer'
   const [xsdViewMode, setXsdViewMode] = useState<'text' | 'visualizer'>('text');
+  // XSD active tab: 'elements', 'types', or 'graph'
+  const [xsdActiveTab, setXsdActiveTab] = useState<'elements' | 'types' | 'graph'>('elements');
   // XML view mode: 'text', 'tree', or 'grid'
   const [xmlViewMode, setXmlViewMode] = useState<'text' | 'tree' | 'grid'>('text');
 
@@ -232,6 +234,7 @@ export function DocumentManager() {
   const handleShowGraph = useCallback(() => {
     if (activeDocument?.type === DocumentType.XSD) {
       setXsdViewMode('visualizer');
+      setXsdActiveTab('graph');
     }
   }, [activeDocument]);
 
@@ -288,12 +291,64 @@ export function DocumentManager() {
           onClose={handleClose}
         />
 
+        {activeDocument && (
+          <div className="view-mode-bar">
+            {isActiveXSD && (
+              <div className="view-mode-toggles">
+                <button
+                  className={`view-mode-btn ${xsdViewMode === 'text' ? 'active' : ''}`}
+                  onClick={() => setXsdViewMode('text')}
+                  data-testid="xsd-text-view-btn"
+                >
+                  Text
+                </button>
+                <button
+                  className={`view-mode-btn ${xsdViewMode === 'visualizer' ? 'active' : ''}`}
+                  onClick={() => setXsdViewMode('visualizer')}
+                  data-testid="xsd-visual-view-btn"
+                >
+                  Visual
+                </button>
+              </div>
+            )}
+            {isActiveXML && (
+              <div className="view-mode-toggles">
+                <button
+                  className={`view-mode-btn ${xmlViewMode === 'text' ? 'active' : ''}`}
+                  onClick={() => setXmlViewMode('text')}
+                  data-testid="xml-text-view-btn"
+                >
+                  Text
+                </button>
+                <button
+                  className={`view-mode-btn ${xmlViewMode === 'tree' ? 'active' : ''}`}
+                  onClick={() => setXmlViewMode('tree')}
+                  data-testid="xml-tree-view-btn"
+                >
+                  Tree
+                </button>
+                <button
+                  className={`view-mode-btn ${xmlViewMode === 'grid' ? 'active' : ''}`}
+                  onClick={() => setXmlViewMode('grid')}
+                  data-testid="xml-grid-view-btn"
+                >
+                  Grid
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="document-content">
           {activeDocument ? (
             <div className="active-document" data-testid="active-document">
               {isActiveXSD ? (
                 xsdViewMode === 'visualizer' ? (
-                  <XSDVisualizer xsdContent={activeDocument.content} />
+                  <XSDVisualizer
+                    xsdContent={activeDocument.content}
+                    activeTab={xsdActiveTab}
+                    onTabChange={setXsdActiveTab}
+                  />
                 ) : (
                   <XMLTextEditor
                     document={activeDocument}
@@ -316,49 +371,6 @@ export function DocumentManager() {
                   document={activeDocument}
                   onSave={() => saveFile(activeDocument)}
                 />
-              )}
-              {isActiveXSD && (
-                <div className="xsd-view-toggle">
-                  <button
-                    className={`toggle-btn ${xsdViewMode === 'text' ? 'active' : ''}`}
-                    onClick={() => setXsdViewMode('text')}
-                    data-testid="xsd-text-view-btn"
-                  >
-                    Text
-                  </button>
-                  <button
-                    className={`toggle-btn ${xsdViewMode === 'visualizer' ? 'active' : ''}`}
-                    onClick={() => setXsdViewMode('visualizer')}
-                    data-testid="xsd-visual-view-btn"
-                  >
-                    Visual
-                  </button>
-                </div>
-              )}
-              {isActiveXML && (
-                <div className="xml-view-toggle">
-                  <button
-                    className={`toggle-btn ${xmlViewMode === 'text' ? 'active' : ''}`}
-                    onClick={() => setXmlViewMode('text')}
-                    data-testid="xml-text-view-btn"
-                  >
-                    Text View
-                  </button>
-                  <button
-                    className={`toggle-btn ${xmlViewMode === 'tree' ? 'active' : ''}`}
-                    onClick={() => setXmlViewMode('tree')}
-                    data-testid="xml-tree-view-btn"
-                  >
-                    Tree View
-                  </button>
-                  <button
-                    className={`toggle-btn ${xmlViewMode === 'grid' ? 'active' : ''}`}
-                    onClick={() => setXmlViewMode('grid')}
-                    data-testid="xml-grid-view-btn"
-                  >
-                    Grid View
-                  </button>
-                </div>
               )}
               {xsdErrors.length > 0 && isActiveXML && (
                 <div className="xsd-error-panel" data-testid="xsd-error-panel">

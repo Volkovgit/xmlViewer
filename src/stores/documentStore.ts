@@ -353,7 +353,7 @@ export const useDocumentStore = create<DocumentStore>((set, get) => ({
       }
 
       const newDocuments = new Map(state.documents);
-      const { xsdSchema, xsdPath, ...restOfDocument } = document;
+      const { xsdSchema: _xsdSchema, xsdPath: _xsdPath, ...restOfDocument } = document;
       newDocuments.set(documentId, {
         ...restOfDocument,
         modifiedAt: new Date(),

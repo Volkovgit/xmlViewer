@@ -170,35 +170,41 @@
   color: var(--text-secondary);
 }
 
-/* XSD View Toggle */
-.xsd-view-toggle,
-.xml-view-toggle {
+/* View Mode Bar */
+.view-mode-bar {
+  padding: 12px 20px;
+  background: var(--bg-white);
+  border-bottom: 1px solid var(--border-color);
   display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
-  padding: 4px 8px;
-  border-top: 1px solid #ccc;
-  background: #f5f5f5;
+  justify-content: flex-end;
 }
 
-.toggle-btn {
-  padding: 4px 12px;
-  border: 1px solid #ccc;
-  background: #fff;
+.view-mode-toggles {
+  display: flex;
+  gap: 4px;
+}
+
+.view-mode-btn {
+  padding: 8px 16px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  border-bottom: 2px solid transparent;
   cursor: pointer;
-  font-size: 12px;
-  border-radius: 3px;
-  transition: background-color 0.15s;
+  font-weight: 500;
+  transition: all var(--transition-normal);
 }
 
-.toggle-btn:hover {
-  background: #e8e8e8;
+.view-mode-btn:hover {
+  color: var(--primary-blue);
+  background: var(--primary-light);
 }
 
-.toggle-btn.active {
-  background: var(--primary-blue);
-  color: var(--text-white);
-  border-color: var(--primary-blue);
+.view-mode-btn.active {
+  color: white;
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  border-radius: var(--border-radius-md);
+  font-weight: 600;
 }
 
 /* XSD Error Panel */

@@ -34,7 +34,10 @@
       "Bash(test:*)",
       "Bash(git check-ignore:*)",
       "Bash(gh pr create:*)",
-      "Bash(bash scripts/start-server.sh:*)"
+      "Bash(bash scripts/start-server.sh:*)",
+      "Bash(netstat:*)",
+      "Bash(powershell:*)",
+      "Bash(npx kill-port:*)"
     ]
   }
 }

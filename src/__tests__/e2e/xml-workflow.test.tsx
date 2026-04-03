@@ -43,8 +43,10 @@ describe('Phase 1: Complete XML Editor Workflow', () => {
       const tabs = screen.queryAllByTestId(/document-tab-/);
       expect(tabs.length).toBe(1);
 
-      // Verify: Document name contains "Untitled"
-      expect(screen.getByText(/Untitled-xml-1/i)).toBeInTheDocument();
+      // Verify: Document name contains "Untitled" (check in tab which should have unique element)
+      const documentName = screen.getByTestId(/document-name-/);
+      expect(documentName).toBeInTheDocument();
+      expect(documentName).toHaveTextContent(/Untitled-xml-1/i);
 
       // Verify: Active document container is shown
       const activeDocument = screen.getByTestId('active-document');
@@ -61,15 +63,18 @@ describe('Phase 1: Complete XML Editor Workflow', () => {
 
       // Create first document
       fireEvent.click(newFileButton);
-      expect(screen.getByText(/Untitled-xml-1/i)).toBeInTheDocument();
+      const docNames = screen.getAllByTestId(/document-name-/);
+      expect(docNames[0]).toHaveTextContent(/Untitled-xml-1/i);
 
       // Create second document
       fireEvent.click(newFileButton);
-      expect(screen.getByText(/Untitled-xml-2/i)).toBeInTheDocument();
+      const docNames2 = screen.getAllByTestId(/document-name-/);
+      expect(docNames2.some(el => el.textContent?.includes('Untitled-xml-2'))).toBe(true);
 
       // Create third document
       fireEvent.click(newFileButton);
-      expect(screen.getByText(/Untitled-xml-3/i)).toBeInTheDocument();
+      const docNames3 = screen.getAllByTestId(/document-name-/);
+      expect(docNames3.some(el => el.textContent?.includes('Untitled-xml-3'))).toBe(true);
 
       // Verify we have 3 tabs
       const tabs = screen.queryAllByTestId(/document-tab-/);
@@ -122,21 +127,23 @@ describe('Phase 1: Complete XML Editor Workflow', () => {
       // Create first document
       fireEvent.click(newFileButton);
 
-      const firstTabText = screen.getByText(/Untitled-xml-1/i);
-      expect(firstTabText).toBeInTheDocument();
+      const firstDocName = screen.getAllByTestId(/document-name-/)[0];
+      expect(firstDocName).toHaveTextContent(/Untitled-xml-1/i);
 
       // Create second document
       fireEvent.click(newFileButton);
 
-      const secondTabText = screen.getByText(/Untitled-xml-2/i);
-      expect(secondTabText).toBeInTheDocument();
+      const docNames = screen.getAllByTestId(/document-name-/);
+      const secondDocName = docNames.find(el => el.textContent?.includes('Untitled-xml-2'));
+      expect(secondDocName).toBeInTheDocument();
 
       // Verify we have 2 tabs
       const tabs = screen.queryAllByTestId(/document-tab-/);
       expect(tabs.length).toBe(2);
 
-      // Switch back to first document
-      fireEvent.click(firstTabText);
+      // Switch back to first document by clicking on its first tab
+      const allTabs = screen.queryAllByTestId(/document-tab-/);
+      fireEvent.click(allTabs[0]);
 
       // Verify active document is shown
       expect(screen.getByTestId('active-document')).toBeInTheDocument();
@@ -152,7 +159,7 @@ describe('Phase 1: Complete XML Editor Workflow', () => {
       fireEvent.click(newFileButton);
 
       // Verify document exists
-      expect(screen.getByText(/Untitled-xml-1/i)).toBeInTheDocument();
+      expect(screen.getAllByTestId(/document-name-/)[0]).toHaveTextContent(/Untitled-xml-1/i);
 
       // Find close button (×) on the tab
       const closeButton = screen.getByRole('button', { name: /close Untitled-xml-1/i });
@@ -161,8 +168,8 @@ describe('Phase 1: Complete XML Editor Workflow', () => {
       // Click close button
       fireEvent.click(closeButton);
 
-      // Verify document is closed
-      expect(screen.queryByText(/Untitled-xml-1/i)).not.toBeInTheDocument();
+      // Verify document is closed (no document names left)
+      expect(screen.queryByTestId(/document-name-/)).not.toBeInTheDocument();
 
       // Verify empty state is shown
       expect(screen.getByTestId('empty-state')).toBeInTheDocument();
@@ -251,7 +258,8 @@ describe('Phase 1: Complete XML Editor Workflow', () => {
 
       // Verify document created
       expect(screen.getByTestId('active-document')).toBeInTheDocument();
-      expect(screen.getByText(/Untitled-xml-1/i)).toBeInTheDocument();
+      const docName = screen.getAllByTestId(/document-name-/)[0];
+      expect(docName).toHaveTextContent(/Untitled-xml-1/i);
 
       // Step 3: Verify editor container is ready
       const activeDocument = screen.getByTestId('active-document');
@@ -291,18 +299,22 @@ describe('Phase 1: Complete XML Editor Workflow', () => {
       expect(tabs.length).toBe(3);
 
       // Verify all three names exist
-      expect(screen.getByText(/Untitled-xml-1/i)).toBeInTheDocument();
-      expect(screen.getByText(/Untitled-xml-2/i)).toBeInTheDocument();
-      expect(screen.getByText(/Untitled-xml-3/i)).toBeInTheDocument();
+      const docNames = screen.getAllByTestId(/document-name-/);
+      const nameTexts = docNames.map(el => el.textContent);
+      expect(nameTexts.some(t => t?.includes('Untitled-xml-1'))).toBe(true);
+      expect(nameTexts.some(t => t?.includes('Untitled-xml-2'))).toBe(true);
+      expect(nameTexts.some(t => t?.includes('Untitled-xml-3'))).toBe(true);
 
       // Close middle document
       const closeButton = screen.getByRole('button', { name: /close Untitled-xml-2/i });
       fireEvent.click(closeButton);
 
       // Verify first and third still exist
-      expect(screen.getByText(/Untitled-xml-1/i)).toBeInTheDocument();
-      expect(screen.queryByText(/Untitled-xml-2/i)).not.toBeInTheDocument();
-      expect(screen.getByText(/Untitled-xml-3/i)).toBeInTheDocument();
+      const remainingDocNames = screen.getAllByTestId(/document-name-/);
+      const remainingTexts = remainingDocNames.map(el => el.textContent);
+      expect(remainingTexts.some(t => t?.includes('Untitled-xml-1'))).toBe(true);
+      expect(remainingTexts.some(t => t?.includes('Untitled-xml-2'))).toBe(false);
+      expect(remainingTexts.some(t => t?.includes('Untitled-xml-3'))).toBe(true);
     });
   });
 });
