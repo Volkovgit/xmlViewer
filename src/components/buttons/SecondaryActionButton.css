@@ -3,13 +3,13 @@
   background: #f0f4ff;
 
   /* Blue text */
-  color: #2196f3;
+  color: var(--primary-blue);
 
   /* Blue border */
-  border: 1px solid #e3f2fd;
+  border: 1px solid var(--primary-light);
 
   /* Border radius */
-  border-radius: 6px;
+  border-radius: var(--border-radius-sm);
 
   /* Padding */
   padding: 10px;
@@ -21,18 +21,19 @@
   /* Flex layout for icon and text */
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-sm);
 
   /* Transition for hover effects */
-  transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+  transition: background var(--transition-normal),
+    border-color var(--transition-normal), opacity var(--transition-normal);
 }
 
 .secondary-action-button:hover:not(:disabled) {
   /* Darker background on hover */
-  background: #e3f2fd;
+  background: var(--primary-light);
 
   /* Stronger border color on hover */
-  border-color: #2196f3;
+  border-color: var(--primary-blue);
 }
 
 .secondary-action-button:disabled {
@@ -43,7 +44,7 @@
 
 .secondary-action-button:focus-visible {
   /* Focus indicator for accessibility */
-  outline: 2px solid #2196f3;
+  outline: 2px solid var(--primary-blue);
   outline-offset: 2px;
 }
 

@@ -1,29 +1,34 @@
 .primary-action-button {
   /* Purple gradient background */
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(
+    135deg,
+    var(--gradient-start) 0%,
+    var(--gradient-end) 100%
+  );
 
   /* Box shadow */
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  box-shadow: var(--shadow-primary);
 
   /* Border radius */
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
 
   /* Padding */
-  padding: 12px;
+  padding: var(--spacing-md);
 
   /* Typography */
   font-weight: 600;
-  color: white;
+  color: var(--text-white);
   border: none;
   cursor: pointer;
 
   /* Flex layout for icon and text */
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-sm);
 
   /* Transition for hover effects */
-  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  transition: transform var(--transition-normal),
+    box-shadow var(--transition-normal), opacity var(--transition-normal);
 }
 
 .primary-action-button:hover:not(:disabled) {
@@ -31,13 +36,13 @@
   transform: translateY(-1px);
 
   /* Increase shadow on hover */
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: var(--shadow-primary-hover);
 }
 
 .primary-action-button:active:not(:disabled) {
   /* Press down effect */
   transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  box-shadow: var(--shadow-primary);
 }
 
 .primary-action-button:disabled {
@@ -49,7 +54,7 @@
 
 .primary-action-button:focus-visible {
   /* Focus indicator for accessibility */
-  outline: 2px solid #667eea;
+  outline: 2px solid var(--gradient-start);
   outline-offset: 2px;
 }
 

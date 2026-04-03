@@ -1,14 +1,14 @@
 .app-layout {
   display: flex;
   height: 100vh;
-  background: var(--bg-body, #f8f9fa);
+  background: var(--bg-body);
 }
 
 .app-layout-sidebar {
-  flex: 0 0 240px;
-  background: var(--bg-white, #ffffff);
-  border-right: 1px solid var(--border-color, #e0e0e0);
-  transition: transform 0.3s ease, width 0.3s ease;
+  flex: 0 0 var(--sidebar-width);
+  background: var(--bg-white);
+  border-right: 1px solid var(--border-color);
+  transition: transform var(--transition-slow), width var(--transition-slow);
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -24,7 +24,7 @@
     left: 0;
     height: 100vh;
     z-index: 1000;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
   }
 }
 

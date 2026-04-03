@@ -1,0 +1,136 @@
+/**
+ * XML Previewer Theme System
+ * CSS Custom Properties for consistent modern blue color scheme
+ */
+
+:root {
+  /* ===================
+   * Primary Colors
+   * =================== */
+
+  /* Main blue color */
+  --primary-blue: #2196f3;
+  --primary-blue-rgb: 33, 150, 243;
+
+  /* Primary variants */
+  --primary-light: #e3f2fd;
+  --primary-light-rgb: 227, 242, 253;
+  --primary-dark: #1976d2;
+  --primary-dark-rgb: 25, 118, 210;
+
+  /* Gradient colors */
+  --gradient-start: #667eea;
+  --gradient-start-rgb: 102, 126, 234;
+  --gradient-end: #764ba2;
+  --gradient-end-rgb: 118, 75, 162;
+
+  /* ===================
+   * Neutral Colors
+   * =================== */
+
+  /* Background colors */
+  --bg-body: #f8f9fa;
+  --bg-white: #ffffff;
+  --bg-hover: #f5f5f5;
+  --bg-active: #e3f2fd;
+
+  /* Border colors */
+  --border-color: #e0e0e0;
+  --border-color-hover: #ccc;
+  --border-color-light: #ddd;
+
+  /* Text colors */
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --text-disabled: #999999;
+  --text-white: #ffffff;
+
+  /* Icon colors */
+  --icon-color: #666666;
+
+  /* ===================
+   * Status Colors
+   * =================== */
+
+  --error: #f44336;
+  --error-rgb: 244, 67, 54;
+  --error-light: #ffebee;
+
+  --warning: #ff9800;
+  --warning-rgb: 255, 152, 0;
+  --warning-light: #fff3e0;
+
+  --success: #4caf50;
+  --success-rgb: 76, 175, 80;
+  --success-light: #e8f5e9;
+
+  --info: #2196f3;
+  --info-rgb: 33, 150, 243;
+  --info-light: #e3f2fd;
+
+  /* ===================
+   * Spacing Scale
+   * =================== */
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 32px;
+
+  /* ===================
+   * Border Radius
+   * =================== */
+
+  --border-radius-sm: 6px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 10px;
+  --border-radius-full: 50%;
+
+  /* ===================
+   * Transitions
+   * =================== */
+
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.2s ease;
+  --transition-slow: 0.3s ease;
+
+  /* ===================
+   * Layout Dimensions
+   * =================== */
+
+  --sidebar-width: 240px;
+  --topbar-height: 60px;
+  --topbar-min-height: 52px;
+
+  /* ===================
+   * Shadows
+   * =================== */
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-primary: 0 2px 8px rgba(102, 126, 234, 0.3);
+  --shadow-primary-hover: 0 4px 12px rgba(102, 126, 234, 0.4);
+  --shadow-blue: 0 2px 8px rgba(33, 150, 243, 0.3);
+
+  /* ===================
+   * Z-Index Scale
+   * =================== */
+
+  --z-base: 1;
+  --z-dropdown: 1000;
+  --z-modal: 1100;
+  --z-tooltip: 1200;
+}
+
+/**
+ * Dark mode support (future enhancement)
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark theme overrides can be added here */
+  }
+}
