@@ -1,0 +1,32 @@
+.actions-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: var(--bg-primary, #ffffff);
+  border-radius: 8px;
+}
+
+.actions-header {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-secondary, #666);
+  margin-bottom: 12px;
+}
+
+.actions-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  color: var(--text-secondary, #666);
+  font-size: 14px;
+  font-style: italic;
+}
+
+.actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
