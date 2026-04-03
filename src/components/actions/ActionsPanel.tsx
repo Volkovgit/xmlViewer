@@ -7,20 +7,16 @@ import './ActionsPanel.css';
 
 interface ActionsPanelProps {
   document: Document | null;
-  onShowGraph?: () => void;
+  onToggleGraphMode?: () => void;
   onGenerateXML?: () => void;
-  onGenerateXsd?: () => void;
   onValidate?: () => void;
-  onAssignSchema?: () => void;
 }
 
 export const ActionsPanel: React.FC<ActionsPanelProps> = ({
   document,
-  onShowGraph,
+  onToggleGraphMode,
   onGenerateXML,
-  onGenerateXsd,
   onValidate,
-  onAssignSchema,
 }) => {
   const isXSD = document?.type === DocumentType.XSD;
   const isXML = document?.type === DocumentType.XML;
@@ -37,7 +33,7 @@ export const ActionsPanel: React.FC<ActionsPanelProps> = ({
             <>
               <PrimaryActionButton
                 icon="Circle"
-                onClick={onShowGraph || (() => {})}
+                onClick={onToggleGraphMode || (() => {})}
                 tooltip="Show dependency graph for XSD schema"
               >
                 Открыть граф
@@ -62,25 +58,11 @@ export const ActionsPanel: React.FC<ActionsPanelProps> = ({
           {isXML && (
             <>
               <SecondaryActionButton
-                icon="FileCode"
-                onClick={onGenerateXsd || (() => {})}
-                tooltip="Generate XSD schema from XML document"
-              >
-                Generate XSD
-              </SecondaryActionButton>
-              <SecondaryActionButton
-                icon="Link"
-                onClick={onAssignSchema || (() => {})}
-                tooltip="Attach XSD schema to XML document for validation"
-              >
-                Assign Schema
-              </SecondaryActionButton>
-              <SecondaryActionButton
                 icon="CheckCircle"
                 onClick={onValidate || (() => {})}
-                tooltip="Validate XML document against attached XSD schema"
+                tooltip="Validate XML document against XSD schema"
               >
-                Validate XSD
+                Validate
               </SecondaryActionButton>
             </>
           )}

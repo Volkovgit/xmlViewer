@@ -5,11 +5,9 @@ import { Document, DocumentType, DocumentStatus } from '@/types';
 
 describe('ActionsPanel', () => {
   const mockCallbacks = {
-    onShowGraph: vi.fn(),
+    onToggleGraphMode: vi.fn(),
     onGenerateXML: vi.fn(),
-    onGenerateXsd: vi.fn(),
     onValidate: vi.fn(),
-    onAssignSchema: vi.fn(),
   };
 
   it('renders "Actions" section header', () => {
@@ -46,10 +44,6 @@ describe('ActionsPanel', () => {
     expect(screen.getByText('Открыть граф')).toBeInTheDocument();
     expect(screen.getByText('Generate XML')).toBeInTheDocument();
     expect(screen.getByText('Validate')).toBeInTheDocument();
-
-    // Ensure XML-specific buttons are not rendered
-    expect(screen.queryByText('Generate XSD')).not.toBeInTheDocument();
-    expect(screen.queryByText('Assign Schema')).not.toBeInTheDocument();
   });
 
   it('renders XML actions when document type is XML', () => {
@@ -66,9 +60,7 @@ describe('ActionsPanel', () => {
     render(<ActionsPanel document={xmlDocument} {...mockCallbacks} />);
 
     // Check for XML-specific buttons
-    expect(screen.getByText('Generate XSD')).toBeInTheDocument();
-    expect(screen.getByText('Assign Schema')).toBeInTheDocument();
-    expect(screen.getByText('Validate XSD')).toBeInTheDocument();
+    expect(screen.getByText('Validate')).toBeInTheDocument();
 
     // Ensure XSD-specific buttons are not rendered
     expect(screen.queryByText('Открыть граф')).not.toBeInTheDocument();
