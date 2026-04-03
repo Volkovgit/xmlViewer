@@ -1,12 +1,14 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 import { useDocumentStore } from '@/stores';
 import { createUntitledDocument } from '@/services/document';
 import { DocumentType, DocumentStatus } from '@/types';
+import { ValidationError } from '@/types';
 import { useFileOperations } from '@/hooks/useFileOperations';
 import { generateXSDFromXML, generateXMLFromXSD, validateXMLAgainstXSD } from '@/services/xsd';
 import { AppLayout } from '@/components/layout';
 import { LeftSidebar } from '@/components/layout';
 import { ActionsPanel } from '@/components/actions';
+import { FilesPanel } from '@/components/files';
 import { DocumentTabs } from './DocumentTabs';
 import { DocumentToolbar } from './DocumentToolbar';
 import { XMLTextEditor } from '@/views/text';
@@ -50,6 +52,18 @@ export function DocumentManager() {
   const [xsdViewMode, setXsdViewMode] = useState<'text' | 'visualizer'>('text');
   // XML view mode: 'text', 'tree', or 'grid'
   const [xmlViewMode, setXmlViewMode] = useState<'text' | 'tree' | 'grid'>('text');
+
+  // Get data for FilesPanel
+  const openDocuments = getAllDocuments();
+  const activeDocument = getActiveDocument();
+
+  // Validation errors map for FilesPanel - empty for now, will be populated when validation is integrated
+  const validationErrors = useMemo(() => new Map<string, ValidationError[]>(), []);
+
+  // Handler for document selection from FilesPanel
+  const handleDocumentSelect = useCallback((id: string) => {
+    setActiveDocument(id);
+  }, [setActiveDocument]);
 
   const handleNewFile = useCallback(() => {
     const newDoc = createUntitledDocument(DocumentType.XML);
@@ -214,8 +228,6 @@ export function DocumentManager() {
 
   // ─── Render ────────────────────────────────────
 
-  const documents = getAllDocuments();
-  const activeDocument = getActiveDocument();
   const isActiveXML = activeDocument?.type === DocumentType.XML;
   const isActiveXSD = activeDocument?.type === DocumentType.XSD;
 
@@ -239,7 +251,14 @@ export function DocumentManager() {
               onAssignSchema={handleAssignSchema}
             />
           }
-          filesPanel={undefined}
+          filesPanel={
+            <FilesPanel
+              documents={openDocuments}
+              activeDocumentId={activeDocument?.id ?? ''}
+              onDocumentSelect={handleDocumentSelect}
+              validationErrors={validationErrors}
+            />
+          }
         />
       }
     >
@@ -274,7 +293,7 @@ export function DocumentManager() {
         />
 
         <DocumentTabs
-          documents={documents}
+          documents={openDocuments}
           activeDocumentId={activeDocument?.id ?? null}
           onTabClick={handleTabClick}
           onClose={handleClose}
