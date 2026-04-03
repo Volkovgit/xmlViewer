@@ -1,0 +1,53 @@
+.secondary-action-button {
+  /* Light blue background */
+  background: #f0f4ff;
+
+  /* Blue text */
+  color: #2196f3;
+
+  /* Blue border */
+  border: 1px solid #e3f2fd;
+
+  /* Border radius */
+  border-radius: 6px;
+
+  /* Padding */
+  padding: 10px;
+
+  /* Typography */
+  font-weight: 500;
+  cursor: pointer;
+
+  /* Flex layout for icon and text */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  /* Transition for hover effects */
+  transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.secondary-action-button:hover:not(:disabled) {
+  /* Darker background on hover */
+  background: #e3f2fd;
+
+  /* Stronger border color on hover */
+  border-color: #2196f3;
+}
+
+.secondary-action-button:disabled {
+  /* Disabled state */
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.secondary-action-button:focus-visible {
+  /* Focus indicator for accessibility */
+  outline: 2px solid #2196f3;
+  outline-offset: 2px;
+}
+
+.secondary-action-button span {
+  /* Text styling */
+  display: inline-block;
+}
