@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { SchemaSelectionModal } from '../SchemaSelectionModal';
-import { Document, DocumentType } from '@/types';
+import { Document, DocumentType, DocumentStatus } from '@/types';
 
 describe('SchemaSelectionModal', () => {
   const mockXsdDocuments: Document[] = [
@@ -10,7 +10,7 @@ describe('SchemaSelectionModal', () => {
       name: 'schema1.xsd',
       type: DocumentType.XSD,
       content: '<xs:schema></xs:schema>',
-      status: 'ready',
+      status: DocumentStatus.READY,
       createdAt: new Date(),
       modifiedAt: new Date(),
     },
@@ -19,7 +19,7 @@ describe('SchemaSelectionModal', () => {
       name: 'schema2.xsd',
       type: DocumentType.XSD,
       content: '<xs:schema></xs:schema>',
-      status: 'ready',
+      status: DocumentStatus.READY,
       createdAt: new Date(),
       modifiedAt: new Date(),
     }
