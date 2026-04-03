@@ -1,7 +1,7 @@
 import { useCallback, useState, useMemo } from 'react';
 import { useDocumentStore } from '@/stores';
 import { createUntitledDocument } from '@/services/document';
-import { Document, DocumentType, DocumentStatus } from '@/types';
+import { Document, DocumentType } from '@/types';
 import { ValidationError } from '@/types';
 import { useFileOperations } from '@/hooks/useFileOperations';
 import { generateXMLFromXSD, validateXMLAgainstXSD, parseXSD } from '@/services/xsd';
@@ -29,6 +29,7 @@ export function DocumentManager() {
     getActiveDocument,
     setActiveDocument,
     addDocument,
+    removeDocument,
   } = useDocumentStore();
 
   const {
@@ -39,7 +40,6 @@ export function DocumentManager() {
   } = useFileOperations();
 
   // Schema assignment state: maps docId → schemaDocId
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [schemaAssignments, setSchemaAssignments] = useState<Map<string, string>>(new Map());
   // XSD view mode: 'text' or 'graph'
   const [xsdMode, setXsdMode] = useState<'text' | 'graph'>('text');
@@ -59,7 +59,37 @@ export function DocumentManager() {
   // Handler for document selection from FilesPanel
   const handleDocumentSelect = useCallback((id: string) => {
     setActiveDocument(id);
+    // Clear validation errors and modal state when switching documents
+    setValidationErrors([]);
+    setShowSchemaModal(false);
   }, [setActiveDocument]);
+
+  // Handler for closing documents
+  const handleCloseDocument = useCallback((id: string) => {
+    const doc = getAllDocuments().find(d => d.id === id);
+    if (!doc) return;
+
+    // Check if document has unsaved changes
+    if (doc.status === 'DIRTY') {
+      if (!window.confirm(`Close ${doc.name} without saving changes?`)) {
+        return;
+      }
+    }
+
+    removeDocument(id);
+    // Clear schema assignment for closed document
+    setSchemaAssignments(prev => {
+      const newMap = new Map(prev);
+      newMap.delete(id);
+      return newMap;
+    });
+  }, [getAllDocuments, removeDocument]);
+
+  // Handler for XSD mode change - clear validation errors when switching modes
+  const handleXsdModeChange = useCallback((mode: 'text' | 'graph') => {
+    setXsdMode(mode);
+    setValidationErrors([]);
+  }, []);
 
   const handleNewFile = useCallback(() => {
     const newDoc = createUntitledDocument(DocumentType.XML);
@@ -143,6 +173,9 @@ export function DocumentManager() {
     const activeDoc = getActiveDocument();
     if (!activeDoc) return;
 
+    // Save the schema assignment
+    setSchemaAssignments(prev => new Map(prev).set(activeDoc.id, xsdDocument.id));
+
     try {
       const errors = validateXMLAgainstXSD(activeDoc.content, xsdDocument.content);
       setValidationErrors(errors);
@@ -204,6 +237,7 @@ export function DocumentManager() {
               documents={openDocuments}
               activeDocumentId={activeDocument?.id ?? ''}
               onDocumentSelect={handleDocumentSelect}
+              onCloseDocument={handleCloseDocument}
               validationErrors={validationErrorsMap}
             />
           }
@@ -222,7 +256,7 @@ export function DocumentManager() {
           hasActiveDocument={!!activeDocument}
           isXSDDocument={isActiveXSD}
           xsdMode={xsdMode}
-          onXsdModeChange={setXsdMode}
+          onXsdModeChange={handleXsdModeChange}
         />
 
         <input

@@ -1,5 +1,5 @@
 import React from 'react';
-import { File, FileCode, FileText } from 'lucide-react';
+import { File, FileCode, FileText, X } from 'lucide-react';
 import { DirtyBadge, ErrorBadge } from '@/components/badges/Badges';
 import { Document, DocumentType, DocumentStatus } from '@/types/document';
 import { ValidationError } from '@/types/document';
@@ -9,6 +9,7 @@ interface FilesPanelProps {
   documents: Document[];
   activeDocumentId: string;
   onDocumentSelect: (id: string) => void;
+  onCloseDocument?: (id: string) => void;
   validationErrors: Map<string, ValidationError[]>;
 }
 
@@ -28,6 +29,7 @@ export const FilesPanel: React.FC<FilesPanelProps> = ({
   documents,
   activeDocumentId,
   onDocumentSelect,
+  onCloseDocument,
   validationErrors,
 }) => {
   return (
@@ -42,6 +44,7 @@ export const FilesPanel: React.FC<FilesPanelProps> = ({
         return (
           <div
             key={document.id}
+            data-testid={`file-item-${document.id}`}
             className={`file-item ${isActive ? 'active' : ''}`}
             onClick={() => onDocumentSelect(document.id)}
             role="button"
@@ -54,11 +57,24 @@ export const FilesPanel: React.FC<FilesPanelProps> = ({
             aria-selected={isActive}
           >
             {getFileIcon(document.type)}
-            <span className="file-name">{document.name}</span>
+            <span className="file-name" data-testid={`file-name-${document.id}`}>{document.name}</span>
             <div className="file-badges">
               {isDirty && <DirtyBadge />}
               {hasErrors && <ErrorBadge count={errors.length} />}
             </div>
+            {onCloseDocument && (
+              <button
+                className="file-close-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onCloseDocument(document.id);
+                }}
+                aria-label={`Close ${document.name}`}
+                data-testid={`close-file-${document.id}`}
+              >
+                <X size={14} />
+              </button>
+            )}
           </div>
         );
       })}

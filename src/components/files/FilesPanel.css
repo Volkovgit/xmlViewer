@@ -60,3 +60,37 @@
   gap: var(--spacing-xs);
   align-items: center;
 }
+
+.file-close-button {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: transparent;
+  color: var(--icon-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius-sm);
+  opacity: 0;
+  transition: opacity var(--transition-fast),
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+  padding: 0;
+}
+
+.file-item:hover .file-close-button {
+  opacity: 1;
+}
+
+.file-close-button:hover {
+  background-color: var(--bg-hover);
+  color: var(--danger-color);
+}
+
+.file-close-button:focus {
+  opacity: 1;
+  outline: 2px solid var(--primary-blue);
+  outline-offset: 1px;
+}
