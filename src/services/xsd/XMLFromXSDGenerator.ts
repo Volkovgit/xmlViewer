@@ -117,6 +117,18 @@ function indent(level: number): string {
   return '  '.repeat(level);
 }
 
+/**
+ * Escape special XML characters in attribute values.
+ */
+function escapeXML(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
 function resolveComplexType(typeName: string, schema: XSDSchema): XSDComplexType | undefined {
   const localName = typeName.includes(':') ? typeName.split(':')[1] : typeName;
   return schema.complexTypes.find((ct) => ct.name === localName);
@@ -154,7 +166,9 @@ function generateAttributes(attributes: XSDAttribute[], schema: XSDSchema, rng?:
       value = getSampleValue(attr.type, attr.name, restriction, rng);
     }
 
-    parts.push(`${attr.name}="${value}"`);
+    // Escape special XML characters in attribute values
+    const escapedValue = escapeXML(value);
+    parts.push(`${attr.name}="${escapedValue}"`);
   }
   return parts.length > 0 ? ' ' + parts.join(' ') : '';
 }
@@ -192,7 +206,7 @@ function generateElementXML(
         const simpleType = resolveSimpleType(complexType.simpleContentBase, schema);
         const restriction = simpleType?.restriction;
         const value = getSampleValue(complexType.simpleContentBase, element.name, restriction, rng);
-        lines.push(`${indent(level)}<${element.name}${attrStr}>${value}</${element.name}>`);
+        lines.push(`${indent(level)}<${element.name}${attrStr}>${escapeXML(value)}</${element.name}>`);
       } else if (complexType.elements.length === 0) {
         lines.push(`${indent(level)}<${element.name}${attrStr}/>`);
       } else {
@@ -204,13 +218,13 @@ function generateElementXML(
       }
     } else if (simpleType) {
       const value = getSampleValueForSimpleType(simpleType, element.name, rng);
-      lines.push(`${indent(level)}<${element.name}>${value}</${element.name}>`);
+      lines.push(`${indent(level)}<${element.name}>${escapeXML(value)}</${element.name}>`);
     } else {
       // Built-in type or unresolved
       const simpleType = resolveSimpleType(element.type, schema);
       const restriction = simpleType?.restriction;
       const value = getSampleValue(element.type, element.name, restriction, rng);
-      lines.push(`${indent(level)}<${element.name}>${value}</${element.name}>`);
+      lines.push(`${indent(level)}<${element.name}>${escapeXML(value)}</${element.name}>`);
     }
   }
 
