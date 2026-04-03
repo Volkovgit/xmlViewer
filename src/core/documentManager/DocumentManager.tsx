@@ -10,11 +10,12 @@ import { LeftSidebar } from '@/components/layout';
 import { ActionsPanel } from '@/components/actions';
 import { FilesPanel } from '@/components/files';
 import { DocumentTabs } from './DocumentTabs';
-import { DocumentToolbar } from './DocumentToolbar';
+import { TopBar } from '@/components/toolbar';
 import { XMLTextEditor } from '@/views/text';
 import { XMLTree } from '@/views/tree';
 import { XMLGrid } from '@/views/grid';
 import { XSDVisualizer } from '@/views/xsd/XSDVisualizer';
+import '@/components/toolbar/TopBar.css';
 import './DocumentManager.css';
 
 /**
@@ -39,9 +40,6 @@ export function DocumentManager() {
     handleFiles,
     fileInputRef,
     saveFile,
-    saveFileAs,
-    saveAllDocuments,
-    hasDirtyDocuments,
   } = useFileOperations();
 
   // Schema assignment state: maps docId → schemaDocId
@@ -267,20 +265,11 @@ export function DocumentManager() {
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       >
-        <DocumentToolbar
+        <TopBar
           onNewFile={handleNewFile}
           onOpenFile={handleOpenButtonClick}
-          onSaveFile={() => activeDocument && saveFile(activeDocument)}
-          onSaveFileAs={() => activeDocument && saveFileAs(activeDocument)}
-          onSaveAllDocuments={saveAllDocuments}
-          hasDirtyDocuments={hasDirtyDocuments}
+          onSave={() => activeDocument && saveFile(activeDocument)}
           hasActiveDocument={!!activeDocument}
-          isActiveXML={isActiveXML}
-          isActiveXSD={isActiveXSD}
-          onGenerateXSD={handleGenerateXSD}
-          onGenerateXML={handleGenerateXML}
-          onValidateXSD={handleValidateXSD}
-          onAssignSchema={handleAssignSchema}
         />
 
         <input
