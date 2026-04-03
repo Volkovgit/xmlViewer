@@ -4,6 +4,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { EnumerationSelector } from '../EnumerationSelector';
+import { SeededRandom } from '../SeededRandom';
 
 describe('EnumerationSelector', () => {
   it('should select random value from enumerations', () => {
@@ -23,16 +24,20 @@ describe('EnumerationSelector', () => {
   it('should use seed for deterministic selection', () => {
     const selector = new EnumerationSelector();
     const enums = ['a', 'b', 'c', 'd', 'e'];
-    const result1 = selector.select(enums, 42);
-    const result2 = selector.select(enums, 42);
+    const rng1 = new SeededRandom(42);
+    const rng2 = new SeededRandom(42);
+    const result1 = selector.select(enums, rng1);
+    const result2 = selector.select(enums, rng2);
     expect(result1).toBe(result2);
   });
 
   it('should select different values with different seeds', () => {
     const selector = new EnumerationSelector();
     const enums = ['a', 'b', 'c', 'd', 'e'];
-    const result1 = selector.select(enums, 1);
-    const result2 = selector.select(enums, 99);
+    const rng1 = new SeededRandom(1);
+    const rng2 = new SeededRandom(99);
+    const result1 = selector.select(enums, rng1);
+    const result2 = selector.select(enums, rng2);
     expect(result1).not.toBe(result2);
   });
 

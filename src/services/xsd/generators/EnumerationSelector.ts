@@ -5,15 +5,17 @@
  * Supports both random and seeded (deterministic) selection.
  */
 
+import { SeededRandom } from './SeededRandom';
+
 export class EnumerationSelector {
   /**
    * Select a random value from the enumeration array.
    *
    * @param enumerations - Array of enumeration values
-   * @param seed - Optional seed for deterministic selection
+   * @param rng - Optional seeded random number generator
    * @returns Selected enumeration value, or empty string if array is empty
    */
-  select(enumerations: string[], seed?: number): string {
+  select(enumerations: string[], rng?: SeededRandom): string {
     if (enumerations.length === 0) {
       return '';
     }
@@ -22,20 +24,7 @@ export class EnumerationSelector {
       return enumerations[0];
     }
 
-    const index = this.seededRandom(enumerations.length, seed);
+    const index = rng ? rng.nextInt(enumerations.length) : Math.floor(Math.random() * enumerations.length);
     return enumerations[index];
-  }
-
-  /**
-   * Generate a random index with optional seed.
-   */
-  private seededRandom(max: number, seed?: number): number {
-    if (seed !== undefined) {
-      // Simple seeded random for reproducibility
-      const x = Math.sin(seed) * 10000;
-      const random = x - Math.floor(x);
-      return Math.floor(random * max);
-    }
-    return Math.floor(Math.random() * max);
   }
 }

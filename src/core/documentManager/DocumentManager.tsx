@@ -1,7 +1,7 @@
 import { useCallback, useState, useMemo } from 'react';
 import { useDocumentStore } from '@/stores';
 import { createUntitledDocument } from '@/services/document';
-import { Document, DocumentType } from '@/types';
+import { Document, DocumentType, DocumentStatus } from '@/types';
 import { ValidationError } from '@/types';
 import { useFileOperations } from '@/hooks/useFileOperations';
 import { generateXMLFromXSD, validateXMLAgainstXSD, parseXSD } from '@/services/xsd';
@@ -70,7 +70,7 @@ export function DocumentManager() {
     if (!doc) return;
 
     // Check if document has unsaved changes
-    if (doc.status === 'DIRTY') {
+    if (doc.status === DocumentStatus.DIRTY) {
       if (!window.confirm(`Close ${doc.name} without saving changes?`)) {
         return;
       }

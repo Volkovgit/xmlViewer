@@ -6,6 +6,7 @@
  */
 
 import type { XSDRestriction } from '../XSDParser';
+import { SeededRandom } from './SeededRandom';
 
 export class NumericRangeGenerator {
   private readonly DEFAULT_MIN_INT = 0;
@@ -17,30 +18,30 @@ export class NumericRangeGenerator {
    * Generate a random integer within the restriction bounds.
    *
    * @param restriction - XSD restriction with min/max constraints
-   * @param seed - Optional seed for deterministic generation
+   * @param rng - Optional seeded random number generator
    * @returns Random integer, or null if constraints are conflicting
    */
-  generateInteger(restriction: XSDRestriction, seed?: number): number | null {
+  generateInteger(restriction: XSDRestriction, rng?: SeededRandom): number | null {
     const min = this.getMinValue(restriction, this.DEFAULT_MIN_INT);
     const max = this.getMaxValue(restriction, this.DEFAULT_MAX_INT);
     const minInclusive = this.isMinInclusive(restriction);
     const maxInclusive = this.isMaxInclusive(restriction);
-    return this.generateInRange(min, max, minInclusive, maxInclusive, true, seed);
+    return this.generateInRange(min, max, minInclusive, maxInclusive, true, rng);
   }
 
   /**
    * Generate a random decimal within the restriction bounds.
    *
    * @param restriction - XSD restriction with min/max constraints
-   * @param seed - Optional seed for deterministic generation
+   * @param rng - Optional seeded random number generator
    * @returns Random decimal, or null if constraints are conflicting
    */
-  generateDecimal(restriction: XSDRestriction, seed?: number): number | null {
+  generateDecimal(restriction: XSDRestriction, rng?: SeededRandom): number | null {
     const min = this.getMinValue(restriction, this.DEFAULT_MIN_DEC);
     const max = this.getMaxValue(restriction, this.DEFAULT_MAX_DEC);
     const minInclusive = this.isMinInclusive(restriction);
     const maxInclusive = this.isMaxInclusive(restriction);
-    return this.generateInRange(min, max, minInclusive, maxInclusive, false, seed);
+    return this.generateInRange(min, max, minInclusive, maxInclusive, false, rng);
   }
 
   /**
@@ -80,7 +81,7 @@ export class NumericRangeGenerator {
     minInclusive: boolean,
     maxInclusive: boolean,
     isInteger: boolean,
-    seed?: number
+    rng?: SeededRandom
   ): number | null {
     // Adjust for exclusive bounds
     const effectiveMin = minInclusive ? min : min + (isInteger ? 1 : 0.0001);
@@ -92,17 +93,9 @@ export class NumericRangeGenerator {
     }
 
     // Generate random value (seeded or random)
-    const random = seed !== undefined ? this.seededRandom(seed) : Math.random();
+    const random = rng ? rng.next() : Math.random();
     const value = effectiveMin + random * (effectiveMax - effectiveMin);
 
     return isInteger ? Math.floor(value) : value;
-  }
-
-  /**
-   * Generate a seeded random number between 0 and 1.
-   */
-  private seededRandom(seed: number): number {
-    const x = Math.sin(seed) * 10000;
-    return x - Math.floor(x);
   }
 }

@@ -6,6 +6,7 @@
  */
 
 import RandExp from 'randexp';
+import { SeededRandom } from './SeededRandom';
 
 export class PatternMatcher {
   private patternCache = new Map<string, RandExp>();
@@ -14,10 +15,16 @@ export class PatternMatcher {
    * Generate a random string matching the given regex pattern.
    *
    * @param pattern - Regular expression pattern string
-   * @param timeoutMs - Timeout in milliseconds (default: 100)
+   * @param options - Optional parameters (rng for seeding, timeoutMs for timeout)
    * @returns Random matching string, or null if pattern is too complex/invalid
    */
-  generate(pattern: string, timeoutMs: number = 100): string | null {
+  generate(
+    pattern: string,
+    options?: { rng?: SeededRandom; timeoutMs?: number }
+  ): string | null {
+    const rng = options?.rng;
+    const timeoutMs = options?.timeoutMs ?? 100;
+
     try {
       const re = this.getCachedPattern(pattern);
 
@@ -25,13 +32,20 @@ export class PatternMatcher {
       const originalMax = re.max;
       re.max = Math.min(originalMax, 100);
 
+      // Use seeded random if provided
+      const originalRandInt = (re as any).randInt;
+      if (rng) {
+        (re as any).randInt = (min: number, max: number) => rng.nextIntRange(min, max);
+      }
+
       // Measure execution time
       const startTime = Date.now();
       const result = re.gen();
       const elapsed = Date.now() - startTime;
 
-      // Reset max
+      // Reset max and randInt
       re.max = originalMax;
+      (re as any).randInt = originalRandInt;
 
       // Check if generation timed out
       if (elapsed > timeoutMs) {
@@ -44,7 +58,7 @@ export class PatternMatcher {
       }
 
       return result;
-    } catch (error) {
+    } catch {
       // Pattern too complex, invalid, or timed out
       return null;
     }

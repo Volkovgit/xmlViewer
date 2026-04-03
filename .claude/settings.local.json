@@ -37,7 +37,9 @@
       "Bash(bash scripts/start-server.sh:*)",
       "Bash(netstat:*)",
       "Bash(powershell:*)",
-      "Bash(npx kill-port:*)"
+      "Bash(npx kill-port:*)",
+      "Bash(npx ts-node -e \":*)",
+      "Bash(npx tsx:*)"
     ]
   }
 }

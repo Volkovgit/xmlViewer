@@ -10,6 +10,7 @@ import { PatternMatcher } from './PatternMatcher';
 import { NumericRangeGenerator } from './NumericRangeGenerator';
 import { LengthConstraintGenerator } from './LengthConstraintGenerator';
 import { EnumerationSelector } from './EnumerationSelector';
+import { SeededRandom } from './SeededRandom';
 import type { XSDRestriction } from '../XSDParser';
 
 export class ConstraintValueGenerator {
@@ -31,14 +32,14 @@ export class ConstraintValueGenerator {
    * @param baseType - Base XSD type (e.g., "xs:string", "xs:integer")
    * @param restriction - Optional XSD restriction
    * @param elementName - Element name (for sample value generation)
-   * @param seed - Optional seed for deterministic generation
+   * @param rng - Optional seeded random number generator
    * @returns Generated value respecting constraints
    */
   generateValue(
     baseType: string,
     restriction: XSDRestriction | undefined,
     elementName: string,
-    seed?: number
+    rng?: SeededRandom
   ): string {
     // No restrictions - use base type sample
     if (!restriction) {
@@ -47,13 +48,13 @@ export class ConstraintValueGenerator {
 
     // Priority 1: Enumeration (highest priority, most specific)
     if (restriction.enumerations && restriction.enumerations.length > 0) {
-      const value = this.enumSelector.select(restriction.enumerations, seed);
+      const value = this.enumSelector.select(restriction.enumerations, rng);
       return this.lengthGenerator.applyLength(value, restriction);
     }
 
     // Priority 2: Pattern (specific format requirement)
     if (restriction.pattern) {
-      const patternValue = this.patternMatcher.generate(restriction.pattern);
+      const patternValue = this.patternMatcher.generate(restriction.pattern, { rng });
       if (patternValue) {
         return this.lengthGenerator.applyLength(patternValue, restriction);
       }
@@ -64,7 +65,7 @@ export class ConstraintValueGenerator {
     let value: string;
 
     if (this.isNumericType(baseType)) {
-      value = this.generateNumericValue(baseType, restriction, elementName, seed);
+      value = this.generateNumericValue(baseType, restriction, elementName, rng);
     } else {
       value = this.getSampleValue(baseType, elementName);
     }
@@ -82,16 +83,16 @@ export class ConstraintValueGenerator {
     baseType: string,
     restriction: XSDRestriction,
     elementName: string,
-    seed?: number
+    rng?: SeededRandom
   ): string {
     if (this.isIntegerType(baseType)) {
-      const num = this.numericGenerator.generateInteger(restriction, seed);
+      const num = this.numericGenerator.generateInteger(restriction, rng);
       if (num !== null) {
         return num.toString();
       }
       console.warn(`Numeric range conflict for ${elementName}, using default`);
     } else {
-      const num = this.numericGenerator.generateDecimal(restriction, seed);
+      const num = this.numericGenerator.generateDecimal(restriction, rng);
       if (num !== null) {
         return num.toString();
       }

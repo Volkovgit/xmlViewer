@@ -10,3 +10,4 @@ export { NumericRangeGenerator } from './NumericRangeGenerator';
 export { LengthConstraintGenerator } from './LengthConstraintGenerator';
 export { EnumerationSelector } from './EnumerationSelector';
 export { ConstraintValueGenerator } from './ConstraintValueGenerator';
+export { SeededRandom, createSeededRandom } from './SeededRandom';

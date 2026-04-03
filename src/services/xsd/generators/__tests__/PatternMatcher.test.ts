@@ -42,7 +42,7 @@ describe('PatternMatcher', () => {
   it('should return null for complex patterns that timeout', () => {
     const matcher = new PatternMatcher();
     const complexPattern = '([a-zA-Z0-9]{1,10}){1000}';
-    const result = matcher.generate(complexPattern, 10); // 10ms timeout
+    const result = matcher.generate(complexPattern, { timeoutMs: 10 });
     expect(result).toBeNull();
   });
 
