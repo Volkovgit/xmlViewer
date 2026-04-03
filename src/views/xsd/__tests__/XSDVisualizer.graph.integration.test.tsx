@@ -22,24 +22,13 @@ const sampleXSD = `<?xml version="1.0" encoding="UTF-8"?>
 </xs:schema>`;
 
 describe('XSDVisualizer Graph Integration', () => {
-  it('should show Graph View tab', () => {
+  it('should render Graph View by default', () => {
     render(<XSDVisualizer xsdContent={sampleXSD} />);
-    expect(screen.getByTestId('xsd-graph-tab')).toBeInTheDocument();
-  });
-
-  it('should switch to Graph View when tab is clicked', async () => {
-    render(<XSDVisualizer xsdContent={sampleXSD} />);
-    const graphTab = screen.getByTestId('xsd-graph-tab');
-    fireEvent.click(graphTab);
-    await waitFor(() => {
-      expect(screen.getByTestId('xsd-graph-view')).toBeInTheDocument();
-    });
+    expect(screen.getByTestId('xsd-graph-view')).toBeInTheDocument();
   });
 
   it('should show all elements in dropdown', async () => {
     render(<XSDVisualizer xsdContent={sampleXSD} />);
-    const graphTab = screen.getByTestId('xsd-graph-tab');
-    fireEvent.click(graphTab);
     await waitFor(() => {
       const select = screen.getByLabelText('Element:');
       expect(select.innerHTML).toContain('PurchaseOrder');
@@ -48,8 +37,6 @@ describe('XSDVisualizer Graph Integration', () => {
 
   it('should render graph when element is selected', async () => {
     render(<XSDVisualizer xsdContent={sampleXSD} />);
-    const graphTab = screen.getByTestId('xsd-graph-tab');
-    fireEvent.click(graphTab);
     await waitFor(() => {
       const select = screen.getByLabelText('Element:');
       fireEvent.change(select, { target: { value: 'PurchaseOrder' } });

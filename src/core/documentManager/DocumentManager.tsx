@@ -46,8 +46,6 @@ export function DocumentManager() {
   const [xsdErrors, setXsdErrors] = useState<string[]>([]);
   // XSD view mode: 'text' or 'visualizer'
   const [xsdViewMode, setXsdViewMode] = useState<'text' | 'visualizer'>('text');
-  // XSD active tab: 'elements', 'types', or 'graph'
-  const [xsdActiveTab, setXsdActiveTab] = useState<'elements' | 'types' | 'graph'>('elements');
 
   // Get data for FilesPanel
   const openDocuments = getAllDocuments();
@@ -219,7 +217,6 @@ export function DocumentManager() {
   const handleShowGraph = useCallback(() => {
     if (activeDocument?.type === DocumentType.XSD) {
       setXsdViewMode('visualizer');
-      setXsdActiveTab('graph');
     }
   }, [activeDocument]);
 
@@ -304,8 +301,6 @@ export function DocumentManager() {
                 xsdViewMode === 'visualizer' ? (
                   <XSDVisualizer
                     xsdContent={activeDocument.content}
-                    activeTab={xsdActiveTab}
-                    onTabChange={setXsdActiveTab}
                   />
                 ) : (
                   <XMLTextEditor
