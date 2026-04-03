@@ -1,22 +1,21 @@
 import React from 'react';
 import { Document } from '@/types';
 import { DocumentType } from '@/types';
-import { PrimaryActionButton } from '../buttons/PrimaryActionButton';
 import { SecondaryActionButton } from '../buttons/SecondaryActionButton';
 import './ActionsPanel.css';
 
 interface ActionsPanelProps {
   document: Document | null;
-  onToggleGraphMode?: () => void;
   onGenerateXML?: () => void;
   onValidate?: () => void;
+  onAssignSchema?: () => void;
 }
 
 export const ActionsPanel: React.FC<ActionsPanelProps> = ({
   document,
-  onToggleGraphMode,
   onGenerateXML,
   onValidate,
+  onAssignSchema,
 }) => {
   const isXSD = document?.type === DocumentType.XSD;
   const isXML = document?.type === DocumentType.XML;
@@ -31,13 +30,6 @@ export const ActionsPanel: React.FC<ActionsPanelProps> = ({
         <div className="actions-list">
           {isXSD && (
             <>
-              <PrimaryActionButton
-                icon="Circle"
-                onClick={onToggleGraphMode || (() => {})}
-                tooltip="Show dependency graph for XSD schema"
-              >
-                Открыть граф
-              </PrimaryActionButton>
               <SecondaryActionButton
                 icon="FileText"
                 onClick={onGenerateXML || (() => {})}
@@ -57,6 +49,13 @@ export const ActionsPanel: React.FC<ActionsPanelProps> = ({
 
           {isXML && (
             <>
+              <SecondaryActionButton
+                icon="Link"
+                onClick={onAssignSchema || (() => {})}
+                tooltip="Attach XSD schema to XML document for validation"
+              >
+                Assign Schema
+              </SecondaryActionButton>
               <SecondaryActionButton
                 icon="CheckCircle"
                 onClick={onValidate || (() => {})}

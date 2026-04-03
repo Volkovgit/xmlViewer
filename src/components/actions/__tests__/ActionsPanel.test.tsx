@@ -5,9 +5,9 @@ import { Document, DocumentType, DocumentStatus } from '@/types';
 
 describe('ActionsPanel', () => {
   const mockCallbacks = {
-    onToggleGraphMode: vi.fn(),
     onGenerateXML: vi.fn(),
     onValidate: vi.fn(),
+    onAssignSchema: vi.fn(),
   };
 
   it('renders "Actions" section header', () => {
@@ -41,9 +41,11 @@ describe('ActionsPanel', () => {
     render(<ActionsPanel document={xsdDocument} {...mockCallbacks} />);
 
     // Check for XSD-specific buttons
-    expect(screen.getByText('Открыть граф')).toBeInTheDocument();
     expect(screen.getByText('Generate XML')).toBeInTheDocument();
     expect(screen.getByText('Validate')).toBeInTheDocument();
+
+    // Ensure "Show Graph" button is not rendered
+    expect(screen.queryByText('Открыть граф')).not.toBeInTheDocument();
   });
 
   it('renders XML actions when document type is XML', () => {
@@ -60,36 +62,14 @@ describe('ActionsPanel', () => {
     render(<ActionsPanel document={xmlDocument} {...mockCallbacks} />);
 
     // Check for XML-specific buttons
+    expect(screen.getByText('Assign Schema')).toBeInTheDocument();
     expect(screen.getByText('Validate')).toBeInTheDocument();
 
     // Ensure XSD-specific buttons are not rendered
-    expect(screen.queryByText('Открыть граф')).not.toBeInTheDocument();
     expect(screen.queryByText('Generate XML')).not.toBeInTheDocument();
   });
 
-  it('"Show Graph" button uses PrimaryActionButton for XSD documents', () => {
-    const xsdDocument: Document = {
-      id: '1',
-      name: 'schema.xsd',
-      type: DocumentType.XSD,
-      content: '<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"></xs:schema>',
-      status: DocumentStatus.READY,
-      createdAt: new Date(),
-      modifiedAt: new Date(),
-    };
-
-    const { container } = render(<ActionsPanel document={xsdDocument} {...mockCallbacks} />);
-
-    // Find the Show Graph button
-    const showGraphButton = Array.from(container.querySelectorAll('button')).find(
-      btn => btn.textContent === 'Открыть граф'
-    );
-
-    expect(showGraphButton).toBeDefined();
-    expect(showGraphButton?.className).toContain('primary-action-button');
-  });
-
-  it('other buttons use SecondaryActionButton', () => {
+  it('all buttons use SecondaryActionButton', () => {
     const xsdDocument: Document = {
       id: '1',
       name: 'schema.xsd',

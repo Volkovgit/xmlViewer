@@ -10,7 +10,6 @@ import { LeftSidebar } from '@/components/layout';
 import { ActionsPanel } from '@/components/actions';
 import { FilesPanel } from '@/components/files';
 import { ValidationPanel, SchemaSelectionModal } from '@/components/validation';
-import { DocumentTabs } from './DocumentTabs';
 import { TopBar } from '@/components/toolbar';
 import { XMLTextEditor } from '@/views/text';
 import { XSDGraphVisualizer } from '@/views/xsd/graph/XSDGraphVisualizer';
@@ -29,7 +28,6 @@ export function DocumentManager() {
     getAllDocuments,
     getActiveDocument,
     setActiveDocument,
-    removeDocument,
     addDocument,
   } = useDocumentStore();
 
@@ -41,6 +39,7 @@ export function DocumentManager() {
   } = useFileOperations();
 
   // Schema assignment state: maps docId → schemaDocId
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [schemaAssignments, setSchemaAssignments] = useState<Map<string, string>>(new Map());
   // XSD view mode: 'text' or 'graph'
   const [xsdMode, setXsdMode] = useState<'text' | 'graph'>('text');
@@ -71,33 +70,6 @@ export function DocumentManager() {
   const handleOpenButtonClick = useCallback(() => {
     fileInputRef.current?.click();
   }, [fileInputRef]);
-
-  const handleClose = useCallback(
-    (docId: string) => {
-      const documents = getAllDocuments();
-      const doc = documents.find((d) => d.id === docId);
-      if (!doc) return;
-      if (doc.status === DocumentStatus.DIRTY) {
-        const confirmed = confirm(`Save changes to "${doc.name}" before closing?`);
-        if (!confirmed) return;
-      }
-      removeDocument(docId);
-      // Clean up schema assignment
-      setSchemaAssignments((prev) => {
-        const next = new Map(prev);
-        next.delete(docId);
-        return next;
-      });
-    },
-    [getAllDocuments, removeDocument]
-  );
-
-  const handleTabClick = useCallback(
-    (docId: string) => {
-      setActiveDocument(docId);
-    },
-    [setActiveDocument]
-  );
 
   // Drag and drop
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
@@ -186,6 +158,18 @@ export function DocumentManager() {
     }
   }, [getActiveDocument]);
 
+  // Handle assign schema - show modal to select XSD
+  const handleAssignSchema = useCallback(() => {
+    const xsdDocuments = getAllDocuments().filter(d => d.type === DocumentType.XSD);
+
+    if (xsdDocuments.length === 0) {
+      alert('No XSD schemas available. Please open an XSD file first.');
+      return;
+    }
+
+    setShowSchemaModal(true);
+  }, [getAllDocuments]);
+
   // Parse XSD schema for graph visualization
   const parsedSchema = useMemo(() => {
     const activeDoc = getActiveDocument();
@@ -203,12 +187,6 @@ export function DocumentManager() {
 
   const isActiveXSD = activeDocument?.type === DocumentType.XSD;
 
-  const handleShowGraph = useCallback(() => {
-    if (activeDocument?.type === DocumentType.XSD) {
-      setXsdMode('graph');
-    }
-  }, [activeDocument]);
-
   return (
     <AppLayout
       sidebar={
@@ -216,9 +194,9 @@ export function DocumentManager() {
           actionsPanel={
             <ActionsPanel
               document={activeDocument ?? null}
-              onToggleGraphMode={handleShowGraph}
               onGenerateXML={handleGenerateXML}
               onValidate={handleValidateXSD}
+              onAssignSchema={handleAssignSchema}
             />
           }
           filesPanel={
@@ -254,13 +232,6 @@ export function DocumentManager() {
           onChange={handleFileSelected}
           accept=".xml,.xsd,.xsl,.xslt,.xq,.xquery,.json"
           data-testid="file-input"
-        />
-
-        <DocumentTabs
-          documents={openDocuments}
-          activeDocumentId={activeDocument?.id ?? null}
-          onTabClick={handleTabClick}
-          onClose={handleClose}
         />
 
         <div className="document-content">
