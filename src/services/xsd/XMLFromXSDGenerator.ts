@@ -13,13 +13,38 @@ import type {
   XSDComplexType,
   XSDSimpleType,
   XSDAttribute,
+  XSDRestriction,
 } from './XSDParser';
+import {
+  ConstraintValueGenerator,
+  PatternMatcher,
+  NumericRangeGenerator,
+  LengthConstraintGenerator,
+  EnumerationSelector,
+} from './generators';
+
+// Generator instances for constraint-aware value generation
+const patternMatcher = new PatternMatcher();
+const numericGenerator = new NumericRangeGenerator();
+const lengthGenerator = new LengthConstraintGenerator();
+const enumSelector = new EnumerationSelector();
+const constraintGenerator = new ConstraintValueGenerator(
+  patternMatcher,
+  numericGenerator,
+  lengthGenerator,
+  enumSelector
+);
 
 // ────────────────────────────────────────────────
 // Sample value generators
 // ────────────────────────────────────────────────
 
-function getSampleValue(typeName: string, elementName: string): string {
+function getSampleValue(typeName: string, elementName: string, restriction?: XSDRestriction): string {
+  // If restriction provided, use constraint generator
+  if (restriction) {
+    return constraintGenerator.generateValue(typeName, restriction, elementName);
+  }
+
   const local = typeName.includes(':') ? typeName.split(':')[1] : typeName;
 
   switch (local) {
@@ -65,12 +90,7 @@ function getSampleValue(typeName: string, elementName: string): string {
 
 function getSampleValueForSimpleType(st: XSDSimpleType, elementName: string): string {
   if (st.restriction) {
-    // Use first enumeration if available
-    if (st.restriction.enumerations && st.restriction.enumerations.length > 0) {
-      return st.restriction.enumerations[0];
-    }
-    // Use base type
-    return getSampleValue(st.restriction.base, elementName);
+    return constraintGenerator.generateValue(st.restriction.base, st.restriction, elementName);
   }
   return getSampleValue('xs:string', elementName);
 }
@@ -103,13 +123,23 @@ function isBuiltInType(typeName: string): boolean {
   return builtIns.includes(local);
 }
 
-function generateAttributes(attributes: XSDAttribute[]): string {
+function generateAttributes(attributes: XSDAttribute[], schema: XSDSchema): string {
   if (attributes.length === 0) return '';
   const parts: string[] = [];
   for (const attr of attributes) {
     if (attr.use === 'prohibited') continue;
-    const value = attr.fixedValue || attr.defaultValue || getSampleValue(attr.type, attr.name);
-    // Include required and optional attributes
+
+    let value: string;
+    if (attr.fixedValue !== undefined) {
+      value = attr.fixedValue;
+    } else if (attr.defaultValue !== undefined) {
+      value = attr.defaultValue;
+    } else {
+      const simpleType = resolveSimpleType(attr.type, schema);
+      const restriction = simpleType?.restriction;
+      value = getSampleValue(attr.type, attr.name, restriction);
+    }
+
     parts.push(`${attr.name}="${value}"`);
   }
   return parts.length > 0 ? ' ' + parts.join(' ') : '';
@@ -140,11 +170,13 @@ function generateElementXML(
     }
 
     if (complexType) {
-      const attrStr = generateAttributes(complexType.attributes);
+      const attrStr = generateAttributes(complexType.attributes, schema);
 
       if (complexType.elements.length === 0 && complexType.simpleContentBase) {
         // Simple content with attributes
-        const value = getSampleValue(complexType.simpleContentBase, element.name);
+        const simpleType = resolveSimpleType(complexType.simpleContentBase, schema);
+        const restriction = simpleType?.restriction;
+        const value = getSampleValue(complexType.simpleContentBase, element.name, restriction);
         lines.push(`${indent(level)}<${element.name}${attrStr}>${value}</${element.name}>`);
       } else if (complexType.elements.length === 0) {
         lines.push(`${indent(level)}<${element.name}${attrStr}/>`);
@@ -160,7 +192,9 @@ function generateElementXML(
       lines.push(`${indent(level)}<${element.name}>${value}</${element.name}>`);
     } else {
       // Built-in type or unresolved
-      const value = getSampleValue(element.type, element.name);
+      const simpleType = resolveSimpleType(element.type, schema);
+      const restriction = simpleType?.restriction;
+      const value = getSampleValue(element.type, element.name, restriction);
       lines.push(`${indent(level)}<${element.name}>${value}</${element.name}>`);
     }
   }
