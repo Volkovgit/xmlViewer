@@ -12,7 +12,7 @@ export type {
 
 export { validateXMLAgainstXSD, validateXMLAgainstSchema } from './XSDValidator';
 export { generateXSDFromXML } from './XSDGenerator';
-export { generateXMLFromXSD } from './XMLFromXSDGenerator';
+export { generateXMLFromXSD, type GenerateXMLOptions } from './XMLFromXSDGenerator';
 
 // Schema-aware editing services
 export { SchemaProvider } from './schemaProvider/SchemaProvider';
@@ -33,3 +33,12 @@ export {
 
 export { SchemaDecorationProvider } from './decorations/SchemaDecorationProvider';
 export { SchemaQuickFixProvider } from './quickFix/SchemaQuickFixProvider';
+
+// Constraint-aware value generators
+export {
+  PatternMatcher,
+  NumericRangeGenerator,
+  LengthConstraintGenerator,
+  EnumerationSelector,
+  ConstraintValueGenerator,
+} from './generators';
