@@ -106,6 +106,14 @@ The application follows a **layered architecture** with clear separation of conc
    - Stores are sliced by feature (document, validation, settings)
    - No prop drilling - components access store directly
 
+5. **Modern UI Architecture** (Added 2026-03-31)
+   - `AppLayout` (components/layout/) provides split layout with sidebar
+   - `LeftSidebar` contains ActionsPanel and FilesPanel
+   - `ActionsPanel` shows context-sensitive buttons based on document type (XML/XSD)
+   - `FilesPanel` displays open documents with status badges (dirty, errors)
+   - Responsive design with mobile sidebar toggle
+   - Modern blue color theme with CSS variables
+
 ---
 
 ## Critical Implementation Order
@@ -144,6 +152,16 @@ The application follows a **layered architecture** with clear separation of conc
 - **parserEngine/** - XML parsing, DOM manipulation, caching
 - **validatorEngine/** - XML/XSD validation, error aggregation
 - **viewManager/** - Multi-view coordination, synchronization
+
+### UI Components (src/components/)
+
+**Purpose:** React UI components with modern design system.
+
+- **layout/** - AppLayout (split layout), LeftSidebar (container), SidebarToggle (mobile)
+- **actions/** - ActionsPanel (context-sensitive XSD/XML actions)
+- **buttons/** - PrimaryActionButton (gradient), SecondaryActionButton (light blue)
+- **badges/** - DirtyBadge (orange dot), ErrorBadge (red count)
+- **files/** - FilesPanel (document list with status indicators)
 
 ### Views (src/views/)
 
@@ -393,6 +411,14 @@ When working on specific features, reference these files:
 - **Text editor:** `src/views/text/MonacoEditor.tsx`
 - **State store:** `src/stores/documentStore.ts`
 
+### Modern UI Components (Added 2026-03-31)
+
+- **AppLayout:** `src/components/layout/AppLayout.tsx` - Split layout wrapper
+- **LeftSidebar:** `src/components/layout/LeftSidebar.tsx` - Sidebar container
+- **ActionsPanel:** `src/components/actions/ActionsPanel.tsx` - Context-sensitive actions
+- **FilesPanel:** `src/components/files/FilesPanel.tsx` - Document list with badges
+- **TopBar:** `src/core/documentManager/TopBar.tsx` - Top toolbar (renamed from DocumentToolbar)
+
 ---
 
 ## MVP Verification Checklist
@@ -427,11 +453,39 @@ Full checklist: See "Верификация" section in IMPLEMENTATION_PLAN.md
 
 ## Important Notes
 
-- **Project is currently in Phase 0** - infrastructure setup
-- **Only documentation exists** - no source code yet
+- **Project is currently in Phase 3** - Advanced Views with Modern UI redesign complete
+- **Modern UI Features:** Left sidebar with context-sensitive actions, SVG icons, tooltips, badges
 - **Follow the plan strictly** - don't skip phases or add features prematurely
 - **Performance is critical** - optimize for large files from the start
 - **Multi-view sync is complex** - invest time in ViewCoordinator architecture
+
+## UI Modernization (2026-03-31)
+
+The application received a comprehensive UI redesign:
+
+### New Components Created
+- `AppLayout` - Split layout with 240px sidebar
+- `LeftSidebar` - Container for actions and files
+- `ActionsPanel` - Dynamic buttons based on document type
+- `FilesPanel` - Document list with status badges
+- `PrimaryActionButton` - Gradient button for primary actions
+- `SecondaryActionButton` - Light blue button for secondary actions
+- `DirtyBadge` - Orange dot for unsaved changes
+- `ErrorBadge` - Red count for validation errors
+- `SidebarToggle` - Mobile toggle button
+
+### Design Changes
+- Modern blue color scheme (#2196f3, #667eea)
+- SVG icons using Lucide React
+- Hover animations on all buttons
+- Tooltips on action buttons
+- Responsive design with mobile support
+- CSS variables for theming
+
+### Refactoring
+- `DocumentToolbar` → `TopBar` (simplified, removed XSD-specific buttons)
+- Actions moved from toolbar to sidebar
+- Better separation of concerns
 
 ---
 

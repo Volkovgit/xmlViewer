@@ -6,7 +6,31 @@ An open-source web-based XML editor inspired by Altova XMLSpy, built with modern
 
 XML Previewer is a comprehensive XML development environment designed to provide developers with powerful tools for working with XML, XSD, XSLT, XPath, and XQuery. This application aims to be a fully-featured open-source alternative to commercial XML editors.
 
-### Key Features (Planned)
+### Key Features
+
+### Modern UI Design
+
+The application features a modern, responsive interface with:
+
+- **Left Sidebar**: Context-sensitive actions and file list
+- **Smart Actions**: XSD and XML specific operations that appear/disappear based on document type
+- **Status Indicators**: Dirty state (orange dot) and validation error badges (red count)
+- **Responsive Design**: Mobile-friendly with collapsible sidebar toggle
+- **Modern Color Theme**: Blue color scheme with smooth gradients (#2196f3, #667eea)
+
+#### Key UI Features
+
+- **Actions Panel**: Shows relevant actions based on document type
+  - XSD files: Show Graph, Generate XML, Validate
+  - XML files: Generate XSD, Assign Schema, Validate XSD
+
+- **Files Panel**: List all open documents with status badges
+  - Orange dot: Unsaved changes
+  - Red badge: Error count
+
+- **ToolTips**: Descriptive tooltips on all action buttons for better UX
+
+### Core Features (Planned)
 
 - **Multiple Editor Views**: Text View, Grid View, and Tree View for XML documents
 - **Schema Support**: XSD editing, validation, and generation
@@ -102,7 +126,11 @@ src/
 ├── components/      # React UI components
 │   ├── common/     # Reusable UI components
 │   ├── document/   # Document-related components
-│   ├── layout/     # Layout components (toolbar, panels)
+│   ├── layout/     # Layout components (AppLayout, LeftSidebar, SidebarToggle)
+│   ├── actions/    # ActionsPanel (context-sensitive buttons)
+│   ├── buttons/    # PrimaryActionButton, SecondaryActionButton
+│   ├── badges/     # DirtyBadge, ErrorBadge
+│   ├── files/      # FilesPanel (document list with status)
 │   └── validation/ # Validation UI components
 ├── core/           # Core business logic
 │   ├── documentManager/    # Document lifecycle management
@@ -134,6 +162,7 @@ src/
 ## Project Status
 
 **Phase 0: Project Setup** ✅ Complete
+**Phase 3: Advanced Views** ✅ Complete (including modern UI redesign)
 
 See [IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md) for detailed development roadmap.
 
