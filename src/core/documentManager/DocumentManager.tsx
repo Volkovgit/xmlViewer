@@ -12,8 +12,6 @@ import { FilesPanel } from '@/components/files';
 import { DocumentTabs } from './DocumentTabs';
 import { TopBar } from '@/components/toolbar';
 import { XMLTextEditor } from '@/views/text';
-import { XMLTree } from '@/views/tree';
-import { XMLGrid } from '@/views/grid';
 import { XSDVisualizer } from '@/views/xsd/XSDVisualizer';
 import '@/components/toolbar/TopBar.css';
 import './DocumentManager.css';
@@ -50,8 +48,6 @@ export function DocumentManager() {
   const [xsdViewMode, setXsdViewMode] = useState<'text' | 'visualizer'>('text');
   // XSD active tab: 'elements', 'types', or 'graph'
   const [xsdActiveTab, setXsdActiveTab] = useState<'elements' | 'types' | 'graph'>('elements');
-  // XML view mode: 'text', 'tree', or 'grid'
-  const [xmlViewMode, setXmlViewMode] = useState<'text' | 'tree' | 'grid'>('text');
 
   // Get data for FilesPanel
   const openDocuments = getAllDocuments();
@@ -215,17 +211,6 @@ export function DocumentManager() {
     alert(`Schema "${xsdDocs[index].name}" assigned to "${activeDoc.name}".`);
   }, [getActiveDocument, getAllDocuments]);
 
-  // Handle grid cell value changes
-  const handleGridCellValueChanged = useCallback(
-    (newXml: string) => {
-      const activeDoc = getActiveDocument();
-      if (!activeDoc) return;
-
-      updateDocumentContent(activeDoc.id, newXml);
-    },
-    [getActiveDocument, updateDocumentContent]
-  );
-
   // ─── Render ────────────────────────────────────
 
   const isActiveXML = activeDocument?.type === DocumentType.XML;
@@ -291,51 +276,24 @@ export function DocumentManager() {
           onClose={handleClose}
         />
 
-        {activeDocument && (
+        {activeDocument && isActiveXSD && (
           <div className="view-mode-bar">
-            {isActiveXSD && (
-              <div className="view-mode-toggles">
-                <button
-                  className={`view-mode-btn ${xsdViewMode === 'text' ? 'active' : ''}`}
-                  onClick={() => setXsdViewMode('text')}
-                  data-testid="xsd-text-view-btn"
-                >
-                  Text
-                </button>
-                <button
-                  className={`view-mode-btn ${xsdViewMode === 'visualizer' ? 'active' : ''}`}
-                  onClick={() => setXsdViewMode('visualizer')}
-                  data-testid="xsd-visual-view-btn"
-                >
-                  Visual
-                </button>
-              </div>
-            )}
-            {isActiveXML && (
-              <div className="view-mode-toggles">
-                <button
-                  className={`view-mode-btn ${xmlViewMode === 'text' ? 'active' : ''}`}
-                  onClick={() => setXmlViewMode('text')}
-                  data-testid="xml-text-view-btn"
-                >
-                  Text
-                </button>
-                <button
-                  className={`view-mode-btn ${xmlViewMode === 'tree' ? 'active' : ''}`}
-                  onClick={() => setXmlViewMode('tree')}
-                  data-testid="xml-tree-view-btn"
-                >
-                  Tree
-                </button>
-                <button
-                  className={`view-mode-btn ${xmlViewMode === 'grid' ? 'active' : ''}`}
-                  onClick={() => setXmlViewMode('grid')}
-                  data-testid="xml-grid-view-btn"
-                >
-                  Grid
-                </button>
-              </div>
-            )}
+            <div className="view-mode-toggles">
+              <button
+                className={`view-mode-btn ${xsdViewMode === 'text' ? 'active' : ''}`}
+                onClick={() => setXsdViewMode('text')}
+                data-testid="xsd-text-view-btn"
+              >
+                Text
+              </button>
+              <button
+                className={`view-mode-btn ${xsdViewMode === 'visualizer' ? 'active' : ''}`}
+                onClick={() => setXsdViewMode('visualizer')}
+                data-testid="xsd-visual-view-btn"
+              >
+                Visual
+              </button>
+            </div>
           </div>
         )}
 
@@ -349,17 +307,6 @@ export function DocumentManager() {
                     activeTab={xsdActiveTab}
                     onTabChange={setXsdActiveTab}
                   />
-                ) : (
-                  <XMLTextEditor
-                    document={activeDocument}
-                    onSave={() => saveFile(activeDocument)}
-                  />
-                )
-              ) : isActiveXML ? (
-                xmlViewMode === 'tree' ? (
-                  <XMLTree document={activeDocument} />
-                ) : xmlViewMode === 'grid' ? (
-                  <XMLGrid document={activeDocument} onCellValueChanged={handleGridCellValueChanged} />
                 ) : (
                   <XMLTextEditor
                     document={activeDocument}
