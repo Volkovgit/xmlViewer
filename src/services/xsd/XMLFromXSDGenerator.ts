@@ -36,19 +36,13 @@ export interface GenerateXMLOptions {
   validateResult?: boolean;
 }
 
-// Generator instances for constraint-aware value generation
-const patternMatcher = new PatternMatcher();
-const numericGenerator = new NumericRangeGenerator();
-const lengthGenerator = new LengthConstraintGenerator();
-const enumSelector = new EnumerationSelector();
-
-// Function to create constraint generator with seed
-function createConstraintGenerator(seed?: number) {
+// Function to create constraint generator
+function createConstraintGenerator() {
   return new ConstraintValueGenerator(
-    patternMatcher,
-    numericGenerator,
-    lengthGenerator,
-    new EnumerationSelector(seed) // Pass seed to EnumerationSelector
+    new PatternMatcher(),
+    new NumericRangeGenerator(),
+    new LengthConstraintGenerator(),
+    new EnumerationSelector()
   );
 }
 
@@ -59,7 +53,7 @@ function createConstraintGenerator(seed?: number) {
 function getSampleValue(typeName: string, elementName: string, restriction?: XSDRestriction, seed?: number): string {
   // If restriction provided, use constraint generator
   if (restriction) {
-    const constraintGen = createConstraintGenerator(seed);
+    const constraintGen = createConstraintGenerator();
     return constraintGen.generateValue(typeName, restriction, elementName, seed);
   }
 
@@ -108,10 +102,10 @@ function getSampleValue(typeName: string, elementName: string, restriction?: XSD
 
 function getSampleValueForSimpleType(st: XSDSimpleType, elementName: string, seed?: number): string {
   if (st.restriction) {
-    const constraintGen = createConstraintGenerator(seed);
+    const constraintGen = createConstraintGenerator();
     return constraintGen.generateValue(st.restriction.base, st.restriction, elementName, seed);
   }
-  return getSampleValue('xs:string', elementName, undefined, seed);
+  return getSampleValue('xs:string', elementName, undefined);
 }
 
 // ────────────────────────────────────────────────
@@ -196,7 +190,7 @@ function generateElementXML(
         // Simple content with attributes
         const simpleType = resolveSimpleType(complexType.simpleContentBase, schema);
         const restriction = simpleType?.restriction;
-        const value = getSampleValue(complexType.simpleContentBase, element.name, restriction, seed);
+        const value = getSampleValue(complexType.simpleContentBase, element.name, restriction);
         lines.push(`${indent(level)}<${element.name}${attrStr}>${value}</${element.name}>`);
       } else if (complexType.elements.length === 0) {
         lines.push(`${indent(level)}<${element.name}${attrStr}/>`);
@@ -208,13 +202,13 @@ function generateElementXML(
         lines.push(`${indent(level)}</${element.name}>`);
       }
     } else if (simpleType) {
-      const value = getSampleValueForSimpleType(simpleType, element.name, seed);
+      const value = getSampleValueForSimpleType(simpleType, element.name);
       lines.push(`${indent(level)}<${element.name}>${value}</${element.name}>`);
     } else {
       // Built-in type or unresolved
       const simpleType = resolveSimpleType(element.type, schema);
       const restriction = simpleType?.restriction;
-      const value = getSampleValue(element.type, element.name, restriction, seed);
+      const value = getSampleValue(element.type, element.name, restriction);
       lines.push(`${indent(level)}<${element.name}>${value}</${element.name}>`);
     }
   }
@@ -230,11 +224,28 @@ function generateElementXML(
  * Generate a sample XML document from an XSD schema string.
  *
  * Creates valid XML instances using the first root element declaration,
- * with sample values for each type.
+ * with sample values for each type. All XSD type constraints are respected:
+ * - Pattern (regex) constraints
+ * - Length constraints (minLength, maxLength)
+ * - Numeric range constraints (minInclusive, maxInclusive, etc.)
+ * - Enumeration constraints (random selection)
  *
  * @param xsdContent - XSD schema string
- * @param options - Generation options (validation loop, seed, attempts)
+ * @param options - Optional generation parameters
  * @returns XML instance string, or null if XSD is not valid
+ *
+ * @example
+ * ```ts
+ * // Basic usage
+ * const xml = generateXMLFromXSD(xsdString);
+ *
+ * // With options
+ * const xml = generateXMLFromXSD(xsdString, {
+ *   seed: 42,              // Reproducible random values
+ *   validateResult: true,  // Validate against XSD (default)
+ *   maxAttempts: 3         // Max retry attempts
+ * });
+ * ```
  */
 export function generateXMLFromXSD(
   xsdContent: string,
