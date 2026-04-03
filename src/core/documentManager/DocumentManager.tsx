@@ -4,7 +4,7 @@ import { createUntitledDocument } from '@/services/document';
 import { Document, DocumentType, DocumentStatus } from '@/types';
 import { ValidationError } from '@/types';
 import { useFileOperations } from '@/hooks/useFileOperations';
-import { generateXSDFromXML, generateXMLFromXSD, validateXMLAgainstXSD, parseXSD } from '@/services/xsd';
+import { generateXMLFromXSD, validateXMLAgainstXSD, parseXSD } from '@/services/xsd';
 import { AppLayout } from '@/components/layout';
 import { LeftSidebar } from '@/components/layout';
 import { ActionsPanel } from '@/components/actions';
@@ -43,8 +43,8 @@ export function DocumentManager() {
 
   // Schema assignment state: maps docId → schemaDocId
   const [schemaAssignments, setSchemaAssignments] = useState<Map<string, string>>(new Map());
-  // XSD view mode: 'text' or 'visualizer'
-  const [xsdViewMode, setXsdViewMode] = useState<'text' | 'visualizer'>('text');
+  // XSD view mode: 'text' or 'graph'
+  const [xsdMode, setXsdMode] = useState<'text' | 'graph'>('text');
 
   // Validation errors for ValidationPanel
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
@@ -120,23 +120,6 @@ export function DocumentManager() {
 
   // ─── XSD Actions ────────────────────────────────
 
-  const handleGenerateXSD = useCallback(() => {
-    const activeDoc = getActiveDocument();
-    if (!activeDoc) return;
-
-    const xsdContent = generateXSDFromXML(activeDoc.content);
-    if (!xsdContent) {
-      alert('Failed to generate XSD. Please ensure the XML is well-formed.');
-      return;
-    }
-
-    const newDoc = createUntitledDocument(DocumentType.XSD);
-    // Replace default content with generated XSD
-    const docWithContent = { ...newDoc, content: xsdContent, name: `${activeDoc.name.replace(/\.[^.]+$/, '')}.xsd` };
-    addDocument(docWithContent);
-    setActiveDocument(docWithContent.id);
-  }, [getActiveDocument, addDocument, setActiveDocument]);
-
   const handleGenerateXML = useCallback(() => {
     const activeDoc = getActiveDocument();
     if (!activeDoc) return;
@@ -182,37 +165,6 @@ export function DocumentManager() {
     }
   }, [getActiveDocument, schemaAssignments, getAllDocuments]);
 
-  const handleAssignSchema = useCallback(() => {
-    const activeDoc = getActiveDocument();
-    if (!activeDoc) return;
-
-    const allDocs = getAllDocuments();
-    const xsdDocs = allDocs.filter((d) => d.type === DocumentType.XSD);
-
-    if (xsdDocs.length === 0) {
-      alert('No XSD files are open. Please open an XSD file first.');
-      return;
-    }
-
-    const options = xsdDocs.map((d, i) => `${i + 1}. ${d.name}`).join('\n');
-    const choice = prompt(`Select XSD schema to assign:\n\n${options}\n\nEnter number:`);
-    if (!choice) return;
-
-    const index = parseInt(choice, 10) - 1;
-    if (isNaN(index) || index < 0 || index >= xsdDocs.length) {
-      alert('Invalid selection.');
-      return;
-    }
-
-    setSchemaAssignments((prev) => {
-      const next = new Map(prev);
-      next.set(activeDoc.id, xsdDocs[index].id);
-      return next;
-    });
-
-    alert(`Schema "${xsdDocs[index].name}" assigned to "${activeDoc.name}".`);
-  }, [getActiveDocument, getAllDocuments]);
-
   // Handle schema selection from modal
   const handleSchemaSelect = useCallback((xsdDocument: Document) => {
     setShowSchemaModal(false);
@@ -238,7 +190,7 @@ export function DocumentManager() {
   // Parse XSD schema for graph visualization
   const parsedSchema = useMemo(() => {
     const activeDoc = getActiveDocument();
-    if (activeDoc?.type === DocumentType.XSD && xsdViewMode === 'visualizer') {
+    if (activeDoc?.type === DocumentType.XSD && xsdMode === 'graph') {
       try {
         return parseXSD(activeDoc.content);
       } catch {
@@ -246,7 +198,7 @@ export function DocumentManager() {
       }
     }
     return null;
-  }, [getActiveDocument, xsdViewMode]);
+  }, [getActiveDocument, xsdMode]);
 
   // ─── Render ────────────────────────────────────
 
@@ -254,7 +206,7 @@ export function DocumentManager() {
 
   const handleShowGraph = useCallback(() => {
     if (activeDocument?.type === DocumentType.XSD) {
-      setXsdViewMode('visualizer');
+      setXsdMode('graph');
     }
   }, [activeDocument]);
 
@@ -265,11 +217,9 @@ export function DocumentManager() {
           actionsPanel={
             <ActionsPanel
               document={activeDocument ?? null}
-              onShowGraph={handleShowGraph}
+              onToggleGraphMode={handleShowGraph}
               onGenerateXML={handleGenerateXML}
-              onGenerateXsd={handleGenerateXSD}
               onValidate={handleValidateXSD}
-              onAssignSchema={handleAssignSchema}
             />
           }
           filesPanel={
@@ -293,6 +243,9 @@ export function DocumentManager() {
           onOpenFile={handleOpenButtonClick}
           onSave={() => activeDocument && saveFile(activeDocument)}
           hasActiveDocument={!!activeDocument}
+          isXSDDocument={isActiveXSD}
+          xsdMode={xsdMode}
+          onXsdModeChange={setXsdMode}
         />
 
         <input
@@ -311,32 +264,11 @@ export function DocumentManager() {
           onClose={handleClose}
         />
 
-        {activeDocument && isActiveXSD && (
-          <div className="view-mode-bar">
-            <div className="view-mode-toggles">
-              <button
-                className={`view-mode-btn ${xsdViewMode === 'text' ? 'active' : ''}`}
-                onClick={() => setXsdViewMode('text')}
-                data-testid="xsd-text-view-btn"
-              >
-                Text
-              </button>
-              <button
-                className={`view-mode-btn ${xsdViewMode === 'visualizer' ? 'active' : ''}`}
-                onClick={() => setXsdViewMode('visualizer')}
-                data-testid="xsd-visual-view-btn"
-              >
-                Visual
-              </button>
-            </div>
-          </div>
-        )}
-
         <div className="document-content">
           {activeDocument ? (
             <div className="active-document" data-testid="active-document">
               {isActiveXSD ? (
-                xsdViewMode === 'visualizer' ? (
+                xsdMode === 'graph' ? (
                   parsedSchema ? (
                     <XSDGraphVisualizer schema={parsedSchema} />
                   ) : (

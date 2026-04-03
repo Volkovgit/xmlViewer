@@ -75,3 +75,46 @@
   outline: 2px solid var(--primary-blue);
   outline-offset: 2px;
 }
+
+/* XSD Mode Switcher */
+.xsd-mode-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 24px;
+  padding-left: 24px;
+  border-left: 1px solid var(--border-color-light);
+}
+
+.mode-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.xsd-mode-switcher label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: background var(--transition-normal);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.xsd-mode-switcher label:hover {
+  background: var(--bg-hover);
+}
+
+.xsd-mode-switcher label.active {
+  background: var(--primary-light);
+  color: var(--primary-blue);
+  font-weight: 500;
+}
+
+.xsd-mode-switcher input[type="radio"] {
+  margin: 0;
+  cursor: pointer;
+}
