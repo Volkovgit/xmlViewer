@@ -1,0 +1,39 @@
+.dirty-badge {
+  /* Small orange circle */
+  width: 8px;
+  height: 8px;
+  background: #ff9800;
+  border-radius: 50%;
+}
+
+.dirty-badge.pulse {
+  /* Optional pulse animation */
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.error-badge {
+  /* Red circular badge with white text */
+  background: #f44336;
+  color: white;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  /* Ensure the badge only takes as much space as needed */
+  display: inline-block;
+  min-width: 18px;
+  text-align: center;
+  line-height: 1.2;
+}
